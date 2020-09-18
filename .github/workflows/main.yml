@@ -10,7 +10,7 @@
     # Unity password
     unity-password: ${{ secrets.UNITY_PASSWORD }}
     # Unity serial
-    unity-serial: ${{ secrets.UNITY_SERIAL }}
+    # unity-serial: ${{ secrets.UNITY_SERIAL }}
     # Choose Android, iOS, Mac, Windows, or WebGL
     build-target: Windows
     # Unity project path
