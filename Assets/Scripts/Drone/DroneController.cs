@@ -12,11 +12,12 @@ namespace Assets.Scripts.Drone
         {
             _drones = FindObjectsOfType<Drone>().ToList();
             Debug.Log($"Found { _drones.Count } drones");
+            _drones[0].ChangeModeOfOperation(ModeOfOperation.FlightToTarget, new Vector3(10, 0f, 10f));
         }
 
         void Update()
         {
-            _drones[0].ChangeModeOfOperation(ModeOfOperation.FlightToTarget);
+            
         }
     }
 }

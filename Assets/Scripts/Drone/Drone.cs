@@ -8,6 +8,7 @@ namespace Assets.Scripts.Drone
     {
         // Public properties
         public float Weight = 10f;
+        public float CruiseSpeed = 5f;
         public float BatteryCapacity = 300f;
         public float ChargingSpeed = 1f;
 
@@ -18,12 +19,13 @@ namespace Assets.Scripts.Drone
 
         void Start()
         {
-            _modeOfOperation = ModeOfOperation.Idle;
             _batteryCharge = BatteryCapacity;
         }
 
         void Update()
         {
+            Debug.Log(gameObject.name + " is in mode " + _modeOfOperation);
+
             switch (_modeOfOperation)
             {
                 case ModeOfOperation.Idle:
@@ -41,6 +43,8 @@ namespace Assets.Scripts.Drone
                 case ModeOfOperation.Launch:
                     break;
                 case ModeOfOperation.FlightToTarget:
+                    // this doesn't work properly, just a mockup to make the drone move
+                    gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, _currentTarget, CruiseSpeed * Time.deltaTime);
                     break;
                 case ModeOfOperation.FlightToBase:
                     break;

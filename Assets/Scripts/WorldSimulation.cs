@@ -1,18 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldSimulation : MonoBehaviour
+namespace Assets.Scripts
 {
-    // Start is called before the first frame update
-    void Start()
+    public class WorldSimulation : MonoBehaviour
     {
-        
-    }
+        public List<Vector3> BaseStations;
+        public List<Vector3> Targets;
 
-    // Update is called once per frame
-    void Update()
-    {
+        void Start()
+        {
         
+        }
+
+        void Update()
+        {
+        
+        }
     }
 }
