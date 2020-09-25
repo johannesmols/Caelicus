@@ -9,6 +9,7 @@ namespace Assets.Scripts.Drone
         // Public properties
         public float Weight = 10f;
         public float CruiseSpeed = 5f;
+        public float CruiseAltitude = 100f;
         public float BatteryCapacity = 300f;
         public float ChargingSpeed = 1f;
 
@@ -29,8 +30,10 @@ namespace Assets.Scripts.Drone
             switch (_modeOfOperation)
             {
                 case ModeOfOperation.Idle:
+                    // do nothing
                     break;
                 case ModeOfOperation.Charging:
+                    // charge battery
                     if (_batteryCharge >= BatteryCapacity)
                     {
                         _modeOfOperation = ModeOfOperation.Idle;
@@ -41,14 +44,18 @@ namespace Assets.Scripts.Drone
                     }
                     break;
                 case ModeOfOperation.Launch:
+                    // launch straight forward and climb to cruise altitude
                     break;
                 case ModeOfOperation.FlightToTarget:
+                    // fly towards target on cruise altitude with cruise speed
                     // this doesn't work properly, just a mockup to make the drone move
                     gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, _currentTarget, CruiseSpeed * Time.deltaTime);
                     break;
                 case ModeOfOperation.FlightToBase:
+                    // fly towards base on cruise altitude with cruise speed
                     break;
                 case ModeOfOperation.Landing:
+                    // reduce altitude and speed to approach base
                     break;
                 default:
                     break;
