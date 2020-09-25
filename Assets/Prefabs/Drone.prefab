@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e156c9392d1c61f45aa9219ac5e1f090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: {fileID: 0}
   Weight: 10
   BatteryCapacity: 300
   ChargingTime: 60
