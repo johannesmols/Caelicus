@@ -1,21 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Drone : MonoBehaviour
+namespace Assets.Scripts.Objects
 {
-    public Transform location;
-    public double weight;
-    public double batteryCapacity;
-    public double chargingTime;
-
-    void Start()
+    public class Drone : MonoBehaviour
     {
-        
-    }
+        public double Weight = 10d;
+        public double BatteryCapacity = 300d;
+        public double ChargingTime = 60d;
 
-    void Update()
-    {
-        location.Translate(Vector3.forward * Time.deltaTime);
+        void Start()
+        {
+            
+        }
+
+        void Update()
+        {
+            gameObject.transform.Translate(Vector3.forward * Time.deltaTime);
+        }
     }
 }
