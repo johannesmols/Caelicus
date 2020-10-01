@@ -7,11 +7,12 @@ namespace Assets.Scripts.Drone
     public class Drone : MonoBehaviour
     {
         // Public properties
-        public float Weight = 10f;
+        public float FixedWeight = 10f;
+        public float PayloadWeight = 0f;
         public float CruiseSpeed = 5f;
-        public float CruiseAltitude = 100f;
         public float BatteryCapacity = 300f;
         public float ChargingSpeed = 1f;
+        public float PurchasingCost = 3000f;
 
         // Private properties
         private ModeOfOperation _modeOfOperation;
@@ -32,20 +33,6 @@ namespace Assets.Scripts.Drone
                 case ModeOfOperation.Idle:
                     // do nothing
                     break;
-                case ModeOfOperation.Charging:
-                    // charge battery
-                    if (_batteryCharge >= BatteryCapacity)
-                    {
-                        _modeOfOperation = ModeOfOperation.Idle;
-                    }
-                    else
-                    {
-                        _batteryCharge += ChargingSpeed * Time.deltaTime; // charge battery by ChargingSpeed per second
-                    }
-                    break;
-                case ModeOfOperation.Launch:
-                    // launch straight forward and climb to cruise altitude
-                    break;
                 case ModeOfOperation.FlightToTarget:
                     // fly towards target on cruise altitude with cruise speed
                     // this doesn't work properly, just a mockup to make the drone move
@@ -53,9 +40,6 @@ namespace Assets.Scripts.Drone
                     break;
                 case ModeOfOperation.FlightToBase:
                     // fly towards base on cruise altitude with cruise speed
-                    break;
-                case ModeOfOperation.Landing:
-                    // reduce altitude and speed to approach base
                     break;
                 default:
                     break;
@@ -70,12 +54,6 @@ namespace Assets.Scripts.Drone
                 case ModeOfOperation.Idle:
                     _modeOfOperation = mode;
                     return true;
-                case ModeOfOperation.Charging:
-                    _modeOfOperation = mode;
-                    return true;
-                case ModeOfOperation.Launch:
-                    _modeOfOperation = mode;
-                    return true;
                 case ModeOfOperation.FlightToTarget:
                     if (target == Vector3.zero) return false;
                     _modeOfOperation = mode;
@@ -85,9 +63,6 @@ namespace Assets.Scripts.Drone
                     if (target == Vector3.zero) return false;
                     _modeOfOperation = mode;
                     _currentTarget = target;
-                    return true;
-                case ModeOfOperation.Landing:
-                    _modeOfOperation = mode;
                     return true;
                 default:
                     return false;

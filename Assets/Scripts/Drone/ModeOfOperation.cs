@@ -9,10 +9,7 @@ namespace Assets.Scripts.Drone
     public enum ModeOfOperation
     {
         Idle,
-        Charging,
-        Launch,
         FlightToTarget,
-        FlightToBase,
-        Landing
+        FlightToBase
     }
 }
