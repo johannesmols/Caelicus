@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Assets.Scripts.Drone;
 using UnityEngine;
 
@@ -7,39 +8,36 @@ namespace Assets.Scripts.Drone
     public class Drone : MonoBehaviour
     {
         // Public properties
-        public float FixedWeight = 10f;
-        public float PayloadWeight = 0f;
+        public float DroneWeight = 10f;
         public float CruiseSpeed = 5f;
-        public float BatteryCapacity = 300f;
-        public float ChargingSpeed = 1f;
-        public float PurchasingCost = 3000f;
+        public BaseStation CurrentBaseStation;
 
         // Private properties
         private ModeOfOperation _modeOfOperation;
         private Vector3 _currentTarget;
-        private float _batteryCharge;
+        private Battery _installedBattery;
+        private float _currentPayloadWeight;
 
         void Start()
         {
-            _batteryCharge = BatteryCapacity;
+            if (CurrentBaseStation == null)
+            {
+                Debug.LogError($"{ gameObject.name } does not have a base station defined at the start of the simulation");
+            }
         }
 
         void Update()
         {
-            Debug.Log(gameObject.name + " is in mode " + _modeOfOperation);
-
             switch (_modeOfOperation)
             {
                 case ModeOfOperation.Idle:
                     // do nothing
                     break;
                 case ModeOfOperation.FlightToTarget:
-                    // fly towards target on cruise altitude with cruise speed
-                    // this doesn't work properly, just a mockup to make the drone move
-                    gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, _currentTarget, CruiseSpeed * Time.deltaTime);
+                    // fly towards target with cruise speed
                     break;
                 case ModeOfOperation.FlightToBase:
-                    // fly towards base on cruise altitude with cruise speed
+                    // fly towards base with cruise speed
                     break;
                 default:
                     break;
@@ -55,7 +53,7 @@ namespace Assets.Scripts.Drone
                     _modeOfOperation = mode;
                     return true;
                 case ModeOfOperation.FlightToTarget:
-                    if (target == Vector3.zero) return false;
+                    if (target == Vector3.zero || _installedBattery == null || _installedBattery.Capacity <= 0f) return false;
                     _modeOfOperation = mode;
                     _currentTarget = target;
                     return true;
@@ -67,6 +65,25 @@ namespace Assets.Scripts.Drone
                 default:
                     return false;
             }
+        }
+
+        public IEnumerator SwapBatteries(Battery newBattery)
+        {
+            _installedBattery = null;
+            yield return new WaitForSeconds(newBattery.SwapTime);
+            _installedBattery = newBattery;
+        }
+
+        public IEnumerator LoadCargo(float weight, float loadingTime)
+        {
+            if (_currentPayloadWeight <= 0f)
+            {
+                Debug.LogError($"{ gameObject.name } still has payload attached, can't load more");
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(loadingTime);
+            _currentPayloadWeight = weight;
         }
     }
 }
