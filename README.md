@@ -1,5 +1,5 @@
-# MBSE_project
-Model Based System Engineering Project (Insert cool project name here)
+# Caelicus
+Model Based System Engineering Project
 
 ## Main question 
 
