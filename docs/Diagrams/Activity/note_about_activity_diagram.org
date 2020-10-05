@@ -1,0 +1,169 @@
+* How I immagine the simulation to works
+There are two main task, generating events and processing events.
+The simulation ends whene there are no more clock events.
+#+begin_src plantuml :file general-view.png
+[*] --> Generating
+Generating : Generate clock event
+Generating : Generate random wind
+Generating : Generate mission event if based on clock
+Generating --> [*]
+
+Generating -> Processing
+Processing: Check if a drone arrived to the target
+Processing: Check if a mission is completed
+Processing: Update the wind conditions
+Processing: Start a new Mission
+Processing: Set new position of the drone
+Processing --> Generating
+#+end_src
+- A clock event is just a normal advancment of time in the simulation.
+- The wind event is random and can happen or not during the current time.
+- The mission event is generated only if there is a mission scheduled for that particular clock time.
+The simulations end when the simulator reach the max ammount of time
+
+** A bad State machine diagram
+#+begin_src plantuml :file bad-state-machine.png
+[*] --> ResetWorldToInitialCondition
+ResetWorldToInitialCondition --> GenerateClock
+state GenerateClock {
+state TimeExpired
+note right of TimeExpired : End the simulation\nand generate report
+--
+state UpdateResetClock
+state EqueueClockEvent
+UpdateClock --> EqueueClockEvent
+}
+GenerateClock --> GenerateReport : Time Expired
+GenerateReport --> [*]
+GenerateClock --> GenerateWind
+state GenerateWind {
+ RandomWindGenerator -> EnqueueWindEvent
+}
+
+GenerateWind --> GenerateMissionEvent
+state GenerateMissionEvent {
+ isMissionScheduled --> AddMissionToActiveMissionQueue
+}
+
+GenerateMissionEvent --> ProcessingOfEvents
+state ProcessingOfEvents {
+CheckDroneArrivedToTarget --> CheckMissionCompleted
+CheckMissionCompleted --> UpdateWindConditions
+UpdateWindConditions --> SetNewDronePosition
+}
+ProcessingOfEvents --> GenerateClock
+#+end_src
+
+** Start new mission
+#+begin_src plantuml :file start-new-mission.png
+|DroneController|
+start
+->Processing of Mission event;
+if (DroneAvailable) then
+  -[#red]->
+:ReEnqueueEvent;
+else
+-[#blue]->
+  :LoadDrone;
+-> Extract from the event the
+coordinates and the payload for the
+new target;
+|Drone|
+  :CofigureDrone;
+|DroneController|
+
+endif
+-[#gray,bold]->
+stop
+#+end_src
+
+** Check drone arrived to target
+#+begin_src plantuml :file arrived-to-target.png
+|DroneController|
+start
+:CheckCompletedDelivery;
+|Drone|
+if (DroneIsFlyingToTarget) then
+  -[#red]-> False;
+else
+  -[#blue]-> True;
+  if (DroneArrivedToTarget) then
+    -[#red]-> False;
+  else
+  -[#blue]->
+    if(StartUnloading) then
+      -[#red]->
+      :UnloadingTime := currentTime;
+      -[#red]-> False;
+    else
+      -[#blue]->
+      if(DoneUnloading) then
+        -[#red]-> False;
+        else
+        -[#blue]-> True;
+      endif
+    endif
+  endif
+endif
+|DroneController|
+-[#gray,bold]->
+stop
+#+end_src
+
+** Check completed mission
+#+begin_src plantuml :file completed-mission.png
+|DroneController|
+start
+:UpdateCompletedMission;
+:CheckCompletedMission;
+|Drone|
+if (DroneIsFlyingToBase) then
+  -[#red]-> False;
+else
+  -[#blue]-> True;
+  if (DroneArrivedToBase) then
+    -[#red]-> False;
+  else
+  -[#blue]-> True;
+  endif
+endif
+|DroneController|
+-[#gray,bold]->
+stop
+#+end_src
+
+
+** Update wind conditions
+#+begin_src plantuml :file update-wind-conditions.png
+|DroneController|
+start
+:UpdateWindConditions;
+|Drone|
+if (DroneIsFlying) then
+  -[#red]-> False;
+else
+  -[#blue]-> True;
+  :SetCurrentWind;
+endif
+|DroneController|
+-[#gray,bold]->
+stop
+#+end_src
+
+
+** Update Drone position
+#+begin_src plantuml :file update-drone-position.png
+|DroneController|
+start
+:UpdateDronePosition;
+|Drone|
+if (DroneIsFlying) then
+  -[#red]-> False;
+else
+  -[#blue]-> True;
+  :UpdatePosition;
+endif
+|DroneController|
+-[#gray,bold]->
+stop
+#+end_src
