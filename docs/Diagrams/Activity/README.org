@@ -83,31 +83,38 @@ stop
 start
 :CheckCompletedDelivery;
 |Drone|
-if (DroneIsFlyingToTarget) then
-  -[#red]-> False;
-else
-  -[#blue]-> True;
-  if (DroneArrivedToTarget) then
-    -[#red]-> False;
-  else
+if (DroneIsFlyingToTarget) then (False)
+stop
+else (True)
   -[#blue]->
-    if(StartUnloading) then
-      -[#red]->
-      :UnloadingTime := currentTime;
-      -[#red]-> False;
-    else
-      -[#blue]->
-      if(DoneUnloading) then
-        -[#red]-> False;
-        else
-        -[#blue]-> True;
+  if (DroneArrivedToTarget) then (False)
+  stop
+  else (True)
+    -[#blue]->
+    if(StartUnloading) then (False)
+       -[#blue]->
+      if(DoneUnloading) then (True)
+        stop
+        else (True)
+        -[#blue]->
+        |DroneController|
+        :FindAvailableBase;
+        -[#blue]->
+        :SendDroneToBase;
+        |Drone|
+        -[#blue]->
+        :UpdateTarget;
+        -[#blue]->
+        :ChangeStateToFlyingToBase;
+        -[#blue]->
+        stop
       endif
+    else (False)
+      :UnloadingTime := currentTime;
+      stop
     endif
   endif
 endif
-|DroneController|
--[#gray,bold]->
-stop
 #+end_src
 
 ** Check completed mission
