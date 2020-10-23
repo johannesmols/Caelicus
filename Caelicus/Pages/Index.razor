@@ -1,7 +1,48 @@
 ﻿@page "/"
+@using Caelicus.Graph
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
+<ul>
+    @foreach (var vertex in _graph.Vertices)
+    {
+        <li>@vertex.Info</li>
+    }
+</ul>
+
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+@code {
+    private Graph<string, string> _graph;
+
+    protected override Task OnInitializedAsync()
+    {
+        _graph = new Graph<string, string>();
+        _graph.AddVertex("Base");
+        _graph.AddVertex("Target 1");
+        _graph.AddVertex("Target 2");
+
+        _graph.AddEdge("Base", "Target 1", "5");
+
+        if (_graph.BidirectionalSearch(_graph.Vertices[1], _graph.Vertices[0]))
+        {
+            Console.WriteLine("path found");
+            Console.WriteLine("exists: " + _graph.Contains("Target 3"));
+
+
+            Console.WriteLine("found vertex " + _graph.FirstOrDefault(v => v == "Target 1"));
+        }
+        else
+        {
+            Console.WriteLine("no path found");
+        }
+
+        // distance
+        var baseStation = _graph.FirstOrDefault(v => v == "Base");
+        var target1 = _graph.FirstOrDefault(v => v == "Target 1");
+
+        return base.OnInitializedAsync();
+    }
+}
