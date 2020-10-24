@@ -1,48 +1,22 @@
 ﻿@page "/"
-@using Caelicus.Graph
+@inject HttpClient Http
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
+<h3>Vertices in graph</h3>
 <ul>
     @foreach (var vertex in _graph.Vertices)
     {
-        <li>@vertex.Info</li>
+        <li>@vertex.Info.Name (@vertex.Info.Position.Item1, @vertex.Info.Position.Item2) (Type: @vertex.Info.Type)</li>
     }
 </ul>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<p>Number of edges in graph: @_graph.EdgeCount (each connection is two edges)</p>
 
 @code {
-    private Graph<string, string> _graph;
+    private Graph<VertexInfo, EdgeInfo> _graph = new Graph<VertexInfo, EdgeInfo>();
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        _graph = new Graph<string, string>();
-        _graph.AddVertex("Base");
-        _graph.AddVertex("Target 1");
-        _graph.AddVertex("Target 2");
-
-        _graph.AddEdge("Base", "Target 1", "5");
-
-        if (_graph.BidirectionalSearch(_graph.Vertices[1], _graph.Vertices[0]))
-        {
-            Console.WriteLine("path found");
-            Console.WriteLine("exists: " + _graph.Contains("Target 3"));
-
-
-            Console.WriteLine("found vertex " + _graph.FirstOrDefault(v => v == "Target 1"));
-        }
-        else
-        {
-            Console.WriteLine("no path found");
-        }
-
-        // distance
-        var baseStation = _graph.FirstOrDefault(v => v == "Base");
-        var target1 = _graph.FirstOrDefault(v => v == "Target 1");
-
-        return base.OnInitializedAsync();
+        var graphData = await Http.GetFromJsonAsync<JsonRootObject>("data/graph.json");
+        _graph = new GraphImporterService().GenerateGraph(graphData);
     }
 }
