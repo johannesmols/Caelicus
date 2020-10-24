@@ -26,7 +26,7 @@ namespace Caelicus.Services
                     //Label = vertex.Info.Name,
                     Icon = new Icon()
                     {
-                        Url = vertex.Info.Type == VertexType.Target ?  "/icons/circle_green.svg" : "/icons/home_black.svg",
+                        Url = vertex.Info.Type == VertexType.Target ?  "icons/circle_green.svg" : "icons/home_black.svg",
                         ScaledSize = new Size()
                         {
                             Height = 24,
