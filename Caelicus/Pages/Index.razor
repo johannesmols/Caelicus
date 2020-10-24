@@ -1,7 +1,22 @@
 ﻿@page "/"
+@inject HttpClient Http
 
-<h1>Hello, world!</h1>
+<h3>Vertices in graph</h3>
+<ul>
+    @foreach (var vertex in _graph.Vertices)
+    {
+        <li>@vertex.Info.Name (@vertex.Info.Position.Item1, @vertex.Info.Position.Item2) (Type: @vertex.Info.Type)</li>
+    }
+</ul>
 
-Welcome to your new app.
+<p>Number of edges in graph: @_graph.EdgeCount (each connection is two edges)</p>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    private Graph<VertexInfo, EdgeInfo> _graph = new Graph<VertexInfo, EdgeInfo>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var graphData = await Http.GetFromJsonAsync<JsonRootObject>("data/graph.json");
+        _graph = new GraphImporterService().GenerateGraph(graphData);
+    }
+}
