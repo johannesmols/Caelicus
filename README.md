@@ -1,4 +1,6 @@
-# Caelicus
+![Deploy to GitHub Pages](https://github.com/johannesmols/Caelicus/workflows/Deploy%20to%20GitHub%20Pages/badge.svg)
+
+## Caelicus
 Model Based System Engineering Project
 
 ## Main question 
