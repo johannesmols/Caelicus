@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -58,7 +58,8 @@ namespace Caelicus.Services
                 Console.WriteLine($"Error while parsing graph JSON for a vertex type " +
                                   $"(type given was { type } but only { VertexType.Base } and " +
                                   $"{ VertexType.Target } are allowed)");
-                throw;
+                
+                return VertexType.Target;
             }
         }
 
