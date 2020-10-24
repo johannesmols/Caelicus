@@ -1,0 +1,31 @@
+{
+  "name": "London",
+  "vertices": [
+    {
+      "name": "London Bridge",
+      "type": "base",
+      "latitude": 51.507650,
+      "longitude": -0.087811,
+      "edges": [
+        "Target 1",
+        "Target 2"
+      ]
+    },
+    {
+      "name": "Palace of Westminster",
+      "type": "target",
+      "latitude": 51.499770,
+      "longitude": -0.124358,
+      "edges": [
+      ]
+    },
+    {
+      "name": "London City Airport",
+      "type": "target",
+      "latitude": 51.504492,
+      "longitude": 0.051242,
+      "edges": [
+      ]
+    }
+  ]
+}

@@ -70,18 +70,4 @@ namespace Caelicus.Services
             return pos1.GetDistanceTo(pos2);
         }
     }
-
-    public class JsonRootObject
-    {
-        public List<JsonVertex> Vertices { get; set; }
-    }
-
-    public class JsonVertex
-    {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public List<string> Edges { get; set; }
-    }
 }

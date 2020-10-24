@@ -1,7 +1,125 @@
 ﻿@page "/graphs"
+@inject AppState AppState
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@implements IDisposable
 
-<h1>Graphs</h1>
+<div class="container-fluid">
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-10">
+            <select class="form-control" value="@AppState.Graphs.FirstOrDefault()?.Name" @onchange="SelectionChanged">
+                @foreach (var graph in AppState.Graphs)
+                {
+                    <option value="@graph.Name">@graph.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-secondary btn-block" @onclick="SaveClicked">Save</button>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-secondary btn-block" @onclick="NewClicked">New</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <textarea @bind="_editorText" class="form-control" style="min-width: 100%; min-height: 100%; font-family: monospace"></textarea>
+        </div>
+        <div class="col-md-6">
+            <GoogleMap @ref="@_map" Id="map1" Options="@_mapOptions"></GoogleMap>
+        </div>
+    </div>
+</div>
 
 @code {
+    private LocalStorageService _localStorageService;
 
+    private GoogleMap _map;
+    private MapOptions _mapOptions;
+
+    private string _currentSelected = string.Empty;
+    private string _editorText = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+
+        _localStorageService = new LocalStorageService(LocalStorage);
+
+        // Load JSON of first element
+        _currentSelected = AppState.Graphs.FirstOrDefault()?.Name;
+        LoadGraphInEditor(_currentSelected);
+
+        _mapOptions = new MapOptions()
+        {
+            Zoom = 13,
+            Center = new LatLngLiteral()
+            {
+                Lat = 55.786334,
+                Lng = 12.523281
+            },
+            MapTypeId = MapTypeId.Roadmap,
+            StreetViewControl = false
+        };
+    }
+
+    private void SelectionChanged(ChangeEventArgs e)
+    {
+        _currentSelected = e.Value.ToString();
+        LoadGraphInEditor(e.Value.ToString());
+    }
+
+    private void LoadGraphInEditor(string name)
+    {
+        var graph = AppState.Graphs.FirstOrDefault(x => x.Name == name);
+        _editorText = JsonConvert.SerializeObject(graph, Formatting.Indented);
+    }
+
+    private async Task SaveClicked(MouseEventArgs e)
+    {
+        try
+        {
+            Console.WriteLine("clicked save button");
+            var graph = (JsonRootObject) JsonConvert.DeserializeObject(_editorText, typeof(JsonRootObject));
+            await _localStorageService.WriteGraphsToLocalStorage(new List<JsonRootObject>() { graph });
+            ModifyAppState(graph);
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Error while parsing JSON from editor field, please verify schema.");
+        }
+    }
+
+    private void NewClicked(MouseEventArgs e)
+    {
+        _editorText = JsonConvert.SerializeObject(new JsonRootObject(), Formatting.Indented);
+    }
+
+    private void ModifyAppState(JsonRootObject graph)
+    {
+        var appStateCopy = AppState.Graphs;
+        var index = appStateCopy.FindIndex(i => i.Name == graph.Name);
+        if (index > -1)
+        {
+            appStateCopy[index] = graph;
+        }
+        else
+        {
+            appStateCopy.Add(graph);
+        }
+        AppState.UpdateGraphs(this, appStateCopy);
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
 }

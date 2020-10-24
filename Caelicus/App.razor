@@ -1,3 +1,8 @@
+@inject AppState AppState
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@implements IDisposable
+
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -8,3 +13,63 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code
+{
+    public List<JsonRootObject> Graphs;
+
+    private LocalStorageService _localStorageService;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+
+        _localStorageService = new LocalStorageService(LocalStorage);
+
+        // Retrieve locally stored graphs
+        Graphs = await _localStorageService.GetLocalStorageGraphs();
+
+        // Read graph files from data folder and add if not already cached in browser
+        var localGraphs = new[] { "data/copenhagen.json", "data/london.json" };
+        foreach (var localGraph in localGraphs)
+        {
+            try
+            {
+                var graph = await Http.GetFromJsonAsync<JsonRootObject>(localGraph);
+                if (Graphs.All(x => x.Name != graph.Name))
+                {
+                    Graphs.Add(graph);
+                }
+                else
+                {
+                    Console.WriteLine($"Already cached { localGraph } in local storage or path invalid, ignoring.");
+                }
+            }
+            catch
+            {
+                Console.WriteLine($"Error parsing { localGraph } to object, ignoring.");
+            }
+        }
+
+        // Update app state with graphs
+        AppState.UpdateGraphs(this, Graphs);
+
+        // Write graphs to local storage
+        await _localStorageService.WriteGraphsToLocalStorage(AppState.Graphs);
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        Http?.Dispose();
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}

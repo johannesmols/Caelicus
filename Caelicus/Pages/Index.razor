@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <h3>Vertices in graph</h3>
 <ul>
@@ -16,7 +17,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var graphData = await Http.GetFromJsonAsync<JsonRootObject>("data/graph.json");
-        _graph = new GraphImporterService().GenerateGraph(graphData);
+        //var graphData = await Http.GetFromJsonAsync<JsonRootObject>("data/graph.json");
+        //_graph = new GraphImporterService().GenerateGraph(graphData);
     }
 }

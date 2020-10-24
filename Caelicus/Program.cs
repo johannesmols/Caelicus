@@ -3,6 +3,9 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
+using Blazored.LocalStorage;
+using Caelicus.Services;
+using GoogleMapsComponents;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +21,9 @@ namespace Caelicus
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped<AppState>();
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddBlazorGoogleMaps();
 
             await builder.Build().RunAsync();
         }
