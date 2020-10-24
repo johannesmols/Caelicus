@@ -25,7 +25,7 @@
             <textarea @bind="_editorText" class="form-control" style="min-width: 100%; min-height: 100%; font-family: monospace"></textarea>
         </div>
         <div class="col-md-6">
-            <GoogleMap @ref="@_map" Id="map1" Options="@_mapOptions"></GoogleMap>
+            <GoogleMap @ref="@_map" Id="map1" Options="@_mapOptions" OnAfterInit="@OnAfterInitAsync"></GoogleMap>
         </div>
     </div>
 </div>
@@ -35,7 +35,9 @@
 
     private GoogleMap _map;
     private MapOptions _mapOptions;
+    private bool _mapLoaded;
 
+    private JsonRootObject _currentGraph;
     private string _currentSelected = string.Empty;
     private string _editorText = string.Empty;
 
@@ -45,10 +47,6 @@
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
 
         _localStorageService = new LocalStorageService(LocalStorage);
-
-        // Load JSON of first element
-        _currentSelected = AppState.Graphs.FirstOrDefault()?.Name;
-        LoadGraphInEditor(_currentSelected);
 
         _mapOptions = new MapOptions()
         {
@@ -61,25 +59,44 @@
             MapTypeId = MapTypeId.Roadmap,
             StreetViewControl = false
         };
+
+        // Load JSON of first element
+        _currentSelected = AppState.Graphs.FirstOrDefault()?.Name;
+        await LoadGraphInEditor(_currentSelected);
+        await LoadGraphInMap(AppState.Graphs.FirstOrDefault(x => x.Name == _currentSelected));
     }
 
-    private void SelectionChanged(ChangeEventArgs e)
+    private async Task SelectionChanged(ChangeEventArgs e)
     {
         _currentSelected = e.Value.ToString();
-        LoadGraphInEditor(e.Value.ToString());
+        await LoadGraphInEditor(e.Value.ToString());
     }
 
-    private void LoadGraphInEditor(string name)
+    private async Task LoadGraphInEditor(string name)
     {
         var graph = AppState.Graphs.FirstOrDefault(x => x.Name == name);
+        _currentGraph = graph;
         _editorText = JsonConvert.SerializeObject(graph, Formatting.Indented);
+        await LoadGraphInMap(_currentGraph);
+    }
+
+    private async Task LoadGraphInMap(JsonRootObject graph)
+    {
+        if (graph != null)
+        {
+            while (!_mapLoaded)
+            {
+                await Task.Delay(500);
+            }
+
+            await MapRenderService.RenderMap(_map, new GraphImporterService().GenerateGraph(graph));
+        }
     }
 
     private async Task SaveClicked(MouseEventArgs e)
     {
         try
         {
-            Console.WriteLine("clicked save button");
             var graph = (JsonRootObject) JsonConvert.DeserializeObject(_editorText, typeof(JsonRootObject));
             await _localStorageService.WriteGraphsToLocalStorage(new List<JsonRootObject>() { graph });
             ModifyAppState(graph);
@@ -108,6 +125,11 @@
             appStateCopy.Add(graph);
         }
         AppState.UpdateGraphs(this, appStateCopy);
+    }
+
+    private void OnAfterInitAsync()
+    {
+        _mapLoaded = true;
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)

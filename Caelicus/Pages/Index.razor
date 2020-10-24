@@ -1,8 +1,10 @@
 ﻿@page "/"
 @inject HttpClient Http
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject AppState AppState
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@implements IDisposable
 
-<h3>Vertices in graph</h3>
+@*<h3>Vertices in graph</h3>
 <ul>
     @foreach (var vertex in _graph.Vertices)
     {
@@ -10,14 +12,30 @@
     }
 </ul>
 
-<p>Number of edges in graph: @_graph.EdgeCount (each connection is two edges)</p>
+<p>Number of edges in graph: @_graph.EdgeCount</p>*@
 
 @code {
-    private Graph<VertexInfo, EdgeInfo> _graph = new Graph<VertexInfo, EdgeInfo>();
+    private List<Graph<VertexInfo, EdgeInfo>> _graphs = new List<Graph<VertexInfo, EdgeInfo>>();
 
     protected override async Task OnInitializedAsync()
     {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+
         //var graphData = await Http.GetFromJsonAsync<JsonRootObject>("data/graph.json");
         //_graph = new GraphImporterService().GenerateGraph(graphData);
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
     }
 }
