@@ -32,6 +32,7 @@
 
 @code {
     private LocalStorageService _localStorageService;
+    private MapRenderService _mapRenderService;
 
     private GoogleMap _map;
     private MapOptions _mapOptions;
@@ -60,10 +61,22 @@
             StreetViewControl = false
         };
 
+        await InitializeMapRenderService();
+
         // Load JSON of first element
         _currentSelected = AppState.Graphs.FirstOrDefault()?.Name;
         await LoadGraphInEditor(_currentSelected);
         await LoadGraphInMap(AppState.Graphs.FirstOrDefault(x => x.Name == _currentSelected));
+    }
+
+    private async Task InitializeMapRenderService()
+    {
+        while (!_mapLoaded)
+        {
+            await Task.Delay(500);
+        }
+
+        _mapRenderService = new MapRenderService(_map);
     }
 
     private async Task SelectionChanged(ChangeEventArgs e)
@@ -89,7 +102,7 @@
                 await Task.Delay(500);
             }
 
-            await MapRenderService.RenderMap(_map, new GraphImporterService().GenerateGraph(graph));
+            await _mapRenderService.RenderMap(new GraphImporterService().GenerateGraph(graph));
         }
     }
 
@@ -100,6 +113,7 @@
             var graph = (JsonRootObject) JsonConvert.DeserializeObject(_editorText, typeof(JsonRootObject));
             await _localStorageService.WriteGraphsToLocalStorage(new List<JsonRootObject>() { graph });
             ModifyAppState(graph);
+            await LoadGraphInMap(graph);
         }
         catch (Exception)
         {

@@ -13,14 +13,26 @@ namespace Caelicus.Services
 {
     public class MapRenderService
     {
-        public static async Task RenderMap(GoogleMap map, Graph<VertexInfo, EdgeInfo> graph)
+        private readonly GoogleMap _map;
+
+        private List<Marker> _markers = new List<Marker>();
+        private List<Polyline> _polylines = new List<Polyline>();
+
+        public MapRenderService(GoogleMap map)
         {
+            _map = map;
+        }
+
+        public async Task RenderMap(Graph<VertexInfo, EdgeInfo> graph)
+        {
+            await ClearMap();
+
             // Add markers for each vertex
             foreach (var vertex in graph.Vertices)
             {
-                await Marker.CreateAsync(map.JsRuntime, new MarkerOptions()
+                _markers.Add(await Marker.CreateAsync(_map.JsRuntime, new MarkerOptions()
                 {
-                    Map = map.InteropObject,
+                    Map = _map.InteropObject,
                     Position = new LatLngLiteral(vertex.Info.Position.Item2, vertex.Info.Position.Item1),
                     Clickable = false,
                     //Label = vertex.Info.Name,
@@ -33,14 +45,14 @@ namespace Caelicus.Services
                             Width = 24
                         }
                     }
-                });
+                }));
 
                 // Add lines for each edge
                 foreach (var edge in vertex.Edges)
                 {
-                    await Polyline.CreateAsync(map.JsRuntime, new PolylineOptions()
+                    _polylines.Add(await Polyline.CreateAsync(_map.JsRuntime, new PolylineOptions()
                     {
-                        Map = map.InteropObject,
+                        Map = _map.InteropObject,
                         Path = new[]
                         {
                             new LatLngLiteral(edge.Origin.Info.Position.Item2, edge.Origin.Info.Position.Item1),
@@ -48,21 +60,37 @@ namespace Caelicus.Services
                         },
                         StrokeWeight = 2,
                         StrokeColor = "#ff0000"
-                    });
+                    }));
                 }
             }
 
-            await PanToPoint(map, new LatLngLiteral(graph.Vertices.First().Info.Position.Item2, graph.Vertices.First().Info.Position.Item1));
+            await PanToPoint(new LatLngLiteral(graph.Vertices.First().Info.Position.Item2, graph.Vertices.First().Info.Position.Item1));
         }
 
-        public static async Task PanToPoint(GoogleMap map, LatLngLiteral point)
+        public async Task PanToPoint(LatLngLiteral point)
         {
-            await map.InteropObject.PanTo(point);
+            await _map.InteropObject.PanTo(point);
         }
 
-        private static async Task ClearMap(GoogleMap map)
+        private async Task ClearMap()
         {
-            // TODO: implement
+            if (_markers != null)
+            {
+                foreach (var marker in _markers.Reverse<Marker>())
+                {
+                    await marker.SetMap(null);
+                    _markers.Remove(marker);
+                }
+            }
+
+            if (_polylines != null)
+            {
+                foreach (var polyline in _polylines.Reverse<Polyline>())
+                {
+                    await polyline.SetMap(null);
+                    _polylines.Remove(polyline);
+                }
+            }
         }
     }
 }
