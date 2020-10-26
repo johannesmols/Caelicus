@@ -16,7 +16,7 @@
 
 @code
 {
-    public List<JsonRootObject> Graphs;
+    public List<GraphRootObjectJson> Graphs;
 
     private LocalStorageService _localStorageService;
 
@@ -36,7 +36,7 @@
         {
             try
             {
-                var graph = await Http.GetFromJsonAsync<JsonRootObject>(localGraph);
+                var graph = await Http.GetFromJsonAsync<GraphRootObjectJson>(localGraph);
                 if (Graphs.All(x => x.Name != graph.Name))
                 {
                     Graphs.Add(graph);

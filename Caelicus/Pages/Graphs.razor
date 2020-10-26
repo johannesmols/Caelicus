@@ -38,7 +38,7 @@
     private MapOptions _mapOptions;
     private bool _mapLoaded;
 
-    private JsonRootObject _currentGraph;
+    private GraphRootObjectJson _currentGraph;
     private string _currentSelected = string.Empty;
     private string _editorText = string.Empty;
 
@@ -93,7 +93,7 @@
         await LoadGraphInMap(_currentGraph);
     }
 
-    private async Task LoadGraphInMap(JsonRootObject graph)
+    private async Task LoadGraphInMap(GraphRootObjectJson graph)
     {
         if (graph != null)
         {
@@ -110,8 +110,8 @@
     {
         try
         {
-            var graph = (JsonRootObject) JsonConvert.DeserializeObject(_editorText, typeof(JsonRootObject));
-            await _localStorageService.WriteGraphsToLocalStorage(new List<JsonRootObject>() { graph });
+            var graph = (GraphRootObjectJson) JsonConvert.DeserializeObject(_editorText, typeof(GraphRootObjectJson));
+            await _localStorageService.WriteGraphsToLocalStorage(new List<GraphRootObjectJson>() { graph });
             ModifyAppState(graph);
             await LoadGraphInMap(graph);
         }
@@ -123,10 +123,10 @@
 
     private void NewClicked(MouseEventArgs e)
     {
-        _editorText = JsonConvert.SerializeObject(new JsonRootObject(), Formatting.Indented);
+        _editorText = JsonConvert.SerializeObject(new GraphRootObjectJson(), Formatting.Indented);
     }
 
-    private void ModifyAppState(JsonRootObject graph)
+    private void ModifyAppState(GraphRootObjectJson graph)
     {
         var appStateCopy = AppState.Graphs;
         var index = appStateCopy.FindIndex(i => i.Name == graph.Name);

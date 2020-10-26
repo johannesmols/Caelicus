@@ -10,9 +10,9 @@ namespace Caelicus.Services
 {
     public class AppState
     {
-        public List<JsonRootObject> Graphs { get; private set; } = new List<JsonRootObject>();
+        public List<GraphRootObjectJson> Graphs { get; private set; } = new List<GraphRootObjectJson>();
 
-        public void UpdateGraphs(ComponentBase source, List<JsonRootObject> graphs)
+        public void UpdateGraphs(ComponentBase source, List<GraphRootObjectJson> graphs)
         {
             Graphs = graphs;
             NotifyStateChanged(source, nameof(Graphs));

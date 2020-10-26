@@ -16,18 +16,18 @@ namespace Caelicus.Services
             _localStorage = localStorage;
         }
 
-        public async Task<List<JsonRootObject>> GetLocalStorageGraphs()
+        public async Task<List<GraphRootObjectJson>> GetLocalStorageGraphs()
         {
-            var localStorageGraphs = new List<JsonRootObject>();
+            var localStorageGraphs = new List<GraphRootObjectJson>();
 
             for (var i = 0; i < await _localStorage.LengthAsync(); i++)
             {
                 var key = await _localStorage.KeyAsync(i);
-                JsonRootObject jsonObject = null;
+                GraphRootObjectJson jsonObject = null;
 
                 try
                 {
-                    jsonObject = await _localStorage.GetItemAsync<JsonRootObject>(key);
+                    jsonObject = await _localStorage.GetItemAsync<GraphRootObjectJson>(key);
                 }
                 catch (Exception)
                 {
@@ -43,7 +43,7 @@ namespace Caelicus.Services
             return localStorageGraphs;
         }
 
-        public async Task WriteGraphsToLocalStorage(IList<JsonRootObject> graphs)
+        public async Task WriteGraphsToLocalStorage(IList<GraphRootObjectJson> graphs)
         {
             foreach (var graph in graphs)
             {
