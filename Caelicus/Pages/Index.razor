@@ -22,7 +22,7 @@
         // Register app state changed event
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
 
-        //var graphData = await Http.GetFromJsonAsync<JsonRootObject>("data/graph.json");
+        //var graphData = await Http.GetFromJsonAsync<GraphRootObjectJson>("data/graph.json");
         //_graph = new GraphImporterService().GenerateGraph(graphData);
     }
 

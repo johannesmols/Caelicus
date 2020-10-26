@@ -14,7 +14,7 @@ namespace Caelicus.Services
 {
     public class GraphImporterService
     {
-        public Graph<VertexInfo, EdgeInfo> GenerateGraph(JsonRootObject json)
+        public Graph<VertexInfo, EdgeInfo> GenerateGraph(GraphRootObjectJson json)
         {
             var graph = new Graph<VertexInfo, EdgeInfo>();
 
