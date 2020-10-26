@@ -58,7 +58,7 @@ The following parameters describe values that the simulation can be evaluated up
 
 ## The Team
 
-<div align="center">
+<div align="left">
     <img src="https://cultofthepartyparrot.com/flags/hd/italyparrot.gif" width="30" height="30"/>
     <img src="https://cultofthepartyparrot.com/flags/hd/denmarkparrot.gif" width="30" height="30"/>
     <img src="https://cultofthepartyparrot.com/flags/hd/germanyparrot.gif" width="30" height="30"/>
