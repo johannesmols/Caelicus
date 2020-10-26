@@ -1,46 +1,71 @@
-![Deploy to GitHub Pages](https://github.com/johannesmols/Caelicus/workflows/Deploy%20to%20GitHub%20Pages/badge.svg)
+[![Deploy to GitHub Pages](https://github.com/johannesmols/Caelicus/workflows/Deploy%20to%20GitHub%20Pages/badge.svg)](https://johannesmols.github.io/Caelicus/)
 
-## Caelicus
-Model Based System Engineering Project
+[![GitHub contributors](https://img.shields.io/github/contributors/johannesmols/Caelicus.svg)](https://github.com/johannesmols/Caelicus/graphs/contributors) ![Size](https://github-size-badge.herokuapp.com/johannesmols/Caelicus.svg)
 
-## Main question 
+[![GitHub issues](https://img.shields.io/github/issues/johannesmols/Caelicus.svg)](https://GitHub.com/Naereen/StrapDown.js/issues/) [![GitHub issues-closed](https://img.shields.io/github/issues-closed/johannesmols/Caelicus.svg)](https://GitHub.com/Naereen/StrapDown.js/issues?q=is%3Aissue+is%3Aclosed) [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/johannesmols/Caelicus.svg)](http://isitmaintained.com/project/johannesmols/Caelicus "Average time to resolve an issue")
 
-- Is it possible to build a nationwide semi-autonomous drone delivery system for time-critical goods such as medicine? 
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/johannesmols/Caelicus.svg)](https://GitHub.com/johannesmols/Caelicus/pulls/) [![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/johannesmols/Caelicus.svg)](https://github.com/johannesmols/Caelicus/pulls?q=is%3Apr+is%3Aclosed)
 
-## Simulation Parameters 
+# 💨 Caelicus 🩺
 
-- Weight 
+A project in the course of Model-Based Systems Engineering at the Technical University of Denmark ([02223](https://kurser.dtu.dk/course/02223))
 
-- Battery capacity (and charging time between flights) 
+## Main question
 
-- Weather (wind, temperature, air pressure, etc.) 
-
-- GPS Location 
-
-- Fixed locations for drop-off and base station 
-
-- Fixed fleet of drones 
-
-- Charging time 
-
-- Type of drones (quad copters or plane) 
-
-- Cost per kilometre 
-
-- Charging time 
+- How would a transport network consisting of drones compare to established networks (e.g. trucks, trains, boats, airplanes) if measured in terms of average delivery time and cost efficiency? In which scenarios, if any, would drones be the best solution?
 
 ## Assumptions: 
 
-- Collision with other drones or aircrafts is not a worry. 
+1. Collision with other drones or aircrafts is not of concern 
+1. Terrain and obstacles are not considered
+1. Vehicles are loaded and fueled automatically and without delay
+1. Unlimited supply of fuel/electricity at the base stations
+1. There is always a constant communication link between the vehicles and the central coordination system, and there is no delay
 
-- Terrain and obstacles are not considered 
+## Simulation Parameters 
 
-- Countries with hard to reach areas need medicine delivery. 
+The following parameters describe values that the simulation can be evaluated upon, not the runtime variables.
 
-- Drones are refilled and recharged automatically (excluding the human factor) 
+### Vehicle
 
-- We assume that at the base station there are charged batteries 
+1. Speed (km/h)
+1. Maximum payload weight (kg)
+1. Cost (€/h or €/km)
+1. Movement penalty (e.g. `1.5x` for road vehicles due to traffic and road networks)
 
-## Simulation Engine
-- Unity
+### World
+
+1. Wind direction and speed (heading and m/s)
+1. List of orders (_should be many and randomly generated to ensure equal chances for all vehicle types, and allows for analysis which vehicles can fulfill which orders most efficiently_)
+    - Origin and destination vertex
+    - Payload weight
+
+### Transportation network
+
+1. Number of vehicles
+1. Initial distribution of vehicles (if multiple bases)
+
+## Resources
+
+- Current application: https://johannesmols.github.io/Caelicus/
+
+- Mockups: https://www.figma.com/file/9LLukX1RzZNmQ4a6vpPVAq/Caelicus
+
+## Tech Stack
 - C#
+- Blazor WebAssembly
+- Magic 🔮
+
+## The Team
+
+<img src="https://cultofthepartyparrot.com/flags/hd/italyparrot.gif" width="30" height="30"/>
+
+<img src="https://cultofthepartyparrot.com/flags/hd/denmarkparrot.gif" width="30" height="30"/>
+
+<img src="https://cultofthepartyparrot.com/flags/hd/germanyparrot.gif" width="30" height="30"/>
+
+<img src="https://cultofthepartyparrot.com/flags/hd/germanyparrot.gif" width="30" height="30"/>
+
+<img src="https://cultofthepartyparrot.com/flags/hd/denmarkparrot.gif" width="30" height="30"/>
+
+<img src="https://cultofthepartyparrot.com/flags/hd/romaniaparrot.gif" width="30" height="30"/>
