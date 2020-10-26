@@ -1,6 +1,7 @@
 ﻿@page "/graphs"
 @inject AppState AppState
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@using Caelicus.Models.Json
 @implements IDisposable
 
 <div class="container-fluid">
@@ -38,7 +39,7 @@
     private MapOptions _mapOptions;
     private bool _mapLoaded;
 
-    private GraphRootObjectJson _currentGraph;
+    private JsonGraphRootObject _currentGraph;
     private string _currentSelected = string.Empty;
     private string _editorText = string.Empty;
 
@@ -93,7 +94,7 @@
         await LoadGraphInMap(_currentGraph);
     }
 
-    private async Task LoadGraphInMap(GraphRootObjectJson graph)
+    private async Task LoadGraphInMap(JsonGraphRootObject graph)
     {
         if (graph != null)
         {
@@ -110,8 +111,8 @@
     {
         try
         {
-            var graph = (GraphRootObjectJson) JsonConvert.DeserializeObject(_editorText, typeof(GraphRootObjectJson));
-            await _localStorageService.WriteGraphsToLocalStorage(new List<GraphRootObjectJson>() { graph });
+            var graph = (JsonGraphRootObject) JsonConvert.DeserializeObject(_editorText, typeof(JsonGraphRootObject));
+            await _localStorageService.WriteGraphsToLocalStorage(new List<JsonGraphRootObject>() { graph });
             ModifyAppState(graph);
             await LoadGraphInMap(graph);
         }
@@ -123,10 +124,10 @@
 
     private void NewClicked(MouseEventArgs e)
     {
-        _editorText = JsonConvert.SerializeObject(new GraphRootObjectJson(), Formatting.Indented);
+        _editorText = JsonConvert.SerializeObject(new JsonGraphRootObject(), Formatting.Indented);
     }
 
-    private void ModifyAppState(GraphRootObjectJson graph)
+    private void ModifyAppState(JsonGraphRootObject graph)
     {
         var appStateCopy = AppState.Graphs;
         var index = appStateCopy.FindIndex(i => i.Name == graph.Name);

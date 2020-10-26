@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using Caelicus.Enums;
 using Caelicus.Graph;
 using Caelicus.Models;
+using Caelicus.Models.Json;
 using GeoCoordinatePortable;
 
 namespace Caelicus.Services
 {
     public class GraphImporterService
     {
-        public Graph<VertexInfo, EdgeInfo> GenerateGraph(GraphRootObjectJson json)
+        public Graph<VertexInfo, EdgeInfo> GenerateGraph(JsonGraphRootObject json)
         {
             var graph = new Graph<VertexInfo, EdgeInfo>();
 
