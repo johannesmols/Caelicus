@@ -1,6 +1,7 @@
 @inject AppState AppState
 @inject HttpClient Http
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@using Caelicus.Models.Json
 @implements IDisposable
 
 <Router AppAssembly="@typeof(Program).Assembly">
@@ -16,7 +17,7 @@
 
 @code
 {
-    public List<JsonRootObject> Graphs;
+    public List<JsonGraphRootObject> Graphs;
 
     private LocalStorageService _localStorageService;
 
@@ -31,12 +32,12 @@
         Graphs = await _localStorageService.GetLocalStorageGraphs();
 
         // Read graph files from data folder and add if not already cached in browser
-        var localGraphs = new[] { "data/copenhagen.json", "data/london.json" };
+        var localGraphs = new[] { "data/graphs/copenhagen.json", "data/graphs/london.json" };
         foreach (var localGraph in localGraphs)
         {
             try
             {
-                var graph = await Http.GetFromJsonAsync<JsonRootObject>(localGraph);
+                var graph = await Http.GetFromJsonAsync<JsonGraphRootObject>(localGraph);
                 if (Graphs.All(x => x.Name != graph.Name))
                 {
                     Graphs.Add(graph);

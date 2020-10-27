@@ -2,28 +2,28 @@
 @inject HttpClient Http
 @inject AppState AppState
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@using Caelicus.Models.Json
 @implements IDisposable
 
-@*<h3>Vertices in graph</h3>
-<ul>
-    @foreach (var vertex in _graph.Vertices)
-    {
-        <li>@vertex.Info.Name (@vertex.Info.Position.Item1, @vertex.Info.Position.Item2) (Type: @vertex.Info.Type)</li>
-    }
-</ul>
-
-<p>Number of edges in graph: @_graph.EdgeCount</p>*@
+<h1>Vehicles: @_vehicles.Count</h1>
 
 @code {
     private List<Graph<VertexInfo, EdgeInfo>> _graphs = new List<Graph<VertexInfo, EdgeInfo>>();
+    private List<JsonVehicle> _vehicles = new List<JsonVehicle>();
 
     protected override async Task OnInitializedAsync()
     {
         // Register app state changed event
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
 
-        //var graphData = await Http.GetFromJsonAsync<JsonRootObject>("data/graph.json");
-        //_graph = new GraphImporterService().GenerateGraph(graphData);
+        try
+        {
+            _vehicles = await Http.GetFromJsonAsync<List<JsonVehicle>>("data/vehicles/vehicles.json");
+        }
+        catch
+        {
+            Console.WriteLine($"Error while parsing vehicles Json file. Please verify it.");
+        }
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Caelicus.Models;
+using Caelicus.Models.Json;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 
@@ -10,9 +11,9 @@ namespace Caelicus.Services
 {
     public class AppState
     {
-        public List<JsonRootObject> Graphs { get; private set; } = new List<JsonRootObject>();
+        public List<JsonGraphRootObject> Graphs { get; private set; } = new List<JsonGraphRootObject>();
 
-        public void UpdateGraphs(ComponentBase source, List<JsonRootObject> graphs)
+        public void UpdateGraphs(ComponentBase source, List<JsonGraphRootObject> graphs)
         {
             Graphs = graphs;
             NotifyStateChanged(source, nameof(Graphs));

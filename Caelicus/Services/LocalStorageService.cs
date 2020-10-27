@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Caelicus.Models;
+using Caelicus.Models.Json;
 
 namespace Caelicus.Services
 {
@@ -16,18 +17,18 @@ namespace Caelicus.Services
             _localStorage = localStorage;
         }
 
-        public async Task<List<JsonRootObject>> GetLocalStorageGraphs()
+        public async Task<List<JsonGraphRootObject>> GetLocalStorageGraphs()
         {
-            var localStorageGraphs = new List<JsonRootObject>();
+            var localStorageGraphs = new List<JsonGraphRootObject>();
 
             for (var i = 0; i < await _localStorage.LengthAsync(); i++)
             {
                 var key = await _localStorage.KeyAsync(i);
-                JsonRootObject jsonObject = null;
+                JsonGraphRootObject jsonObject = null;
 
                 try
                 {
-                    jsonObject = await _localStorage.GetItemAsync<JsonRootObject>(key);
+                    jsonObject = await _localStorage.GetItemAsync<JsonGraphRootObject>(key);
                 }
                 catch (Exception)
                 {
@@ -43,7 +44,7 @@ namespace Caelicus.Services
             return localStorageGraphs;
         }
 
-        public async Task WriteGraphsToLocalStorage(IList<JsonRootObject> graphs)
+        public async Task WriteGraphsToLocalStorage(IList<JsonGraphRootObject> graphs)
         {
             foreach (var graph in graphs)
             {
