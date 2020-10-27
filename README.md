@@ -2,7 +2,7 @@
 
 [![GitHub contributors](https://img.shields.io/github/contributors/johannesmols/Caelicus.svg)](https://github.com/johannesmols/Caelicus/graphs/contributors) ![Size](https://github-size-badge.herokuapp.com/johannesmols/Caelicus.svg)
 
-[![GitHub issues](https://img.shields.io/github/issues/johannesmols/Caelicus.svg)](https://GitHub.com/Naereen/StrapDown.js/issues/) [![GitHub issues-closed](https://img.shields.io/github/issues-closed/johannesmols/Caelicus.svg)](https://GitHub.com/Naereen/StrapDown.js/issues?q=is%3Aissue+is%3Aclosed) [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/johannesmols/Caelicus.svg)](http://isitmaintained.com/project/johannesmols/Caelicus "Average time to resolve an issue")
+[![GitHub issues](https://img.shields.io/github/issues/johannesmols/Caelicus.svg)](https://GitHub.com/johannesmols/Caelicus/issues/) [![GitHub issues-closed](https://img.shields.io/github/issues-closed/johannesmols/Caelicus.svg)](https://GitHub.com/johannesmols/Caelicus/issues?q=is%3Aissue+is%3Aclosed) [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/johannesmols/Caelicus.svg)](http://isitmaintained.com/project/johannesmols/Caelicus "Average time to resolve an issue")
 
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/johannesmols/Caelicus.svg)](https://GitHub.com/johannesmols/Caelicus/pulls/) [![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/johannesmols/Caelicus.svg)](https://github.com/johannesmols/Caelicus/pulls?q=is%3Apr+is%3Aclosed)
 

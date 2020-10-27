@@ -2,22 +2,28 @@
   {
     "name": "Drone",
     "speed": 30,
+    "maxRange": 80,
+    "movementPenalty": 1.0,
     "maxPayload": 5,
     "costPerHour": 10,
-    "movementPenalty": 1.0
+    "costPerKm": 5
   },
   {
     "name": "Truck",
     "speed": 80,
-    "maxPayload": 1800,
-    "costPerHour": 500,
-    "movementPenalty": 1.5
+    "maxRange": 500,
+    "movementPenalty": 1.5,
+    "maxPayload": 30000,
+    "costPerHour": 50,
+    "costPerKm": 2
   },
   {
     "name": "Ship",
     "speed": 10,
-    "maxPayload": 50000,
-    "costPerHour": 2000,
-    "movementPenalty": 1.0
+    "maxRange": 2000,
+    "movementPenalty": 1.0,
+    "maxPayload": 80000,
+    "costPerHour": 35,
+    "costPerKm": 0.5
   }
 ]

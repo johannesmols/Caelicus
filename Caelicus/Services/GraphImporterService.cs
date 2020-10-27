@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Caelicus.Enums;
 using Caelicus.Graph;
 using Caelicus.Models;
-using Caelicus.Models.Json;
+using Caelicus.Models.Graph;
 using GeoCoordinatePortable;
 
 namespace Caelicus.Services
