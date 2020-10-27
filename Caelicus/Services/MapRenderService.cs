@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Caelicus.Enums;
 using Caelicus.Graph;
 using Caelicus.Models;
+using Caelicus.Models.Graph;
 using GoogleMapsComponents;
 using GoogleMapsComponents.Maps;
 using OneOf;

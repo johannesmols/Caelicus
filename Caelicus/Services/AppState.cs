@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Caelicus.Models;
-using Caelicus.Models.Json;
+using Caelicus.Models.Graph;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 

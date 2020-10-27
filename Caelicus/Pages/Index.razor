@@ -2,14 +2,13 @@
 @inject HttpClient Http
 @inject AppState AppState
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
-@using Caelicus.Models.Json
 @implements IDisposable
 
 <h1>Vehicles: @_vehicles.Count</h1>
 
 @code {
     private List<Graph<VertexInfo, EdgeInfo>> _graphs = new List<Graph<VertexInfo, EdgeInfo>>();
-    private List<JsonVehicle> _vehicles = new List<JsonVehicle>();
+    private List<Vehicle> _vehicles = new List<Vehicle>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -18,7 +17,7 @@
 
         try
         {
-            _vehicles = await Http.GetFromJsonAsync<List<JsonVehicle>>("data/vehicles/vehicles.json");
+            _vehicles = await Http.GetFromJsonAsync<List<Vehicle>>("data/vehicles/vehicles.json");
         }
         catch
         {
