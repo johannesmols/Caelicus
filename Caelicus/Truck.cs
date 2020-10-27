@@ -17,7 +17,7 @@ namespace Caelicus
 
         public int totalCost;
         
-        private Vertex<int,int> position; //This could maybe be the coordinates of the given vertex that the truck is on?
+        private Vertex<int,int> position; //idk how the vertex worked so i just wtore int int
 
         private Vertex<int, int> goal;
 
