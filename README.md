@@ -28,10 +28,15 @@ The following parameters describe values that the simulation can be evaluated up
 
 ### Vehicle
 
-1. Speed (km/h)
-1. Maximum payload weight (kg)
-1. Cost (€/h or €/km)
-1. Movement penalty (e.g. `1.5x` for road vehicles due to traffic and road networks)
+- Movement
+    1. Speed (km/h)
+    1. Maximum range (km)
+    1. Movement penalty (e.g. `1.5x` for road vehicles due to traffic and road networks)
+- Transport
+    1. Maximum payload weight (kg)
+- Cost
+    1. Cost per hour (€)
+    1. Cost per km (€)
 
 ### World
 
