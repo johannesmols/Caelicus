@@ -55,6 +55,18 @@
         // Update app state with graphs
         AppState.UpdateGraphs(this, Graphs);
 
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+
+        try
+        {
+            AppState.VehicleTemplates = await Http.GetFromJsonAsync<List<Vehicle>>("data/vehicles/vehicles.json");
+        }
+        catch
+        {
+            Console.WriteLine($"Error while parsing vehicles Json file. Please verify it.");
+        }
+
         // Write graphs to local storage
         await _localStorageService.WriteGraphsToLocalStorage(AppState.Graphs);
     }

@@ -4,27 +4,9 @@
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @implements IDisposable
 
-<h1>Vehicles: @_vehicles.Count</h1>
+<h1>Welcome</h1>
 
 @code {
-    private List<Graph<VertexInfo, EdgeInfo>> _graphs = new List<Graph<VertexInfo, EdgeInfo>>();
-    private List<Vehicle> _vehicles = new List<Vehicle>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        // Register app state changed event
-        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
-
-        try
-        {
-            _vehicles = await Http.GetFromJsonAsync<List<Vehicle>>("data/vehicles/vehicles.json");
-        }
-        catch
-        {
-            Console.WriteLine($"Error while parsing vehicles Json file. Please verify it.");
-        }
-    }
-
     private async Task AppState_StateChanged(ComponentBase source, string property)
     {
         if (source != this)
