@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Caelicus.Models;
 using Caelicus.Models.Graph;
+using Caelicus.Models.Vehicles;
 
 namespace Caelicus.Services
 {
@@ -29,6 +30,10 @@ namespace Caelicus.Services
                 try
                 {
                     jsonObject = await _localStorage.GetItemAsync<JsonGraphRootObject>(key);
+                    if (!(jsonObject.Vertices?.Count > 0))
+                    {
+                        continue;
+                    }
                 }
                 catch (Exception)
                 {
@@ -49,6 +54,41 @@ namespace Caelicus.Services
             foreach (var graph in graphs)
             {
                 await _localStorage.SetItemAsync(graph.Name, graph);
+            }
+        }
+
+        public async Task<List<Vehicle>> GetLocalVehicles()
+        {
+            var localStorageVehicles = new List<Vehicle>();
+
+            for (var i = 0; i < await _localStorage.LengthAsync(); i++)
+            {
+                var key = await _localStorage.KeyAsync(i);
+                Vehicle jsonObject = null;
+
+                try
+                {
+                    jsonObject = await _localStorage.GetItemAsync<Vehicle>(key);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"Could not convert local storage object with key '{ key }' to vehicle object, ignoring object.");
+                }
+
+                if (jsonObject != null)
+                {
+                    localStorageVehicles.Add(jsonObject);
+                }
+            }
+
+            return localStorageVehicles;
+        }
+
+        public async Task WriteVehiclesToLocalStorage(IList<Vehicle> vehicles)
+        {
+            foreach (var vehicle in vehicles)
+            {
+                await _localStorage.SetItemAsync(vehicle.Name, vehicle);
             }
         }
     }

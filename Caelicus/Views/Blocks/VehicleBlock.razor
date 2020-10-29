@@ -1,0 +1,64 @@
+﻿@inject AppState AppState
+@using Caelicus.Enums
+@implements IDisposable
+
+<div class="border">
+    @LocalVehicle.Name
+    <form>
+        @if (AppState.SimulationParameters?.Graph?.Vertices != null)
+        {
+            @foreach (var node in AppState.SimulationParameters.Graph.Vertices.Where(v => v.Type.Equals(VertexType.Base.ToString(), StringComparison.InvariantCultureIgnoreCase)))
+            {
+                <div class="form-group form-inline">
+                    <label for="@node.Name">
+                        @node.Name
+                    </label>
+                    <input type="number" class="form-control" value="0" id="@node.Name" @onchange="(e) => InputChanged(e, string.Empty)" >
+                </div>
+            }
+        }
+    </form>
+</div>
+
+@code {
+    [Parameter]
+    public Vehicle LocalVehicle { get; set; }
+
+    private List<Tuple<Vehicle, string, int>> simulationVehicle { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+    }
+
+    private async Task InputChanged(ChangeEventArgs e, string node)
+    {
+        var index = simulationVehicle.FindIndex(t => t.Item2 == node);
+        if (index != -1)
+        {
+            simulationVehicle.RemoveAt(index);
+        }
+
+        simulationVehicle.Add(Tuple.Create(LocalVehicle, node, Convert.ToInt32(e)));
+
+        Console.WriteLine("Simulation vehicle list for " + LocalVehicle.Name);
+        foreach (var (item1, item2, item3) in simulationVehicle)
+        {
+            Console.WriteLine(item1.Name + ", " + item2 + ", " + item3);
+        }
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}
