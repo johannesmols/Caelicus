@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Caelicus.Models;
 using Caelicus.Models.Graph;
+using Caelicus.Models.Vehicles;
+using Caelicus.Simulation;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 
@@ -11,6 +13,8 @@ namespace Caelicus.Services
 {
     public class AppState
     {
+        // Graphs
+
         public List<JsonGraphRootObject> Graphs { get; private set; } = new List<JsonGraphRootObject>();
 
         public void UpdateGraphs(ComponentBase source, List<JsonGraphRootObject> graphs)
@@ -18,6 +22,19 @@ namespace Caelicus.Services
             Graphs = graphs;
             NotifyStateChanged(source, nameof(Graphs));
         }
+
+
+        // Vehicles
+
+        public List<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+
+        public void UpdateVehicles(ComponentBase source, List<Vehicle> vehicles)
+        {
+            Vehicles = vehicles;
+            NotifyStateChanged(source, nameof(Vehicles));
+        }
+
+        // Events
 
         public event Action<ComponentBase, string> StateChanged;
 

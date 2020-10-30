@@ -17,6 +17,7 @@
 @code
 {
     public List<JsonGraphRootObject> Graphs;
+    public List<Vehicle> Vehicles;
 
     private LocalStorageService _localStorageService;
 
@@ -27,6 +28,12 @@
 
         _localStorageService = new LocalStorageService(LocalStorage);
 
+        await LoadGraphs();
+        await LoadVehicles();
+    }
+
+    private async Task LoadGraphs()
+    {
         // Retrieve locally stored graphs
         Graphs = await _localStorageService.GetLocalStorageGraphs();
 
@@ -37,6 +44,7 @@
             try
             {
                 var graph = await Http.GetFromJsonAsync<JsonGraphRootObject>(localGraph);
+
                 if (Graphs.All(x => x.Name != graph.Name))
                 {
                     Graphs.Add(graph);
@@ -52,11 +60,29 @@
             }
         }
 
-        // Update app state with graphs
+        // Update app state and write to local storage
         AppState.UpdateGraphs(this, Graphs);
-
-        // Write graphs to local storage
         await _localStorageService.WriteGraphsToLocalStorage(AppState.Graphs);
+    }
+
+    private async Task LoadVehicles()
+    {
+        // Retrieve locally stored vehicles
+        Vehicles = await _localStorageService.GetLocalVehicles();
+
+        // Read vehicle file from data folder and add if not already cached in browser
+        try
+        {
+            Vehicles = await Http.GetFromJsonAsync<List<Vehicle>>("data/vehicles/vehicles.json");
+
+            // Write vehicles to local storage and update app state
+            AppState.UpdateVehicles(this, Vehicles);
+            await _localStorageService.WriteVehiclesToLocalStorage(AppState.Vehicles);
+        }
+        catch
+        {
+            Console.WriteLine($"Error while parsing vehicles Json file. Please verify it.");
+        }
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)

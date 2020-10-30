@@ -1,0 +1,49 @@
+﻿@page "/"
+@inject HttpClient Http
+@inject AppState AppState
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@implements IDisposable
+
+<div class="container-fluid h-100">
+    <div class="row h-50" style="overflow: auto">
+        <div class="col-4 overflow-auto border border-secondary">
+            <div style="text-align: center">
+                <strong>Simulation</strong>
+            </div>
+        </div>
+        <div class="col-4 overflow-auto border border-secondary">
+            <div style="text-align: center">
+                <strong>Vehicles</strong>
+            </div>
+        </div>
+        <div class="col-4 overflow-auto border border-secondary">
+            <div style="text-align: center">
+                <strong>Orders</strong>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center h-50 border border-secondary" style="overflow: auto">
+        <p>Map / Output</p>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}

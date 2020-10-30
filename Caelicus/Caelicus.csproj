@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Simulation\" />
+    <Folder Include="Views\Blocks\" />
   </ItemGroup>
 
 </Project>
