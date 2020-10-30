@@ -84,11 +84,11 @@ namespace Caelicus.Services
             return localStorageVehicles;
         }
 
-        public async Task WriteVehiclesToLocalStorage(IList<Vehicle> vehicles)
+        public async Task WriteVehiclesToLocalStorage(IList<Tuple<Vehicle, bool>> vehicles)
         {
             foreach (var vehicle in vehicles)
             {
-                await _localStorage.SetItemAsync(vehicle.Name, vehicle);
+                await _localStorage.SetItemAsync(vehicle.Item1.Name, vehicle.Item1);
             }
         }
     }

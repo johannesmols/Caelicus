@@ -26,9 +26,9 @@ namespace Caelicus.Services
 
         // Vehicles
 
-        public List<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+        public List<Tuple<Vehicle, bool>> Vehicles { get; set; } = new List<Tuple<Vehicle, bool>>();
 
-        public void UpdateVehicles(ComponentBase source, List<Vehicle> vehicles)
+        public void UpdateVehicles(ComponentBase source, List<Tuple<Vehicle, bool>> vehicles)
         {
             Vehicles = vehicles;
             NotifyStateChanged(source, nameof(Vehicles));

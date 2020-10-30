@@ -1,0 +1,50 @@
+﻿@inject AppState AppState
+@implements IDisposable
+
+<div>
+    <ul style="list-style-type: none; padding: 0; margin: 0">
+        @foreach (var vehicle in AppState.Vehicles)
+        {
+            <li>
+                <label>
+                    <input type="checkbox" checked="@vehicle.Item2" @onchange="e => { CheckboxClicked(vehicle.Item1.Name, e.Value); }"/> @vehicle.Item1.Name
+                </label>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+    }
+
+    public void CheckboxClicked(string vehicleName, object isChecked)
+    {
+        if (isChecked is bool isCheckedBool)
+        {
+            var vehicleList = AppState.Vehicles.Select(x =>
+            {
+                x = Tuple.Create(x.Item1, x.Item1.Name == vehicleName ? isCheckedBool : x.Item2);
+                return x;
+            }).ToList();
+            
+            AppState.UpdateVehicles(this, vehicleList);
+        }
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}
