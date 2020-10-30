@@ -34,16 +34,6 @@ namespace Caelicus.Services
             NotifyStateChanged(source, nameof(Vehicles));
         }
 
-
-        // Simulation
-        public SimulationParameters SimulationParameters { get; set; } = new SimulationParameters();
-
-        public void UpdateSimulationParameters(ComponentBase source, SimulationParameters simulationParameters)
-        {
-            SimulationParameters = simulationParameters;
-            NotifyStateChanged(source, nameof(SimulationParameters));
-        }
-
         // Events
 
         public event Action<ComponentBase, string> StateChanged;
