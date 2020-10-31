@@ -1,5 +1,4 @@
 ﻿@inject AppState AppState
-@using Caelicus.Simulation
 @implements IDisposable
 
 <form class="form-inline">
@@ -64,7 +63,7 @@
         }
     }
 
-    private void StartSimulation(MouseEventArgs e)
+    private async Task StartSimulation(MouseEventArgs e)
     {
         var parameters = new SimulationParameters
         {
@@ -74,6 +73,9 @@
         };
 
         // Start the simulation
+        SimulationManager.AddSimulation(parameters);
+        SimulationManager.AddSimulation(parameters);
+        await SimulationManager.StartSimulations();
 
         _simulationRunning = true;
     }
