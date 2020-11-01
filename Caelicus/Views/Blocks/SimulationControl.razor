@@ -36,6 +36,7 @@
 </div>
 
 @code {
+    private SimulationManager _simulationManager = new SimulationManager();
     private bool _simulationRunning = false;
 
     private JsonGraphRootObject _currentGraph;
@@ -72,22 +73,25 @@
             SimulationSpeed = _simulationSpeed
         };
 
-        // Start the simulation
-        SimulationManager.AddSimulation(parameters);
-        SimulationManager.AddSimulation(parameters);
-        await SimulationManager.StartSimulations();
+        // Add the different simulation scenarios
+        _simulationManager.AddSimulation(parameters);
+        _simulationManager.AddSimulation(parameters);
 
+        // Start the simulations
         _simulationRunning = true;
+        await _simulationManager.StartSimulations();
     }
 
-    private void PauseSimulation(MouseEventArgs e)
+    private async Task PauseSimulation(MouseEventArgs e)
     {
         _simulationRunning = false;
+        await _simulationManager.PauseSimulations();
     }
 
-    private void StopSimulation(MouseEventArgs e)
+    private async Task StopSimulation(MouseEventArgs e)
     {
         _simulationRunning = false;
+        await _simulationManager.StopSimulations();
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)

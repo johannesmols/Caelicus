@@ -16,10 +16,12 @@ namespace Caelicus.Simulation
             _parameters = parameters;
         }
 
-        public async Task Simulate()
+        public async Task<SimulationResult> Simulate(IProgress<SimulationProgress> progress)
         {
-            Console.WriteLine("Simulating with speed " + _parameters.SimulationSpeed);
+            progress.Report(new SimulationProgress("Starting simulation"));
             await Task.Delay(1000);
+            progress.Report(new SimulationProgress("Finished simulation"));
+            return new SimulationResult("Success");
         }
     }
 }
