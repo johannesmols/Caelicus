@@ -12,9 +12,11 @@ namespace Caelicus.Simulation
     {
         public Guid SimulationIdentifier { get; set; }
 
+        public int RandomSeed { get; set; }
+
         public Graph<VertexInfo, EdgeInfo> Graph { get; set; } = new Graph<VertexInfo, EdgeInfo>();
 
-        public List<Tuple<Vehicle, bool>> Vehicles { get; set; } = new List<Tuple<Vehicle, bool>>();
+        public List<Tuple<Vehicle, int>> Vehicles { get; set; } = new List<Tuple<Vehicle, int>>();
 
         public float SimulationSpeed { get; set; } = 1f;
     }

@@ -68,25 +68,20 @@
     {
         // TODO: Create several versions of the simulation where each one has a different number of vehicles for each vehicle type
 
-        var simulation1 = new SimulationParameters
-        {
-            SimulationIdentifier = Guid.NewGuid(),
-            Graph = new GraphImporterService().GenerateGraph(_currentGraph ?? AppState.Graphs.FirstOrDefault()),
-            Vehicles = AppState.Vehicles,
-            SimulationSpeed = _simulationSpeed
-        };
-
-        var simulation2 = new SimulationParameters
-        {
-            SimulationIdentifier = Guid.NewGuid(),
-            Graph = new GraphImporterService().GenerateGraph(_currentGraph ?? AppState.Graphs.FirstOrDefault()),
-            Vehicles = AppState.Vehicles,
-            SimulationSpeed = _simulationSpeed
-        };
+        var randomSeed = Guid.NewGuid().GetHashCode();
 
         // Add the different simulation scenarios
-        _simulationManager.AddSimulation(simulation1);
-        _simulationManager.AddSimulation(simulation2);
+        for (var i = 1; i <= 5; i++)
+        {
+            _simulationManager.AddSimulation(new SimulationParameters()
+            {
+                SimulationIdentifier = Guid.NewGuid(),
+                RandomSeed = randomSeed,
+                Graph = new GraphImporterService().GenerateGraph(_currentGraph ?? AppState.Graphs.FirstOrDefault()),
+                Vehicles = AppState.Vehicles.Select(v => Tuple.Create(v.Item1, i)).ToList(),
+                SimulationSpeed = _simulationSpeed
+            });
+        }
 
         // Register simulation update event
         _simulationManager.Simulations.ForEach(s => s.Item2.ProgressChanged += SimulationUpdate);
@@ -94,6 +89,7 @@
         // Start the simulations
         _simulationRunning = true;
         await _simulationManager.StartSimulations();
+        _simulationRunning = false;
     }
 
     private async Task PauseSimulation(MouseEventArgs e)

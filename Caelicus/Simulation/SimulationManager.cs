@@ -11,26 +11,27 @@ namespace Caelicus.Simulation
 {
     public class SimulationManager
     {
-        public List<Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>>> Simulations { get; } = new List<Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>>>();
-        private List<Task<SimulationResult>> _simulations;
+        public List<Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>, CancellationTokenSource>> Simulations { get; } = new List<Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>, CancellationTokenSource>>();
+        private List<Tuple<Task<SimulationResult>, CancellationTokenSource>> _simulations;
 
         public void AddSimulation(SimulationParameters parameters)
         {
             var progress = new Progress<SimulationProgress>();
-            Simulations.Add(new Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>>(() => new Simulation(parameters).Simulate(progress), progress));
+            var cancellationTokenSource = new CancellationTokenSource();
+            Simulations.Add(new Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>, CancellationTokenSource>(() => new Simulation(parameters).Simulate(progress, cancellationTokenSource.Token), progress, cancellationTokenSource));
         }
 
         public async Task StartSimulations()
         {
             // Start simulations
-            _simulations = Simulations.Select(sim => sim.Item1()).ToList();
+            _simulations = Simulations.Select(sim => Tuple.Create(sim.Item1(), sim.Item3)).ToList();
 
             // Wait for all simulations to finish before continuing
-            await Task.WhenAll(_simulations);
+            await Task.WhenAll(_simulations.Select(x => x.Item1));
 
-            if (_simulations.All(s => s.IsCompletedSuccessfully))
+            if (_simulations.All(s => s.Item1.IsCompletedSuccessfully))
             {
-                SaveResults(_simulations.Select(x => x.Result).ToList());
+                SaveResults(_simulations.Select(x => x.Item1.Result).ToList());
                 RemoveAllSimulations();
             }
             else
@@ -47,6 +48,7 @@ namespace Caelicus.Simulation
         public async Task StopSimulations()
         {
             // TODO implement stop
+            _simulations.ForEach(s => s.Item2.Cancel());
         }
 
         public void SaveResults(List<SimulationResult> results)
