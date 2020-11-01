@@ -7,10 +7,12 @@ namespace Caelicus.Simulation
 {
     public class SimulationProgress
     {
+        public Guid SimulationIdentifier { get; }
         public string Message { get; set; }
 
-        public SimulationProgress(string message)
+        public SimulationProgress(Guid identifier, string message)
         {
+            SimulationIdentifier = identifier;
             Message = message;
         }
     }

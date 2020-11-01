@@ -1,17 +1,16 @@
 ﻿@inject AppState AppState
 @implements IDisposable
 
-<textarea class="form-control" style="margin: 10px 0; resize: none" disabled>@OutputText</textarea>
+<textarea class="form-control" id="output" style="margin: 10px 0; resize: none; font-family: monospace" disabled>
+@AppState.SimulationUpdates
+</textarea>
 
 @code {
-    public string OutputText = string.Empty;
-
     protected override async Task OnInitializedAsync()
     {
         // Register app state changed event
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
     }
-
 
     private async Task AppState_StateChanged(ComponentBase source, string property)
     {

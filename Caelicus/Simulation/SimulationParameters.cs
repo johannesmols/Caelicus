@@ -10,6 +10,8 @@ namespace Caelicus.Simulation
 {
     public class SimulationParameters
     {
+        public Guid SimulationIdentifier { get; set; }
+
         public Graph<VertexInfo, EdgeInfo> Graph { get; set; } = new Graph<VertexInfo, EdgeInfo>();
 
         public List<Tuple<Vehicle, bool>> Vehicles { get; set; } = new List<Tuple<Vehicle, bool>>();

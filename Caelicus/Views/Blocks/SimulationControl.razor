@@ -66,16 +66,30 @@
 
     private async Task StartSimulation(MouseEventArgs e)
     {
-        var parameters = new SimulationParameters
+        // TODO: Create several versions of the simulation where each one has a different number of vehicles for each vehicle type
+
+        var simulation1 = new SimulationParameters
         {
+            SimulationIdentifier = Guid.NewGuid(),
+            Graph = new GraphImporterService().GenerateGraph(_currentGraph ?? AppState.Graphs.FirstOrDefault()),
+            Vehicles = AppState.Vehicles,
+            SimulationSpeed = _simulationSpeed
+        };
+
+        var simulation2 = new SimulationParameters
+        {
+            SimulationIdentifier = Guid.NewGuid(),
             Graph = new GraphImporterService().GenerateGraph(_currentGraph ?? AppState.Graphs.FirstOrDefault()),
             Vehicles = AppState.Vehicles,
             SimulationSpeed = _simulationSpeed
         };
 
         // Add the different simulation scenarios
-        _simulationManager.AddSimulation(parameters);
-        _simulationManager.AddSimulation(parameters);
+        _simulationManager.AddSimulation(simulation1);
+        _simulationManager.AddSimulation(simulation2);
+
+        // Register simulation update event
+        _simulationManager.Simulations.ForEach(s => s.Item2.ProgressChanged += SimulationUpdate);
 
         // Start the simulations
         _simulationRunning = true;
@@ -92,6 +106,13 @@
     {
         _simulationRunning = false;
         await _simulationManager.StopSimulations();
+    }
+
+    public void SimulationUpdate(object sender, SimulationProgress progress)
+    {
+        var simUpdates = AppState.SimulationUpdates;
+        simUpdates += $"{progress.SimulationIdentifier}: {progress.Message}{ Environment.NewLine }";
+        AppState.UpdateSimulationUpdates(this, simUpdates);
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)

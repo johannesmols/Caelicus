@@ -11,25 +11,22 @@ namespace Caelicus.Simulation
 {
     public class SimulationManager
     {
-        public List<Func<Task<SimulationResult>>> Simulations { get; } = new List<Func<Task<SimulationResult>>>();
+        public List<Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>>> Simulations { get; } = new List<Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>>>();
         private List<Task<SimulationResult>> _simulations;
 
         public void AddSimulation(SimulationParameters parameters)
         {
             var progress = new Progress<SimulationProgress>();
-            progress.ProgressChanged += Test;
-            Simulations.Add(() => new Simulation(parameters).Simulate(progress));
+            Simulations.Add(new Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>>(() => new Simulation(parameters).Simulate(progress), progress));
         }
 
         public async Task StartSimulations()
         {
             // Start simulations
-            _simulations = Simulations.Select(sim => sim()).ToList();
+            _simulations = Simulations.Select(sim => sim.Item1()).ToList();
 
             // Wait for all simulations to finish before continuing
             await Task.WhenAll(_simulations);
-
-            Console.WriteLine("All tasks finished");
 
             if (_simulations.All(s => s.IsCompletedSuccessfully))
             {
@@ -44,27 +41,22 @@ namespace Caelicus.Simulation
 
         public async Task PauseSimulations()
         {
-            // TODO
+            // TODO implement pause
         }
 
         public async Task StopSimulations()
         {
-            // TODO
+            // TODO implement stop
         }
 
         public void SaveResults(List<SimulationResult> results)
         {
-            // Save results to local storage
+            // TODO Save results to local storage
         }
 
         public void RemoveAllSimulations()
         {
             Simulations.Clear();
-        }
-
-        public void Test(object sender, SimulationProgress e)
-        {
-            Console.WriteLine(e.Message);
         }
     }
 }
