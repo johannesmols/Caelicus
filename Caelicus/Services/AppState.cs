@@ -34,6 +34,16 @@ namespace Caelicus.Services
             NotifyStateChanged(source, nameof(Vehicles));
         }
 
+
+        // Simulation
+        public string SimulationUpdates { get; set; } = string.Empty;
+
+        public void UpdateSimulationUpdates(ComponentBase source, string updates)
+        {
+            SimulationUpdates = updates;
+            NotifyStateChanged(source, nameof(SimulationUpdates));
+        }
+
         // Events
 
         public event Action<ComponentBase, string> StateChanged;

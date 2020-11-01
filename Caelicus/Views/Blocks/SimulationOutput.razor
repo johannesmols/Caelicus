@@ -1,0 +1,27 @@
+﻿@inject AppState AppState
+@implements IDisposable
+
+<textarea class="form-control" id="output" style="margin: 10px 0; resize: none; font-family: monospace" disabled>
+@AppState.SimulationUpdates
+</textarea>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}
