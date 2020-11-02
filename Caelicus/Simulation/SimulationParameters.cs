@@ -21,5 +21,9 @@ namespace Caelicus.Simulation
         public int NumberOfVehicles { get; set; } = 1;
 
         public float SimulationSpeed { get; set; } = 1f;
+
+        public float SimulationDuration { get; set; } = 1000f;
+
+        public List<Mission> Missions { get; set; }
     }
 }
