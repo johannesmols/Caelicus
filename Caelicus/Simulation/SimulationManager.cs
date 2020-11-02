@@ -47,7 +47,6 @@ namespace Caelicus.Simulation
 
         public async Task StopSimulations()
         {
-            // TODO implement stop
             _simulations.ForEach(s => s.Item2.Cancel());
         }
 

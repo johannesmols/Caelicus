@@ -84,7 +84,7 @@ namespace Caelicus.Services
             return localStorageVehicles;
         }
 
-        public async Task WriteVehiclesToLocalStorage(IList<Tuple<Vehicle, bool>> vehicles)
+        public async Task WriteVehiclesToLocalStorage(IList<Tuple<Vehicle, bool, int, int, int>> vehicles)
         {
             foreach (var vehicle in vehicles)
             {

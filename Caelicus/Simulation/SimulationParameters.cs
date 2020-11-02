@@ -16,7 +16,9 @@ namespace Caelicus.Simulation
 
         public Graph<VertexInfo, EdgeInfo> Graph { get; set; } = new Graph<VertexInfo, EdgeInfo>();
 
-        public List<Tuple<Vehicle, int>> Vehicles { get; set; } = new List<Tuple<Vehicle, int>>();
+        public Vehicle VehicleTemplate { get; set; } = new Vehicle();
+
+        public int NumberOfVehicles { get; set; } = 1;
 
         public float SimulationSpeed { get; set; } = 1f;
     }

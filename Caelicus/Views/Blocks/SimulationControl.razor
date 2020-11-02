@@ -60,7 +60,7 @@
         var newValue = float.Parse(e.Value.ToString());
         if (newValue >= 1)
         {
-            _simulationSpeed = float.Parse(e.Value.ToString());
+            _simulationSpeed = newValue;
         }
     }
 
@@ -71,16 +71,25 @@
         var randomSeed = Guid.NewGuid().GetHashCode();
 
         // Add the different simulation scenarios
-        for (var i = 1; i <= 5; i++)
+        foreach (var (vehicle, enabled, min, max, step) in AppState.Vehicles)
         {
-            _simulationManager.AddSimulation(new SimulationParameters()
+            for (var i = min; i <= max; i += step)
             {
-                SimulationIdentifier = Guid.NewGuid(),
-                RandomSeed = randomSeed,
-                Graph = new GraphImporterService().GenerateGraph(_currentGraph ?? AppState.Graphs.FirstOrDefault()),
-                Vehicles = AppState.Vehicles.Select(v => Tuple.Create(v.Item1, i)).ToList(),
-                SimulationSpeed = _simulationSpeed
-            });
+                if (i <= 0)
+                {
+                    continue;
+                }
+
+                _simulationManager.AddSimulation(new SimulationParameters()
+                {
+                    SimulationIdentifier = Guid.NewGuid(),
+                    RandomSeed = randomSeed,
+                    Graph = new GraphImporterService().GenerateGraph(_currentGraph ?? AppState.Graphs.FirstOrDefault()),
+                    VehicleTemplate = vehicle,
+                    NumberOfVehicles = i,
+                    SimulationSpeed = _simulationSpeed
+                });
+            }
         }
 
         // Register simulation update event
