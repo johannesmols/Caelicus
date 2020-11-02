@@ -19,5 +19,9 @@ namespace Caelicus.Simulation
         public List<Tuple<Vehicle, int>> Vehicles { get; set; } = new List<Tuple<Vehicle, int>>();
 
         public float SimulationSpeed { get; set; } = 1f;
+
+        public float SimulationDuration { get; set; } = 1000f;
+
+        public List<Mission> Missions { get; set; }
     }
 }
