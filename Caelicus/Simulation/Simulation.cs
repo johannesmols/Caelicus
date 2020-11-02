@@ -40,25 +40,52 @@ namespace Caelicus.Simulation
             return new SimulationResult(_parameters.SimulationIdentifier, "Success");
         }
     }
-
-    public abstract class Event
+    
+    public class RandomPenaltiesGenerator
     {
-        private int id;
+        private Random generator = new Random();
+        private List<Vehicle> _vehicles;
+        public RandomPenaltiesGenerator(List<Vehicle> v)
+        {
+            _vehicles = v;
+        }
+
+        public void GenerateRandomness()
+        {
+            foreach (var v in _vehicles.Where(v => generator.Next() % 2 == 0))
+            {
+                v.MovementPenalty = generator.NextDouble();
+            }
+        }
     }
 
     public class Simulator
     {
         private SimulationParameters _parameters;
         private VehicleController _controller;
+        private RandomPenaltiesGenerator _generator;
+        private int _time = 0;
         public Simulator(SimulationParameters p)
         {
-            
+            _time = 0; 
             _parameters = p;
             _controller = new VehicleController(_parameters.Vehicles.Select(x => x.Item1).ToList(), _parameters.Missions);
+            _generator = new RandomPenaltiesGenerator(_parameters.Vehicles.Select(x => x.Item1).ToList());
+        }
+
+        public void reset()
+        {
+            _time = 0;
         }
 
         public bool advance()
         {
+            _time += 1;
+            _controller.CheckForCompletedMissions();
+            _controller.UpdatePendingMissions();
+            _controller.SetupVehicles();
+            _generator.GenerateRandomness();
+            _controller.advanceTime();
             return true;
         }
     }
@@ -67,19 +94,14 @@ namespace Caelicus.Simulation
     public class VehicleController
     {
         private List<Vehicle> _vehicles;
-        private List<Event> _events;
         private List<Mission> _missions;
+        private int Time { get; set; }
 
         public VehicleController(List<Vehicle> vehicles, List<Mission> missions)
         {
             _vehicles = vehicles;
             _missions = missions;
-            _events = new List<Event>();
-        }
-
-        public void EnqueueEvent(Event e)
-        {
-            _events.Add(e);
+            Time = 0;
         }
 
         public void CheckForCompletedMissions()
@@ -87,8 +109,43 @@ namespace Caelicus.Simulation
             foreach (var m in _missions.Where(m => m.IsActive()).Where(m => m.AssignedVehicle.ArrivedToTarget()))
             {
                 m.Status = MissionStatus.Done;
+                m.AssignedVehicle.ReturnToBase();
             }
         }
         
+        /// <summary>
+        /// Check if there are missions to start and set them to Pending status
+        /// </summary>
+        public void UpdatePendingMissions()
+        {
+            foreach (var m in _missions.Where(m => m.IsEnqueue()))
+            {
+                if (m.StartTime == Time)
+                {
+                    m.Status = MissionStatus.Pending;
+                }
+            }
+        }
+
+        public void advanceTime()
+        {
+            Time += 1;
+            foreach (var v in _vehicles.Where(v => v.State == VehicleState.Moving))
+            {
+                v.Advance();
+            }
+        }
+
+        public void SetupVehicles()
+        {
+            foreach (var v in _vehicles.Where(v => v.State == VehicleState.Steady))
+            {
+                foreach (var m in _missions.Where(m => m.IsPending()))
+                {
+                    v.SetMission(m.Target);
+                    m.SetVehicle(v);
+                }
+            }
+        }
     }
 }

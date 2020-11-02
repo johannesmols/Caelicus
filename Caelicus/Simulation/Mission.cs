@@ -14,8 +14,10 @@ namespace Caelicus.Simulation
     public class Mission
     {
         
-        private VertexInfo _target;
-        private float _startTime;
+        public VertexInfo Target { get; }
+        
+        public int StartTime { get; set; }
+
         public Vehicle AssignedVehicle { get; set; }
         public MissionStatus Status { get; set; }
 
@@ -23,12 +25,31 @@ namespace Caelicus.Simulation
         {
             return Status == MissionStatus.Active;
         }
+        public bool IsPending()
+        {
+            return Status == MissionStatus.Pending;
+        }
+        public bool IsDone()
+        {
+            return Status == MissionStatus.Done;
+        }
+        
+        public bool IsEnqueue()
+        {
+            return Status == MissionStatus.Enqueued;
+        }
 
-        public Mission(float startTime, VertexInfo target)
+        public void SetVehicle(Vehicle v)
+        {
+            Status = MissionStatus.Active;
+            AssignedVehicle = v;
+        }
+        
+        public Mission(int startTime, VertexInfo target)
         {
             Status = MissionStatus.Enqueued;
-            _startTime = startTime;
-            _target = target;
+            StartTime = startTime;
+            Target = target;
         }
     }
 }
