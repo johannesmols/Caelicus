@@ -3,12 +3,25 @@
 
 <div>
     <ul style="list-style-type: none; padding: 0; margin: 0">
-        @foreach (var vehicle in AppState.Vehicles)
+        @foreach (var (vehicle, active, min, max, step) in AppState.Vehicles)
         {
             <li>
                 <label>
-                    <input type="checkbox" checked="@vehicle.Item2" @onchange="e => { CheckboxClicked(vehicle.Item1.Name, e.Value); }"/> @vehicle.Item1.Name
+                    <input type="checkbox" checked="@active" @onchange="e => { CheckboxClicked(vehicle.Name, e.Value); }"/> @vehicle.Name (Min / Max / Step)
                 </label>
+                <div class="form-group">
+                    <div class="row no-gutters">
+                        <div class="col" style="padding: 0 5px">
+                            <input type="number" id="min" class="form-control" placeholder="Minimum" min="0" max="@int.MaxValue" value="1" @onchange="e => { MinChanged(vehicle.Name, e); }" />
+                        </div>
+                        <div class="col" style="padding: 0 5px">
+                            <input type="number" class="form-control" placeholder="Maximum" min="0" max="@int.MaxValue" value="10" @onchange="e => { MaxChanged(vehicle.Name, e); }" />
+                        </div>
+                        <div class="col" style="padding: 0 5px">
+                            <input type="number" class="form-control" placeholder="Step" min="1" max="@int.MaxValue" value="1" @onchange="e => { StepChanged(vehicle.Name, e); }" />
+                        </div>
+                    </div>
+                </div>
             </li>
         }
     </ul>
@@ -21,16 +34,61 @@
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
     }
 
-    public void CheckboxClicked(string vehicleName, object isChecked)
+    public void CheckboxClicked(string vehicle, object isChecked)
     {
         if (isChecked is bool isCheckedBool)
         {
             var vehicleList = AppState.Vehicles.Select(x =>
             {
-                x = Tuple.Create(x.Item1, x.Item1.Name == vehicleName ? isCheckedBool : x.Item2);
+                x = Tuple.Create(x.Item1, x.Item1.Name == vehicle ? isCheckedBool : x.Item2, x.Item3, x.Item4, x.Item5);
                 return x;
             }).ToList();
             
+            AppState.UpdateVehicles(this, vehicleList);
+        }
+    }
+
+    private void MinChanged(string vehicle, ChangeEventArgs e)
+    {
+        var newValue = int.Parse(e.Value.ToString());
+        if (newValue >= 0)
+        {
+            var vehicleList = AppState.Vehicles.Select(x =>
+            {
+                x = Tuple.Create(x.Item1, x.Item2, x.Item1.Name == vehicle ? newValue : x.Item3, x.Item4, x.Item5);
+                return x;
+            }).ToList();
+
+            AppState.UpdateVehicles(this, vehicleList);
+        }
+    }
+
+    private void MaxChanged(string vehicle, ChangeEventArgs e)
+    {
+        var newValue = int.Parse(e.Value.ToString());
+        if (newValue >= 0)
+        {
+            var vehicleList = AppState.Vehicles.Select(x =>
+            {
+                x = Tuple.Create(x.Item1, x.Item2, x.Item3, x.Item1.Name == vehicle ? newValue : x.Item4, x.Item5);
+                return x;
+            }).ToList();
+
+            AppState.UpdateVehicles(this, vehicleList);
+        }
+    }
+
+    private void StepChanged(string vehicle, ChangeEventArgs e)
+    {
+        var newValue = int.Parse(e.Value.ToString());
+        if (newValue >= 0)
+        {
+            var vehicleList = AppState.Vehicles.Select(x =>
+            {
+                x = Tuple.Create(x.Item1, x.Item2, x.Item3, x.Item4, x.Item1.Name == vehicle ? newValue : x.Item5);
+                return x;
+            }).ToList();
+
             AppState.UpdateVehicles(this, vehicleList);
         }
     }
