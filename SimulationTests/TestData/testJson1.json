@@ -1,0 +1,33 @@
+{
+  "name": "Copenhagen",
+  "vertices": [
+    {
+      "name": "Base 1",
+      "type": "base",
+      "latitude": 55.786327,
+      "longitude": 12.523387,
+      "edges": [
+        "Target 1",
+        "Target 2"
+      ]
+    },
+    {
+      "name": "Target 1",
+      "type": "target",
+      "latitude": 55.673452,
+      "longitude": 12.567195,
+      "edges": [
+        "Base 1"
+      ]
+    },
+    {
+      "name": "Target 2",
+      "type": "target",
+      "latitude": 55.655827,
+      "longitude": 12.647102,
+      "edges": [
+        "Base 1"
+      ]
+    }
+  ]
+}
