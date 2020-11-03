@@ -25,5 +25,14 @@
     "maxPayload": 80000,
     "costPerHour": 35,
     "costPerKm": 0.5
+  },
+  {
+    "name": "Lockheed SR-71 Blackbird",
+    "speed": 3529,
+    "maxRange": 5400,
+    "movementPenalty": 1.0,
+    "maxPayload": 5000,
+    "costPerHour": 1000000,
+    "costPerKm": 1
   }
 ]
