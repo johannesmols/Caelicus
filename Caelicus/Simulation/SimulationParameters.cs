@@ -16,12 +16,12 @@ namespace Caelicus.Simulation
 
         public Graph<VertexInfo, EdgeInfo> Graph { get; set; } = new Graph<VertexInfo, EdgeInfo>();
 
-        public List<Tuple<Vehicle, int>> Vehicles { get; set; } = new List<Tuple<Vehicle, int>>();
+        public List<VehicleInstance> Vehicles { get; set; } = new List<VehicleInstance>();
 
         public float SimulationSpeed { get; set; } = 1f;
 
         public float SimulationDuration { get; set; } = 1000f;
 
-        public List<Mission> Missions { get; set; }
+        public List<Order> Missions { get; set; }
     }
 }

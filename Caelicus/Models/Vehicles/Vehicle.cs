@@ -4,13 +4,8 @@ using Caelicus.Models.Graph;
 
 namespace Caelicus.Models.Vehicles
 {
-    public enum VehicleState
-    {
-        Moving,
-        Steady
-    }
     
-    public class Vehicle : VertexInfo
+    public class Vehicle
     {
         // General information
         public string Name { get; set; }
@@ -26,30 +21,6 @@ namespace Caelicus.Models.Vehicles
         // Cost
         public double CostPerHour { get; set; }
         public double CostPerKm { get; set; }
-        
-        public VertexInfo Target { get; set; }
-        
-        private VertexInfo Base { get; set; }
-        
-        public VehicleState State { get; set; } 
-        
-        public void SetMission(VertexInfo t)
-        {
-            State = VehicleState.Moving;
-            Target = t;
-        }
-
-        /// <summary>
-        /// Check if we arrived at the destination. Since the coordinates are floating points we should get distance
-        /// between two points and compare it with a minimum threshold. The threshold for now is 0.10 but I think it
-        /// is quite large!!.
-        /// </summary>
-        /// <returns></returns>
-        public bool ArrivedToTarget()
-        {
-            return Math.Sqrt(Math.Pow(this.Position.Item1 - Target.Position.Item1, 2) + 
-                Math.Pow(this.Position.Item2 - Target.Position.Item2, 2)) >= 0.10;
-        }
 
         /// <summary>
         /// Calculate the cost of a journey given a distance.
@@ -65,46 +36,15 @@ namespace Caelicus.Models.Vehicles
             return baseHourlyCost + baseDistanceCost;
         }
 
-        public void SetTarget(VertexInfo t)
+        public Vehicle(Vehicle v)
         {
-            Target = t;
-        }
-
-        public void Advance()
-        {
-            if (Position.Item1 - Target.Position.Item1 > 0 && Position.Item2 - Target.Position.Item2 > 0)
-            {
-                Position = new Tuple<double, double>(Position.Item1 - MovementCost(), Position.Item2 - MovementCost());
-            }
-
-            else if (Position.Item1 - Target.Position.Item1 > 0 && Position.Item2 - Target.Position.Item2 < 0)
-            {
-                Position = new Tuple<double, double>(Position.Item1 - MovementCost(), Position.Item2 + MovementCost());
-            }
-
-            else if (Position.Item1 - Target.Position.Item1 < 0 && Position.Item2 - Target.Position.Item2 < 0)
-            {
-                Position = new Tuple<double, double>(Position.Item1 + MovementCost(), Position.Item2 + MovementCost());
-            }
-
-            else if (Position.Item1 - Target.Position.Item1 < 0 && Position.Item2 - Target.Position.Item2 > 0)
-            {
-                Position = new Tuple<double, double>(Position.Item1 + MovementCost(), Position.Item2 - MovementCost());
-            }
-        }
-
-        /// <summary>
-        /// TODO: complete the formula
-        /// </summary>
-        /// <returns></returns>
-        private double MovementCost()
-        {
-            return 20d;
-        }
-
-        public void ReturnToBase()
-        {
-            Target = Base;
+            this.Name = v.Name;
+            this.Speed = v.Speed;
+            this.MaxPayload = v.MaxPayload;
+            this.MaxRange = v.MaxRange;
+            this.MovementPenalty = v.MovementPenalty;
+            this.CostPerHour = v.CostPerHour;
+            this.CostPerKm = v.CostPerKm;
         }
     }
 }
