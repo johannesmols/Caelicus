@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Caelicus.Models.Graph;
+using Priority_Queue;
 
 namespace Caelicus.Graph
 {
@@ -154,6 +156,72 @@ namespace Caelicus.Graph
         #endregion
 
         #region Traversal
+
+        /// <summary>
+        /// Dijkstra's Algorithm to find shortest path in a directed weighted graph
+        /// Implementation guide and explanation: https://www.redblobgames.com/pathfinding/a-star/introduction.html
+        /// </summary>
+        /// <param name="graph">Reference to the graph with non-generic objects (needed to retrieve distances from edges)</param>
+        /// <param name="start">The start vertex</param>
+        /// <param name="target">The target vertex</param>
+        /// <returns></returns>
+        public Tuple<List<Vertex<VertexInfo, EdgeInfo>>, double> FindShortestPath(Graph<VertexInfo, EdgeInfo> graph, Vertex<TVertex, TEdge> start, Vertex<TVertex, TEdge> target)
+        {
+            if (start == null)
+                throw new ArgumentNullException(nameof(start));
+
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            var frontier = new SimplePriorityQueue<Guid, double>();
+            frontier.Enqueue(start.Id, 0d);
+
+            var cameFrom = new Dictionary<Guid, Guid>
+            {
+                { start.Id, Guid.Empty }
+            };
+
+            var costSoFar = new Dictionary<Guid, double>
+            {
+                { start.Id, 0d }
+            };
+
+            while (frontier.Count > 0)
+            {
+                var current = frontier.Dequeue();
+
+                if (current.Equals(target.Id))
+                    break;
+
+                foreach (var edge in graph._vertices.Find(v => v.Id.Equals(current)).Edges)
+                {
+                    var newCost = costSoFar[current] + edge.Info.Distance;
+                    if (!costSoFar.ContainsKey(edge.Destination.Id) || newCost < costSoFar[edge.Destination.Id])
+                    {
+                        costSoFar[edge.Destination.Id] = newCost;
+                        frontier.Enqueue(edge.Destination.Id, newCost);
+                        cameFrom[edge.Destination.Id] = current;
+                    }
+                }
+            }
+
+            // Get shortest path
+            var pfCurrent = target.Id;
+            var pfPath = new List<Guid>();
+
+            while (!pfCurrent.Equals(start.Id))
+            {
+                pfPath.Add(pfCurrent);
+                pfCurrent = cameFrom[pfCurrent];
+            }
+            pfPath.Add(start.Id);
+            pfPath.Reverse();
+
+            var shortestPath = new List<Vertex<VertexInfo, EdgeInfo>>();
+            shortestPath.AddRange(pfPath.Select(x => graph._vertices.Find(v => v.Id.Equals(x))).ToList());
+
+            return Tuple.Create(shortestPath, costSoFar[target.Id]);
+        }
 
         /// <summary>
         /// Depth-first traversal

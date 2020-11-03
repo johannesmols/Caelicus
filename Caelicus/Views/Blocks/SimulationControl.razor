@@ -73,6 +73,9 @@
         // Add the different simulation scenarios
         foreach (var (vehicle, enabled, min, max, step) in AppState.Vehicles)
         {
+            if (!enabled)
+                continue;
+
             for (var i = min; i <= max; i += step)
             {
                 if (i <= 0)

@@ -1,32 +1,101 @@
 {
-  "name":  "Copenhagen", 
+  "name": "Copenhagen",
   "vertices": [
     {
-      "name": "Base 1",
+      "name": "DTU",
       "type": "base",
       "latitude": 55.786327,
       "longitude": 12.523387,
       "edges": [
-        "Target 1",
-        "Target 2"
+        "Tivoli",
+        "Amager Strandpark",
+        "Ballerup"
       ]
     },
     {
-      "name": "Target 1",
+      "name": "Tivoli",
       "type": "target",
       "latitude": 55.673452,
       "longitude": 12.567195,
       "edges": [
-        "Base 1"
+        "DTU",
+        "Dragor",
+        "Brondby Strand"
       ]
     },
     {
-      "name": "Target 2",
+      "name": "Amager Strandpark",
       "type": "target",
       "latitude": 55.655827,
       "longitude": 12.647102,
       "edges": [
-        "Base 1"
+        "DTU",
+        "Dragor",
+        "Saltholm"
+      ]
+    },
+    {
+      "name": "Dragor",
+      "type": "target",
+      "latitude": 55.594293,
+      "longitude": 12.674374,
+      "edges": [
+        "Tivoli",
+        "Amager Strandpark",
+        "Brondby Strand"
+      ]
+    },
+    {
+      "name": "Brondby Strand",
+      "type": "target",
+      "latitude": 55.620991,
+      "longitude": 12.421854,
+      "edges": [
+        "Dragor",
+        "Tivoli",
+        "Koge"
+      ]
+    },
+    {
+      "name": "Saltholm",
+      "type": "target",
+      "latitude": 55.665163,
+      "longitude": 12.746673,
+      "edges": [
+        "Amager Strandpark"
+      ]
+    },
+    {
+      "name": "Koge",
+      "type": "target",
+      "latitude": 55.455554,
+      "longitude": 12.183992,
+      "edges": [
+        "Brondby Strand",
+        "Roskilde"
+      ]
+    },
+    {
+      "name": "Roskilde",
+      "type": "target",
+      "latitude": 55.642504,
+      "longitude": 12.080403,
+      "edges": [
+        "Tivoli",
+        "Koge",
+        "Brondby Strand",
+        "Ballerup"
+      ]
+    },
+
+    {
+      "name": "Ballerup",
+      "type": "target",
+      "latitude": 55.730093,
+      "longitude": 12.358226,
+      "edges": [
+        "DTU",
+        "Roskilde"
       ]
     }
   ]
