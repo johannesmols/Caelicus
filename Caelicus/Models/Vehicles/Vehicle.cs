@@ -2,6 +2,9 @@
 {
     public class Vehicle
     {
+        public Vehicle() { 
+        }
+
         // General information
         public string Name { get; set; }
 
