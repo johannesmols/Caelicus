@@ -36,7 +36,11 @@ namespace Caelicus.Models.Vehicles
             return baseHourlyCost + baseDistanceCost;
         }
 
-        public Vehicle(Vehicle v)
+        public Vehicle()
+        {
+            
+        }
+        protected Vehicle(Vehicle v)
         {
             this.Name = v.Name;
             this.Speed = v.Speed;

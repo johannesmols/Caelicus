@@ -14,16 +14,26 @@ namespace Caelicus.Simulation
     public class Simulation
     {
         private readonly SimulationParameters _parameters;
+        private List<Order> _orders;
+        private List<VehicleInstance> _vehicles;
 
         public Simulation(SimulationParameters parameters)
         {
             _parameters = parameters;
+            _orders = new List<Order>();
+            _orders.Add(new Order(10, _parameters.Graph.FirstOrDefault(v => v.Info.Type == VertexType.Target)?.Info));
+            _vehicles = new List<VehicleInstance>();
+            var bases = _parameters.Graph.Where(vertex => vertex.Info.Type == VertexType.Base).Select(vertex => vertex.Info).ToList();
+            for (int i = 0; i < _parameters.NumberOfVehicles; i++)
+            {
+                _vehicles.Add(new VehicleInstance(_parameters.VehicleTemplate, bases[bases.Capacity % i]));
+            } 
         }
 
         public async Task<SimulationResult> Simulate(IProgress<SimulationProgress> progress, CancellationToken cancellationToken)
         {
             progress.Report(new SimulationProgress(_parameters.SimulationIdentifier, $"Starting simulation with  { _parameters.NumberOfVehicles } { _parameters.VehicleTemplate.Name }"));
-            var simulator = new Simulator(_parameters);
+            var simulator = new Simulator(_parameters, _vehicles);
             while (!simulator.IsDone())
             {
                 simulator.advance();
@@ -67,27 +77,29 @@ namespace Caelicus.Simulation
         private SimulationParameters _parameters;
         private VehicleController _controller;
         private RandomPenaltiesGenerator _generator;
+        private List<VehicleInstance> _vehicle;
         private int _time = 0;
 
         public bool IsDone()
         {
             return _parameters.Missions.All(o => o.IsDone());
         }
-        public Simulator(SimulationParameters p)
+        public Simulator(SimulationParameters p, List<VehicleInstance> vi)
         {
+            _vehicle = vi;
             _time = 0; 
             _parameters = p;
-            _controller = new VehicleController(_parameters.Vehicles, _parameters.Missions, _parameters.Graph);
-            _generator = new RandomPenaltiesGenerator(_parameters.Vehicles);
+            _controller = new VehicleController(_vehicle, _parameters.Missions, _parameters.Graph);
+            _generator = new RandomPenaltiesGenerator(_vehicle);
         }
 
         public void reset()
         {
             var bases = _parameters.Graph.Where(vertex => vertex.Info.Type == VertexType.Base).Select(vertex => vertex.Info).ToList();
-            for (int i = 0; i < _parameters.Vehicles.Count; i++)
+            for (int i = 0; i < _vehicle.Count; i++)
             {
-                _parameters.Vehicles[i].State = VehicleState.Steady;
-                _parameters.Vehicles[i].Base = bases[bases.Count % i];
+                _vehicle[i].State = VehicleState.Steady;
+                _vehicle[i].Base = bases[bases.Count % i];
             }
             _time = 0;
         }
