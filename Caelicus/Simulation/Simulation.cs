@@ -10,19 +10,21 @@ using Caelicus.Helpers;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
 using GeoCoordinatePortable;
+using Newtonsoft.Json;
 
 namespace Caelicus.Simulation
 {
     public class Simulation
     {
-        private readonly Random _random;
+        public IProgress<SimulationProgress> ProgressReporter { get; private set; }
+        public readonly SimulationParameters Parameters;
+        public List<VehicleInstance> Vehicles { get; } = new List<VehicleInstance>();
+        public List<Order> OpenOrders { get; } = new List<Order>();
+        public List<CompletedOrder> ClosedOrders { get; set; } = new List<CompletedOrder>();
 
-        private readonly SimulationParameters _parameters;
-        private List<VehicleInstance> _vehicles = new List<VehicleInstance>();
-        private List<Order> _orders = new List<Order>();
+        public readonly double SecondsPerSimulationStep;
+        public int SimulationStep { get; private set; }
 
-        private readonly double _secondsPerSimulationStep;
-        private int _simulationStep = 0;
 
         /// <summary>
         /// Generates list of vehicles and orders based on the simulation parameters
@@ -30,30 +32,30 @@ namespace Caelicus.Simulation
         /// <param name="parameters">simulation parameters</param>
         public Simulation(SimulationParameters parameters)
         {
-            _parameters = parameters;
-            _random = new Random(_parameters.RandomSeed);
-            _secondsPerSimulationStep = 1d / _parameters.SimulationSpeed;
+            Parameters = parameters;
+            SecondsPerSimulationStep = 1d / Parameters.SimulationSpeed;
 
-            var allBases = _parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Base).ToList();
-            var allTargets = _parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Target).ToList();
+            var allBases = Parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Base).ToList();
+            var allTargets = Parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Target).ToList();
 
             // Equally split vehicles up to base stations
             var currentBaseIndex = 0;
-            for (var i = 0; i < _parameters.NumberOfVehicles; i++)
+            for (var i = 0; i < Parameters.NumberOfVehicles; i++)
             {
                 if (currentBaseIndex == allBases.Count)
                 {
                     currentBaseIndex = 0;
                 }
 
-                _vehicles.Add(new VehicleInstance(_parameters.VehicleTemplate, allBases[_random.Next(allBases.Count - 1)]));
+                Vehicles.Add(new VehicleInstance(this, Parameters.VehicleTemplate, allBases[new Random(Parameters.RandomSeed + i).Next(allBases.Count)]));
                 currentBaseIndex++;
             }
 
             // Generate random orders
-            for (var i = 0; i < _parameters.NumberOfOrders; i++)
+            for (var i = 0; i < Parameters.NumberOfOrders; i++)
             {
-                _orders.Add(new Order(allBases[_random.Next(allBases.Count - 1)], allTargets[_random.Next(allTargets.Count - 1)]));
+                // TODO: Generate semi-random payload weight
+                OpenOrders.Add(new Order(allBases[new Random(Parameters.RandomSeed + i).Next(allBases.Count)], allTargets[new Random(Parameters.RandomSeed + i).Next(allTargets.Count)], 10));
             }
         }
 
@@ -65,27 +67,32 @@ namespace Caelicus.Simulation
         /// <returns></returns>
         public async Task<SimulationResult> Simulate(IProgress<SimulationProgress> progress, CancellationToken cancellationToken)
         {
-            progress.Report(new SimulationProgress(_parameters.SimulationIdentifier, $"Starting simulation with  { _parameters.NumberOfVehicles } { _parameters.VehicleTemplate.Name }"));
+            ProgressReporter = progress;
+            ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Starting simulation with  { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
 
             while (!IsDone())
             {
+                ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, 
+                    $"Simulating at step { SimulationStep }: " +
+                    $"({ OpenOrders.Count } open orders, { ClosedOrders.Count } closed orders, { Vehicles.Where(v => v.CurrentOrder != null).ToList().Count } orders in progress)"));
+
                 Advance();
 
                 // Wait for an amount of time corresponding to the simulation speed (e.g. speed of 1 = 1 step per second, speed of 2 = 2 steps per second, ...)
-                await Task.Delay((int) (_secondsPerSimulationStep * 1000), cancellationToken);
+                await Task.Delay((int) (SecondsPerSimulationStep * 1000));
 
                 // Use this snippet to repeatedly check for cancellation in each iteration of the simulation
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    progress.Report(new SimulationProgress(_parameters.SimulationIdentifier, $"Stopped simulation with { _parameters.NumberOfVehicles } { _parameters.VehicleTemplate.Name }"));
+                    ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Stopped simulation with { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
                     throw new TaskCanceledException();
                 }
             }
 
-            progress.Report(new SimulationProgress(_parameters.SimulationIdentifier, $"Finished simulation with { _parameters.NumberOfVehicles } { _parameters.VehicleTemplate.Name }"));
+            ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Finished simulation with { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
 
             // TODO: Return actual results
-            return new SimulationResult(_parameters.SimulationIdentifier, "Success");
+            return new SimulationResult(Parameters.SimulationIdentifier, "Success");
         }
 
         /// <summary>
@@ -94,7 +101,7 @@ namespace Caelicus.Simulation
         /// <returns></returns>
         public bool IsDone()
         {
-            return _orders.All(o => o.Status == OrderStatus.Done);
+            return OpenOrders.Count == 0 && Vehicles.All(v => v.CurrentOrder == null);
         }
 
         /// <summary>
@@ -102,69 +109,25 @@ namespace Caelicus.Simulation
         /// </summary>
         public void Advance()
         {
-            _simulationStep++;
-
-            CheckForCompletedOrders();
-            CheckVehicleToBase();
-            UpdatePendingOrders();
-            SetupVehicles();
-            AdvanceVehicles();
-        }
-
-        /// <summary>
-        /// Check if any orders have been completed in the previous step and mark them as done
-        /// </summary>
-        private void CheckForCompletedOrders()
-        {
-            foreach (var order in _orders.Where(o => o.Status == OrderStatus.Active).Where(o => o.AssignedVehicle.ArrivedAtTarget()))
+            // Assign open orders to any available vehicle
+            foreach (var vehicle in Vehicles.Where(vehicle => vehicle.State == VehicleState.Idle))
             {
-                order.Status = OrderStatus.Done;
-                order.AssignedVehicle.ReturnToBase();
-                order.AssignedVehicle.StartOrder(null);
-            }
-        }
-
-        private void CheckVehicleToBase()
-        {
-            foreach (var vehicle in _vehicles.Where(v => v.State == VehicleState.MovingToBase))
-            {
-                if (vehicle.ArrivedAtTarget())
+                if (OpenOrders.Where(o => o.Start == vehicle.CurrentVertexPosition).ToList().Count > 0)
                 {
-                    vehicle.State = VehicleState.Idle;
+                    var order = OpenOrders.First(o => o.Start == vehicle.CurrentVertexPosition);
+                    vehicle.AssignOrder(order);
+                    OpenOrders.Remove(order);
+                }
+                else
+                {
+                    // TODO Move vehicle to another base where there is an order available
                 }
             }
-        }
 
-        private void UpdatePendingOrders()
-        {
-            foreach (var order in _orders.Where(m => m.Status == OrderStatus.Enqueued))
-            {
-                // TODO Create logic to determine when an order should be started (e.g. whether there is a vehicle available at the start base)
-                order.Status = OrderStatus.Pending;
-            }
-        }
+            // Advance all vehicles and their assigned orders
+            Vehicles.ForEach(v => v.Advance());
 
-        private void SetupVehicles()
-        {
-            foreach (var vehicle in _vehicles.Where(v => v.State == VehicleState.Idle))
-            {
-                foreach (var order in _orders.Where(m => m.Status == OrderStatus.Pending))
-                {
-                    vehicle.StartOrder(order.Target);
-                    order.AssignVehicle(vehicle);
-
-                    // TODO Calculate actual distance from the target using path-finding algorithm minus the already traveled distance
-                    vehicle.Distance = GeographicalHelpers.CalculateGeographicalDistanceInMeters(order.Target.Info.Position, vehicle.CurrentVertexPosition.Info.Position);
-                }
-            }
-        }
-
-        private void AdvanceVehicles()
-        {
-            foreach (var vehicle in _vehicles.Where(v => v.IsMoving()))
-            {
-                vehicle.Advance();
-            }
+            SimulationStep++;
         }
     }
 }

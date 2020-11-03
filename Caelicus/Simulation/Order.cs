@@ -4,38 +4,24 @@ using Caelicus.Models.Vehicles;
 
 namespace Caelicus.Simulation
 {
-     public enum OrderStatus
-     {
-        Done,
-        Pending,
-        Active,
-        Enqueued
-     }
-
     public class Order
     {
-        public Order(Vertex<VertexInfo, EdgeInfo> start, Vertex<VertexInfo, EdgeInfo> target)
+        public Order(Vertex<VertexInfo, EdgeInfo> start, Vertex<VertexInfo, EdgeInfo> target, double payloadWeight)
         {
-            Status = OrderStatus.Enqueued;
             Start = start;
             Target = target;
+            PayloadWeight = payloadWeight;
         }
 
-        public Vertex<VertexInfo, EdgeInfo> Start { get; }
-
-        public Vertex<VertexInfo, EdgeInfo> Target { get; set; }
-
-
-        // Runtime variables
-
-        public OrderStatus Status { get; set; }
-
-        public VehicleInstance AssignedVehicle { get; private set; }
-
-        public void AssignVehicle(VehicleInstance vehicle)
+        public Order(Order order)
         {
-            Status = OrderStatus.Active;
-            AssignedVehicle = vehicle;
+            Start = order.Start;
+            Target = order.Target;
+            PayloadWeight = order.PayloadWeight;
         }
+
+        public readonly Vertex<VertexInfo, EdgeInfo> Start;
+        public readonly Vertex<VertexInfo, EdgeInfo> Target;
+        public readonly double PayloadWeight;
     }
 }

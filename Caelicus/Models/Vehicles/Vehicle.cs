@@ -7,6 +7,22 @@ namespace Caelicus.Models.Vehicles
     
     public class Vehicle
     {
+        public Vehicle()
+        {
+
+        }
+
+        protected Vehicle(Vehicle vehicle)
+        {
+            Name = vehicle.Name;
+            Speed = vehicle.Speed;
+            MaxPayload = vehicle.MaxPayload;
+            MaxRange = vehicle.MaxRange;
+            MovementPenalty = vehicle.MovementPenalty;
+            CostPerHour = vehicle.CostPerHour;
+            CostPerKm = vehicle.CostPerKm;
+        }
+
         // General information
         public string Name { get; set; }
 
@@ -34,22 +50,6 @@ namespace Caelicus.Models.Vehicles
             var baseHourlyCost = CostPerHour * travelTimeInHours;
             var baseDistanceCost = CostPerKm * (distanceInMetres / 1000d);
             return baseHourlyCost + baseDistanceCost;
-        }
-
-        public Vehicle()
-        {
-            
-        }
-
-        protected Vehicle(Vehicle vehicle)
-        {
-            this.Name = vehicle.Name;
-            this.Speed = vehicle.Speed;
-            this.MaxPayload = vehicle.MaxPayload;
-            this.MaxRange = vehicle.MaxRange;
-            this.MovementPenalty = vehicle.MovementPenalty;
-            this.CostPerHour = vehicle.CostPerHour;
-            this.CostPerKm = vehicle.CostPerKm;
         }
     }
 }
