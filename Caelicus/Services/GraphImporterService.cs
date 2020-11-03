@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Caelicus.Enums;
 using Caelicus.Graph;
+using Caelicus.Helpers;
 using Caelicus.Models;
 using Caelicus.Models.Graph;
 using GeoCoordinatePortable;
@@ -40,7 +41,7 @@ namespace Caelicus.Services
 
                     if (origin != null && destination != null)
                     {
-                        graph.AddEdge(origin, destination, new EdgeInfo() { Distance = CalculateGeographicalDistanceInMeters(origin.Info.Position, destination.Info.Position) });
+                        graph.AddEdge(origin, destination, new EdgeInfo() { Distance = GeographicalHelpers.CalculateGeographicalDistanceInMeters(origin.Info.Position, destination.Info.Position) });
                     }
                 }
             }
@@ -62,13 +63,6 @@ namespace Caelicus.Services
                 
                 return VertexType.Target;
             }
-        }
-
-        private static double CalculateGeographicalDistanceInMeters(Tuple<double, double> start, Tuple<double, double> end)
-        {
-            var pos1 = new GeoCoordinate(start.Item1, start.Item2);
-            var pos2 = new GeoCoordinate(end.Item1, end.Item2);
-            return pos1.GetDistanceTo(pos2);
         }
     }
 }

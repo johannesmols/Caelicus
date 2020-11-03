@@ -16,10 +16,13 @@ namespace Caelicus.Simulation
 
         public Graph<VertexInfo, EdgeInfo> Graph { get; set; } = new Graph<VertexInfo, EdgeInfo>();
 
-        public Vehicle VehicleTemplate { get; set; } = new Vehicle();
+        public Vehicle VehicleTemplate { get; set; }
 
         public int NumberOfVehicles { get; set; } = 1;
 
-        public float SimulationSpeed { get; set; } = 1f;
+        public double SimulationSpeed { get; set; } = 1f;
+
+        // TODO: Set the number of orders from the UI
+        public int NumberOfOrders { get; set; } = 25;
     }
 }

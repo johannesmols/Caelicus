@@ -259,6 +259,47 @@ namespace Caelicus.Graph
                 }
             }
         }
+        
+        /// <summary>
+        /// Depth-first traversal
+        /// <paramref name="initialVertex">Initial vertex of the traversal</paramref>
+        /// <paramref name="action">Action to be executed foreach node</paramref>
+        /// </summary>
+        public float DepthFirstFind(TVertex start, TVertex end)
+        {
+            return 100;
+            // Vertex<TVertex, TEdge> initialVertex = FirstOrDefault(v => ((IEquatable<TVertex>)(v)).Equals(start));
+            // Vertex<TVertex, TEdge> endVertex = FirstOrDefault(v => ((IEquatable<TVertex>)(v)).Equals(end));
+            //
+            // if (initialVertex == null)
+            //     throw new ArgumentNullException(nameof(initialVertex));
+            //
+            // if (action == null)
+            //     throw new ArgumentNullException(nameof(action));
+            //
+            // var stack = new Stack<Vertex<TVertex, TEdge>>();
+            //
+            // ClearVisitedVertices();
+            //
+            // stack.Push(initialVertex);
+            //
+            // while (stack.Count > 0)
+            // {
+            //     var currentVertex = stack.Pop();
+            //     currentVertex.Info
+            //     if (!currentVertex.Visited && !((IEquatable<TVertex>) currentVertex.Info).Equals(end))
+            //     {
+            //         currentVertex.Visited = true;
+            //
+            //         action(currentVertex);
+            //
+            //         foreach (var edge in currentVertex.Edges)
+            //         {
+            //             stack.Push(edge.Destination);
+            //         }
+            //     }
+            // }
+        }
 
         /// <summary>
         /// Breadth-first traversal

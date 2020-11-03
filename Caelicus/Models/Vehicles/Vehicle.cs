@@ -1,7 +1,28 @@
-﻿namespace Caelicus.Models.Vehicles
+﻿using System;
+using Caelicus.Graph;
+using Caelicus.Models.Graph;
+
+namespace Caelicus.Models.Vehicles
 {
+    
     public class Vehicle
     {
+        public Vehicle()
+        {
+
+        }
+
+        protected Vehicle(Vehicle vehicle)
+        {
+            Name = vehicle.Name;
+            Speed = vehicle.Speed;
+            MaxPayload = vehicle.MaxPayload;
+            MaxRange = vehicle.MaxRange;
+            MovementPenalty = vehicle.MovementPenalty;
+            CostPerHour = vehicle.CostPerHour;
+            CostPerKm = vehicle.CostPerKm;
+        }
+
         // General information
         public string Name { get; set; }
 
