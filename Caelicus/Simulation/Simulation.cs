@@ -6,199 +6,164 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caelicus.Enums;
 using Caelicus.Graph;
+using Caelicus.Helpers;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
+using GeoCoordinatePortable;
 
 namespace Caelicus.Simulation
 {
     public class Simulation
     {
-        private readonly SimulationParameters _parameters;
-        private List<Order> _orders;
-        private List<VehicleInstance> _vehicles;
+        private readonly Random _random;
 
+        private readonly SimulationParameters _parameters;
+        private List<VehicleInstance> _vehicles = new List<VehicleInstance>();
+        private List<Order> _orders = new List<Order>();
+
+        private readonly double _secondsPerSimulationStep;
+        private int _simulationStep = 0;
+
+        /// <summary>
+        /// Generates list of vehicles and orders based on the simulation parameters
+        /// </summary>
+        /// <param name="parameters">simulation parameters</param>
         public Simulation(SimulationParameters parameters)
         {
             _parameters = parameters;
-            _orders = new List<Order>();
-            _orders.Add(new Order(10, _parameters.Graph.FirstOrDefault(v => v.Info.Type == VertexType.Target)?.Info));
-            _vehicles = new List<VehicleInstance>();
-            var bases = _parameters.Graph.Where(vertex => vertex.Info.Type == VertexType.Base).Select(vertex => vertex.Info).ToList();
-            for (int i = 0; i < _parameters.NumberOfVehicles; i++)
+            _random = new Random(_parameters.RandomSeed);
+            _secondsPerSimulationStep = 1d / _parameters.SimulationSpeed;
+
+            var allBases = _parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Base).ToList();
+            var allTargets = _parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Target).ToList();
+
+            // Equally split vehicles up to base stations
+            var currentBaseIndex = 0;
+            for (var i = 0; i < _parameters.NumberOfVehicles; i++)
             {
-                _vehicles.Add(new VehicleInstance(_parameters.VehicleTemplate, bases[bases.Capacity % i]));
-            } 
+                if (currentBaseIndex == allBases.Count)
+                {
+                    currentBaseIndex = 0;
+                }
+
+                _vehicles.Add(new VehicleInstance(_parameters.VehicleTemplate, allBases[_random.Next(allBases.Count - 1)]));
+                currentBaseIndex++;
+            }
+
+            // Generate random orders
+            for (var i = 0; i < _parameters.NumberOfOrders; i++)
+            {
+                _orders.Add(new Order(allBases[_random.Next(allBases.Count - 1)], allTargets[_random.Next(allTargets.Count - 1)]));
+            }
         }
 
+        /// <summary>
+        /// Main thread of running the simulation, posting updates, and finally returning the results
+        /// </summary>
+        /// <param name="progress">Can be used to send status updates back to the UI</param>
+        /// <param name="cancellationToken">Can be used to cancel the operation from the UI</param>
+        /// <returns></returns>
         public async Task<SimulationResult> Simulate(IProgress<SimulationProgress> progress, CancellationToken cancellationToken)
         {
             progress.Report(new SimulationProgress(_parameters.SimulationIdentifier, $"Starting simulation with  { _parameters.NumberOfVehicles } { _parameters.VehicleTemplate.Name }"));
-            var simulator = new Simulator(_parameters, _vehicles);
-            while (!simulator.IsDone())
+
+            while (!IsDone())
             {
-                simulator.advance();
-                // TODO: Perform the actual simulation
-                await Task.Delay((int) (_parameters.SimulationDuration / _parameters.SimulationSpeed));
+                Advance();
+
+                // Wait for an amount of time corresponding to the simulation speed (e.g. speed of 1 = 1 step per second, speed of 2 = 2 steps per second, ...)
+                await Task.Delay((int) (_secondsPerSimulationStep * 1000), cancellationToken);
 
                 // Use this snippet to repeatedly check for cancellation in each iteration of the simulation
                 if (cancellationToken.IsCancellationRequested)
                 {
-                progress.Report(new SimulationProgress(_parameters.SimulationIdentifier, $"Stopped simulation with { _parameters.NumberOfVehicles } { _parameters.VehicleTemplate.Name }"));
+                    progress.Report(new SimulationProgress(_parameters.SimulationIdentifier, $"Stopped simulation with { _parameters.NumberOfVehicles } { _parameters.VehicleTemplate.Name }"));
                     throw new TaskCanceledException();
                 }
-
             }
+
             progress.Report(new SimulationProgress(_parameters.SimulationIdentifier, $"Finished simulation with { _parameters.NumberOfVehicles } { _parameters.VehicleTemplate.Name }"));
 
+            // TODO: Return actual results
             return new SimulationResult(_parameters.SimulationIdentifier, "Success");
         }
-    }
-    
-    public class RandomPenaltiesGenerator
-    {
-        private Random generator = new Random();
-        private List<VehicleInstance> _vehicles;
-        public RandomPenaltiesGenerator(List<VehicleInstance> v)
-        {
-            _vehicles = v;
-        }
 
-        public void GenerateRandomness()
-        {
-            foreach (var v in _vehicles.Where(v => generator.Next() % 2 == 0))
-            {
-                v.MovementPenalty = generator.NextDouble();
-            }
-        }
-    }
-
-    public class Simulator
-    {
-        private SimulationParameters _parameters;
-        private VehicleController _controller;
-        private RandomPenaltiesGenerator _generator;
-        private List<VehicleInstance> _vehicle;
-        private int _time = 0;
-
+        /// <summary>
+        /// Determines whether all orders have been fulfilled successfully
+        /// </summary>
+        /// <returns></returns>
         public bool IsDone()
         {
-            return _parameters.Missions.All(o => o.IsDone());
-        }
-        public Simulator(SimulationParameters p, List<VehicleInstance> vi)
-        {
-            _vehicle = vi;
-            _time = 0; 
-            _parameters = p;
-            _controller = new VehicleController(_vehicle, _parameters.Missions, _parameters.Graph);
-            _generator = new RandomPenaltiesGenerator(_vehicle);
+            return _orders.All(o => o.Status == OrderStatus.Done);
         }
 
-        public void reset()
-        {
-            var bases = _parameters.Graph.Where(vertex => vertex.Info.Type == VertexType.Base).Select(vertex => vertex.Info).ToList();
-            for (int i = 0; i < _vehicle.Count; i++)
-            {
-                _vehicle[i].State = VehicleState.Steady;
-                _vehicle[i].Base = bases[bases.Count % i];
-            }
-            _time = 0;
-        }
-
-        public bool advance()
-        {
-            _time += 1;
-            _controller.CheckForCompletedOrders();
-            _controller.CheckVehicleToBase();
-            _controller.UpdatePendingOrders();
-            _controller.SetupVehicles();
-            _generator.GenerateRandomness();
-            _controller.advanceTime();
-            return true;
-        }
-    }
-
-    
-    public class VehicleController
-    {
-        private List<VehicleInstance> _vehicles;
-        private List<Order> _missions;
-        private int Time { get; set; }
-
-        public Graph<VertexInfo, EdgeInfo> _graph { get; set; }
-        
-        public VehicleController(List<VehicleInstance> vehicles, List<Order> missions, Graph<VertexInfo, EdgeInfo> g)
-        {
-            _graph = g;
-            _vehicles = vehicles;
-            _missions = missions;
-            Time = 0;
-        }
-
-        public void CheckForCompletedOrders()
-        {
-            foreach (var m in _missions.Where(m => m.IsActive()).Where(m => m.AssignedVehicle.ArrivedToTarget()))
-            {
-                m.Status = OrderStatus.Done;
-                m.AssignedVehicle.ReturnToBase();
-                m.AssignedVehicle.SetOrder(null);
-            }
-        }
-        
-        public void CheckVehicleToBase()
-        {
-            foreach (var v in _vehicles.Where(v => v.State == VehicleState.MovingToBase))
-            {
-                if (v.ArrivedToTarget())
-                {
-                    v.State = VehicleState.Steady;
-                }
-            }
-        }
-        
         /// <summary>
-        /// Check if there are missions to start and set them to Pending status
+        /// Advance the simulation by a single step
         /// </summary>
-        public void UpdatePendingOrders()
+        public void Advance()
         {
-            foreach (var m in _missions.Where(m => m.IsEnqueue()))
+            _simulationStep++;
+
+            CheckForCompletedOrders();
+            CheckVehicleToBase();
+            UpdatePendingOrders();
+            SetupVehicles();
+            AdvanceVehicles();
+        }
+
+        /// <summary>
+        /// Check if any orders have been completed in the previous step and mark them as done
+        /// </summary>
+        private void CheckForCompletedOrders()
+        {
+            foreach (var order in _orders.Where(o => o.Status == OrderStatus.Active).Where(o => o.AssignedVehicle.ArrivedAtTarget()))
             {
-                if (m.StartTime == Time)
+                order.Status = OrderStatus.Done;
+                order.AssignedVehicle.ReturnToBase();
+                order.AssignedVehicle.StartOrder(null);
+            }
+        }
+
+        private void CheckVehicleToBase()
+        {
+            foreach (var vehicle in _vehicles.Where(v => v.State == VehicleState.MovingToBase))
+            {
+                if (vehicle.ArrivedAtTarget())
                 {
-                    m.Status = OrderStatus.Pending;
+                    vehicle.State = VehicleState.Idle;
                 }
             }
         }
 
-        public void advanceTime()
+        private void UpdatePendingOrders()
         {
-            Time += 1;
-            foreach (var v in _vehicles.Where(v => v.IsMoving()))
+            foreach (var order in _orders.Where(m => m.Status == OrderStatus.Enqueued))
             {
-                v.Advance();
+                // TODO Create logic to determine when an order should be started (e.g. whether there is a vehicle available at the start base)
+                order.Status = OrderStatus.Pending;
             }
         }
-/// <summary>
-/// TODO: complete the search
-/// </summary>
-/// <param name="t"></param>
-/// <param name="b"></param>
-/// <returns></returns>
-        float CalculateDistance(VertexInfo t, VertexInfo b)
+
+        private void SetupVehicles()
         {
-            float distance = _graph.DepthFirstFind(t, b);
-            return distance;
+            foreach (var vehicle in _vehicles.Where(v => v.State == VehicleState.Idle))
+            {
+                foreach (var order in _orders.Where(m => m.Status == OrderStatus.Pending))
+                {
+                    vehicle.StartOrder(order.Target);
+                    order.AssignVehicle(vehicle);
+
+                    // TODO Calculate actual distance from the target using path-finding algorithm minus the already traveled distance
+                    vehicle.Distance = GeographicalHelpers.CalculateGeographicalDistanceInMeters(order.Target.Info.Position, vehicle.CurrentVertexPosition.Info.Position);
+                }
+            }
         }
 
-        public void SetupVehicles()
+        private void AdvanceVehicles()
         {
-            foreach (var v in _vehicles.Where(v => v.State == VehicleState.Steady))
+            foreach (var vehicle in _vehicles.Where(v => v.IsMoving()))
             {
-                foreach (var m in _missions.Where(m => m.IsPending()))
-                {
-                    v.SetOrder(m.Target);
-                    m.SetVehicle(v);
-                    v.Distance = CalculateDistance(m.Target, v.Base);
-                }
+                vehicle.Advance();
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Caelicus.Graph;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
 
@@ -8,28 +9,34 @@ namespace Caelicus.Simulation
     {
         MovingToTarget,
         MovingToBase,
-        Steady
+        Idle
     }
     
     public class VehicleInstance : Vehicle
     {
-        public VehicleInstance(Vehicle v, VertexInfo b) : base(v)
+        public VehicleInstance(Vehicle vehicle, Vertex<VertexInfo, EdgeInfo> startingVertex) : base(vehicle)
         {
-            Base = b;
+            CurrentVertexPosition = startingVertex;
         }
-        public VertexInfo Base {get; set; } 
-        public VertexInfo Target { get; set; }
-        public VehicleState State { get; set; }
-        public float Distance { get; set; }
-        
-        public float TotalDistance { get; set; }
 
+        public Vertex<VertexInfo, EdgeInfo> CurrentVertexPosition {get; set; } 
+        public Vertex<VertexInfo, EdgeInfo> Target { get; set; }
+
+        public VehicleState State { get; set; }
+        public double Distance { get; set; }
+        public float TotalDistance { get; set; }
         public double Threshold { get; set; } = 0.0010;
 
-        public void SetOrder(VertexInfo t)
+        public void StartOrder(Vertex<VertexInfo, EdgeInfo> target)
         {
             State = VehicleState.MovingToTarget;
-            Target = t;
+            Target = target;
+        }
+
+        public void ReturnToBase()
+        {
+            State = VehicleState.MovingToBase;
+            Target = CurrentVertexPosition;
         }
 
         /// <summary>
@@ -38,15 +45,14 @@ namespace Caelicus.Simulation
         /// is quite large!!.
         /// </summary>
         /// <returns></returns>
-        public bool ArrivedToTarget()
+        public bool ArrivedAtTarget()
         {
             return Distance <= Threshold;
-
         }
         
-        public void SetTarget(VertexInfo t)
+        public void SetTarget(Vertex<VertexInfo, EdgeInfo> target)
         {
-            Target = t;
+            Target = target;
         }
 
         public void Advance()
@@ -61,11 +67,6 @@ namespace Caelicus.Simulation
         private float MovementCost()
         {
             return 20f;
-        }
-
-        public void ReturnToBase()
-        {
-            Target = Base;
         }
 
         public bool IsMoving()

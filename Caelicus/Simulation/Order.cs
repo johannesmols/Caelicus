@@ -1,4 +1,5 @@
-﻿using Caelicus.Models.Graph;
+﻿using Caelicus.Graph;
+using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
 
 namespace Caelicus.Simulation
@@ -13,43 +14,28 @@ namespace Caelicus.Simulation
 
     public class Order
     {
-        
-        public VertexInfo Target { get; }
-        
-        public int StartTime { get; set; }
-
-        public VehicleInstance AssignedVehicle { get; set; }
-        public OrderStatus Status { get; set; }
-
-        public bool IsActive()
-        {
-            return Status == OrderStatus.Active;
-        }
-        public bool IsPending()
-        {
-            return Status == OrderStatus.Pending;
-        }
-        public bool IsDone()
-        {
-            return Status == OrderStatus.Done;
-        }
-        
-        public bool IsEnqueue()
-        {
-            return Status == OrderStatus.Enqueued;
-        }
-
-        public void SetVehicle(VehicleInstance v)
-        {
-            Status = OrderStatus.Active;
-            AssignedVehicle = v;
-        }
-        
-        public Order(int startTime, VertexInfo target)
+        public Order(Vertex<VertexInfo, EdgeInfo> start, Vertex<VertexInfo, EdgeInfo> target)
         {
             Status = OrderStatus.Enqueued;
-            StartTime = startTime;
+            Start = start;
             Target = target;
+        }
+
+        public Vertex<VertexInfo, EdgeInfo> Start { get; }
+
+        public Vertex<VertexInfo, EdgeInfo> Target { get; set; }
+
+
+        // Runtime variables
+
+        public OrderStatus Status { get; set; }
+
+        public VehicleInstance AssignedVehicle { get; private set; }
+
+        public void AssignVehicle(VehicleInstance vehicle)
+        {
+            Status = OrderStatus.Active;
+            AssignedVehicle = vehicle;
         }
     }
 }

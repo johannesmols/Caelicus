@@ -40,15 +40,16 @@ namespace Caelicus.Models.Vehicles
         {
             
         }
-        protected Vehicle(Vehicle v)
+
+        protected Vehicle(Vehicle vehicle)
         {
-            this.Name = v.Name;
-            this.Speed = v.Speed;
-            this.MaxPayload = v.MaxPayload;
-            this.MaxRange = v.MaxRange;
-            this.MovementPenalty = v.MovementPenalty;
-            this.CostPerHour = v.CostPerHour;
-            this.CostPerKm = v.CostPerKm;
+            this.Name = vehicle.Name;
+            this.Speed = vehicle.Speed;
+            this.MaxPayload = vehicle.MaxPayload;
+            this.MaxRange = vehicle.MaxRange;
+            this.MovementPenalty = vehicle.MovementPenalty;
+            this.CostPerHour = vehicle.CostPerHour;
+            this.CostPerKm = vehicle.CostPerKm;
         }
     }
 }

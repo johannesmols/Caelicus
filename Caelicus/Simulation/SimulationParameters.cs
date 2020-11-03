@@ -20,10 +20,9 @@ namespace Caelicus.Simulation
 
         public int NumberOfVehicles { get; set; } = 1;
 
-        public float SimulationSpeed { get; set; } = 1f;
+        public double SimulationSpeed { get; set; } = 1f;
 
-        public float SimulationDuration { get; set; } = 1000f;
-
-        public List<Order> Missions { get; set; }
+        // TODO: Set the number of orders from the UI
+        public int NumberOfOrders { get; set; } = 100;
     }
 }
