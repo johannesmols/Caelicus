@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Caelicus.Enums;
+using Caelicus.Graph;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
 
@@ -21,9 +23,10 @@ namespace Caelicus.Simulation
         public async Task<SimulationResult> Simulate(IProgress<SimulationProgress> progress, CancellationToken cancellationToken)
         {
             progress.Report(new SimulationProgress(_parameters.SimulationIdentifier, $"Starting simulation with  { _parameters.NumberOfVehicles } { _parameters.VehicleTemplate.Name }"));
-            int currentTime = 0;
-            while (currentTime < _parameters.SimulationDuration)
+            var simulator = new Simulator(_parameters);
+            while (!simulator.IsDone())
             {
+                simulator.advance();
                 // TODO: Perform the actual simulation
                 await Task.Delay((int) (_parameters.SimulationDuration / _parameters.SimulationSpeed));
 
@@ -44,8 +47,8 @@ namespace Caelicus.Simulation
     public class RandomPenaltiesGenerator
     {
         private Random generator = new Random();
-        private List<Vehicle> _vehicles;
-        public RandomPenaltiesGenerator(List<Vehicle> v)
+        private List<VehicleInstance> _vehicles;
+        public RandomPenaltiesGenerator(List<VehicleInstance> v)
         {
             _vehicles = v;
         }
@@ -65,24 +68,36 @@ namespace Caelicus.Simulation
         private VehicleController _controller;
         private RandomPenaltiesGenerator _generator;
         private int _time = 0;
+
+        public bool IsDone()
+        {
+            return _parameters.Missions.All(o => o.IsDone());
+        }
         public Simulator(SimulationParameters p)
         {
             _time = 0; 
             _parameters = p;
-            _controller = new VehicleController(_parameters.Vehicles.Select(x => x.Item1).ToList(), _parameters.Missions);
-            _generator = new RandomPenaltiesGenerator(_parameters.Vehicles.Select(x => x.Item1).ToList());
+            _controller = new VehicleController(_parameters.Vehicles, _parameters.Missions, _parameters.Graph);
+            _generator = new RandomPenaltiesGenerator(_parameters.Vehicles);
         }
 
         public void reset()
         {
+            var bases = _parameters.Graph.Where(vertex => vertex.Info.Type == VertexType.Base).Select(vertex => vertex.Info).ToList();
+            for (int i = 0; i < _parameters.Vehicles.Count; i++)
+            {
+                _parameters.Vehicles[i].State = VehicleState.Steady;
+                _parameters.Vehicles[i].Base = bases[bases.Count % i];
+            }
             _time = 0;
         }
 
         public bool advance()
         {
             _time += 1;
-            _controller.CheckForCompletedMissions();
-            _controller.UpdatePendingMissions();
+            _controller.CheckForCompletedOrders();
+            _controller.CheckVehicleToBase();
+            _controller.UpdatePendingOrders();
             _controller.SetupVehicles();
             _generator.GenerateRandomness();
             _controller.advanceTime();
@@ -93,36 +108,51 @@ namespace Caelicus.Simulation
     
     public class VehicleController
     {
-        private List<Vehicle> _vehicles;
-        private List<Mission> _missions;
+        private List<VehicleInstance> _vehicles;
+        private List<Order> _missions;
         private int Time { get; set; }
 
-        public VehicleController(List<Vehicle> vehicles, List<Mission> missions)
+        public Graph<VertexInfo, EdgeInfo> _graph { get; set; }
+        
+        public VehicleController(List<VehicleInstance> vehicles, List<Order> missions, Graph<VertexInfo, EdgeInfo> g)
         {
+            _graph = g;
             _vehicles = vehicles;
             _missions = missions;
             Time = 0;
         }
 
-        public void CheckForCompletedMissions()
+        public void CheckForCompletedOrders()
         {
             foreach (var m in _missions.Where(m => m.IsActive()).Where(m => m.AssignedVehicle.ArrivedToTarget()))
             {
-                m.Status = MissionStatus.Done;
+                m.Status = OrderStatus.Done;
                 m.AssignedVehicle.ReturnToBase();
+                m.AssignedVehicle.SetOrder(null);
+            }
+        }
+        
+        public void CheckVehicleToBase()
+        {
+            foreach (var v in _vehicles.Where(v => v.State == VehicleState.MovingToBase))
+            {
+                if (v.ArrivedToTarget())
+                {
+                    v.State = VehicleState.Steady;
+                }
             }
         }
         
         /// <summary>
         /// Check if there are missions to start and set them to Pending status
         /// </summary>
-        public void UpdatePendingMissions()
+        public void UpdatePendingOrders()
         {
             foreach (var m in _missions.Where(m => m.IsEnqueue()))
             {
                 if (m.StartTime == Time)
                 {
-                    m.Status = MissionStatus.Pending;
+                    m.Status = OrderStatus.Pending;
                 }
             }
         }
@@ -130,10 +160,21 @@ namespace Caelicus.Simulation
         public void advanceTime()
         {
             Time += 1;
-            foreach (var v in _vehicles.Where(v => v.State == VehicleState.Moving))
+            foreach (var v in _vehicles.Where(v => v.IsMoving()))
             {
                 v.Advance();
             }
+        }
+/// <summary>
+/// TODO: complete the search
+/// </summary>
+/// <param name="t"></param>
+/// <param name="b"></param>
+/// <returns></returns>
+        float CalculateDistance(VertexInfo t, VertexInfo b)
+        {
+            float distance = _graph.DepthFirstFind(t, b);
+            return distance;
         }
 
         public void SetupVehicles()
@@ -142,8 +183,9 @@ namespace Caelicus.Simulation
             {
                 foreach (var m in _missions.Where(m => m.IsPending()))
                 {
-                    v.SetMission(m.Target);
+                    v.SetOrder(m.Target);
                     m.SetVehicle(v);
+                    v.Distance = CalculateDistance(m.Target, v.Base);
                 }
             }
         }

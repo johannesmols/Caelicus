@@ -24,6 +24,6 @@ namespace Caelicus.Simulation
 
         public float SimulationDuration { get; set; } = 1000f;
 
-        public List<Mission> Missions { get; set; }
+        public List<Order> Missions { get; set; }
     }
 }
