@@ -30,7 +30,7 @@ namespace SimulationTests
         }
 
         [Fact]
-        public void basicInitialization() {
+        public void basicInitializationTest() {
 
             int testVariable = 1;
             var basicTestVihecle = new Vehicle();

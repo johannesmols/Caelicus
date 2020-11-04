@@ -1,10 +1,17 @@
-﻿using System;
+﻿using Caelicus.Simulation;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Xunit;
 
 namespace SimulationTests
 {
-    class SimulationManagerTest
+    public class SimulationTests
     {
+     [Fact]
+     public void test()
+        {
+           
+        }
     }
 }

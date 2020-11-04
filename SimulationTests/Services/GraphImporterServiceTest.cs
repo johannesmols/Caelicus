@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Caelicus.Models.Graph;
+using Caelicus.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
@@ -12,10 +14,7 @@ namespace SimulationTests.Services
         { 
         }
 
-        [Fact]
-        public void generateGraphTest()
-        {
-        }
+        
 
         [Fact]
         public void DetermineVertexTypeTest()
