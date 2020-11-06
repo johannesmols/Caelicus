@@ -74,7 +74,10 @@ namespace Caelicus.Simulation
             {
                 ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, 
                     $"Simulating at step { SimulationStep }: " +
-                    $"({ OpenOrders.Count } open orders, { ClosedOrders.Count } closed orders, { Vehicles.Where(v => v.CurrentOrder != null).ToList().Count } orders in progress)"));
+                    $"({ OpenOrders.Count } open orders, " +
+                    $"{ ClosedOrders.Count } closed orders, " +
+                    $"{ Vehicles.Where(v => v.CurrentOrder != null && v.State == VehicleState.MovingToTarget).ToList().Count } orders in progress, " +
+                    $"{ Vehicles.Where(v => v.CurrentOrder != null && v.State == VehicleState.PickingUpOrder).ToList().Count } in pickup)"));
 
                 Advance();
 

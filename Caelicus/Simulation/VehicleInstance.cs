@@ -13,7 +13,7 @@ namespace Caelicus.Simulation
     {
         Idle,
         MovingToTarget,
-        MovingToBase
+        PickingUpOrder
     }
     
     public class VehicleInstance : Vehicle
@@ -56,6 +56,25 @@ namespace Caelicus.Simulation
                     new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
                         $"Vehicle { GetHashCode() } idling at base station { CurrentVertexPosition.Info.Name }"));
             }
+            else if (State == VehicleState.PickingUpOrder)
+            {
+                if (Target != null)
+                {
+                    DistanceTraveled += (Speed / 3.6d) * Simulation.SecondsPerSimulationStep;
+
+                    Simulation.ProgressReporter.Report(
+                        new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
+                            $"Moving vehicle { GetHashCode() } to base { Target.Info.Name } from { CurrentVertexPosition.Info.Name } to pick up next order ({ DistanceTraveled / DistanceToTarget * 100d:n2}%)"));
+
+                    // Arrived at base station
+                    if (DistanceTraveled >= DistanceToTarget)
+                    {
+                        State = VehicleState.MovingToTarget;
+                        CurrentVertexPosition = Target;
+                        DistanceTraveled = 0d;
+                    }
+                }
+            }
             else if (State == VehicleState.MovingToTarget)
             {
                 if (CurrentOrder != null)
@@ -77,10 +96,14 @@ namespace Caelicus.Simulation
                         CurrentOrder = null;
 
                         // Move to the nearest base station
-                        State = VehicleState.MovingToBase;
+                        State = VehicleState.PickingUpOrder;
                         CurrentVertexPosition = Target;
                         DistanceTraveled = 0d;
-                        Target = GetNearestBaseStation(CurrentVertexPosition);
+
+                        var (nextOrder, target) = GetNearestOpenOrder(CurrentVertexPosition);
+                        Target = target;
+                        Simulation.OpenOrders.Remove(nextOrder);
+                        CurrentOrder = new CompletedOrder(nextOrder);
 
                         if (Target != null)
                         {
@@ -90,26 +113,20 @@ namespace Caelicus.Simulation
                         }
                     }
                 }
-            }
-            else if (State == VehicleState.MovingToBase)
-            {
-                if (Target != null)
-                {
-                    DistanceTraveled += (Speed / 3.6d) * Simulation.SecondsPerSimulationStep;
+            }  
+        }
 
-                    Simulation.ProgressReporter.Report(
-                        new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
-                            $"Moving vehicle { GetHashCode() } to base { Target.Info.Name } from { CurrentVertexPosition.Info.Name } ({ DistanceTraveled / DistanceToTarget * 100d:n2}%)"));
+        /// <summary>
+        /// Get the nearest open order available for pickup from the current location
+        /// </summary>
+        /// <param name="currentPosition"></param>
+        /// <returns></returns>
+        private Tuple<Order, Vertex<VertexInfo, EdgeInfo>> GetNearestOpenOrder(Vertex<VertexInfo, EdgeInfo> currentPosition)
+        {
+            var nearestBaseStation = GetNearestBaseStationWithOpenOrder(currentPosition);
+            var order = Simulation.OpenOrders.FirstOrDefault(o => o.Start == nearestBaseStation);
 
-                    // Arrived at base station
-                    if (DistanceTraveled >= DistanceToTarget)
-                    {
-                        State = VehicleState.Idle;
-                        CurrentVertexPosition = Target;
-                        DistanceTraveled = 0d;
-                    }
-                }
-            }
+            return Tuple.Create(order, nearestBaseStation);
         }
 
         /// <summary>
@@ -117,7 +134,7 @@ namespace Caelicus.Simulation
         /// </summary>
         /// <param name="currentPosition">The vertex where the vehicle currently is</param>
         /// <returns></returns>
-        private Vertex<VertexInfo, EdgeInfo> GetNearestBaseStation(Vertex<VertexInfo, EdgeInfo> currentPosition)
+        private Vertex<VertexInfo, EdgeInfo> GetNearestBaseStationWithOpenOrder(Vertex<VertexInfo, EdgeInfo> currentPosition)
         {
             var nearestBaseStation = Simulation.Parameters.Graph
                 .Where(x => x.Info.Type == VertexType.Base)
