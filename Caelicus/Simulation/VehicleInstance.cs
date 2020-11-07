@@ -42,8 +42,22 @@ namespace Caelicus.Simulation
             Target = order.Target;
             State = VehicleState.MovingToTarget;
             DistanceTraveled = 0d;
+            Simulation.OpenOrders.Remove(order);
 
             var (path, distance) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target);
+            PathToTarget = path;
+            DistanceToTarget = distance;
+        }
+
+        public void AssignOrderAtDifferentBase(Order order, Vertex<VertexInfo, EdgeInfo> target)
+        {
+            CurrentOrder = new CompletedOrder(order);
+            Target = target;
+            State = VehicleState.PickingUpOrder;
+            DistanceTraveled = 0d;
+            Simulation.OpenOrders.Remove(order);
+
+            var (path, distance) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, Target);
             PathToTarget = path;
             DistanceToTarget = distance;
         }
@@ -94,56 +108,10 @@ namespace Caelicus.Simulation
                         // Close order
                         Simulation.ClosedOrders.Add(CurrentOrder);
                         CurrentOrder = null;
-
-                        // Move to the nearest base station
-                        State = VehicleState.PickingUpOrder;
-                        CurrentVertexPosition = Target;
-                        DistanceTraveled = 0d;
-
-                        var (nextOrder, target) = GetNearestOpenOrder(CurrentVertexPosition);
-                        Target = target;
-                        Simulation.OpenOrders.Remove(nextOrder);
-                        CurrentOrder = new CompletedOrder(nextOrder);
-
-                        if (Target != null)
-                        {
-                            var (path, distance) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, Target);
-                            PathToTarget = path;
-                            DistanceToTarget = distance;
-                        }
+                        State = VehicleState.Idle;
                     }
                 }
             }  
-        }
-
-        /// <summary>
-        /// Get the nearest open order available for pickup from the current location
-        /// </summary>
-        /// <param name="currentPosition"></param>
-        /// <returns></returns>
-        private Tuple<Order, Vertex<VertexInfo, EdgeInfo>> GetNearestOpenOrder(Vertex<VertexInfo, EdgeInfo> currentPosition)
-        {
-            var nearestBaseStation = GetNearestBaseStationWithOpenOrder(currentPosition);
-            var order = Simulation.OpenOrders.FirstOrDefault(o => o.Start == nearestBaseStation);
-
-            return Tuple.Create(order, nearestBaseStation);
-        }
-
-        /// <summary>
-        /// Get the nearest base station to the current position that has open orders available
-        /// </summary>
-        /// <param name="currentPosition">The vertex where the vehicle currently is</param>
-        /// <returns></returns>
-        private Vertex<VertexInfo, EdgeInfo> GetNearestBaseStationWithOpenOrder(Vertex<VertexInfo, EdgeInfo> currentPosition)
-        {
-            var nearestBaseStation = Simulation.Parameters.Graph
-                .Where(x => x.Info.Type == VertexType.Base)
-                .Where(x => Simulation.OpenOrders.Any(y => y.Start.Info == x.Info))
-                .Select(x => Tuple.Create(GeographicalHelpers.CalculateGeographicalDistanceInMeters(currentPosition.Info.Position, x.Info.Position), x))
-                .OrderBy(x => x.Item1)
-                .FirstOrDefault();
-
-            return nearestBaseStation?.Item2;
         }
     }
 }

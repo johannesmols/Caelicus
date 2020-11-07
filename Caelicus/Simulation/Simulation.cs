@@ -118,12 +118,18 @@ namespace Caelicus.Simulation
                 if (OpenOrders.Where(o => o.Start == vehicle.CurrentVertexPosition).ToList().Count > 0)
                 {
                     var order = OpenOrders.First(o => o.Start == vehicle.CurrentVertexPosition);
-                    vehicle.AssignOrder(order);
-                    OpenOrders.Remove(order);
+                    if (order != null)
+                    {
+                        vehicle.AssignOrder(order);
+                    }
                 }
                 else
                 {
-                    // TODO Move vehicle to another base where there is an order available
+                    var (order, target) = GetNearestOpenOrder(vehicle.CurrentVertexPosition);
+                    if (order != null && target != null)
+                    {
+                        vehicle.AssignOrderAtDifferentBase(order, target);
+                    }
                 }
             }
 
@@ -131,6 +137,36 @@ namespace Caelicus.Simulation
             Vehicles.ForEach(v => v.Advance());
 
             SimulationStep++;
+        }
+
+        /// <summary>
+        /// Get the nearest open order available for pickup from the current location
+        /// </summary>
+        /// <param name="currentPosition"></param>
+        /// <returns></returns>
+        public Tuple<Order, Vertex<VertexInfo, EdgeInfo>> GetNearestOpenOrder(Vertex<VertexInfo, EdgeInfo> currentPosition)
+        {
+            var nearestBaseStation = GetNearestBaseStationWithOpenOrder(currentPosition);
+            var order = OpenOrders.FirstOrDefault(o => o.Start == nearestBaseStation);
+
+            return Tuple.Create(order, nearestBaseStation);
+        }
+
+        /// <summary>
+        /// Get the nearest base station to the current position that has open orders available
+        /// </summary>
+        /// <param name="currentPosition">The vertex where the vehicle currently is</param>
+        /// <returns></returns>
+        public Vertex<VertexInfo, EdgeInfo> GetNearestBaseStationWithOpenOrder(Vertex<VertexInfo, EdgeInfo> currentPosition)
+        {
+            var nearestBaseStation = Parameters.Graph
+                .Where(x => x.Info.Type == VertexType.Base)
+                .Where(x => OpenOrders.Any(y => y.Start.Info == x.Info))
+                .Select(x => Tuple.Create(GeographicalHelpers.CalculateGeographicalDistanceInMeters(currentPosition.Info.Position, x.Info.Position), x))
+                .OrderBy(x => x.Item1)
+                .FirstOrDefault();
+
+            return nearestBaseStation?.Item2;
         }
     }
 }
