@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Caelicus.Graph;
 using Caelicus.Models.Graph;
 

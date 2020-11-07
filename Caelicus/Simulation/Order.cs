@@ -1,4 +1,4 @@
-﻿using Caelicus.Graph;
+using Caelicus.Graph;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
 

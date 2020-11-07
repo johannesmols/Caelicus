@@ -6,19 +6,20 @@ using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Caelicus.Simulation.History;
 
 namespace Caelicus.Simulation
 {
     public class SimulationManager
     {
-        public List<Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>, CancellationTokenSource>> Simulations { get; } = new List<Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>, CancellationTokenSource>>();
-        private List<Tuple<Task<SimulationResult>, CancellationTokenSource>> _simulations;
+        public List<Tuple<Func<Task<SimulationHistory>>, Progress<SimulationProgress>, CancellationTokenSource>> Simulations { get; } = new List<Tuple<Func<Task<SimulationHistory>>, Progress<SimulationProgress>, CancellationTokenSource>>();
+        private List<Tuple<Task<SimulationHistory>, CancellationTokenSource>> _simulations;
 
         public void AddSimulation(SimulationParameters parameters)
         {
             var progress = new Progress<SimulationProgress>();
             var cancellationTokenSource = new CancellationTokenSource();
-            Simulations.Add(new Tuple<Func<Task<SimulationResult>>, Progress<SimulationProgress>, CancellationTokenSource>(() => new Simulation(parameters).Simulate(progress, cancellationTokenSource.Token), progress, cancellationTokenSource));
+            Simulations.Add(new Tuple<Func<Task<SimulationHistory>>, Progress<SimulationProgress>, CancellationTokenSource>(() => new Simulation(parameters).Simulate(progress, cancellationTokenSource.Token), progress, cancellationTokenSource));
         }
 
         public async Task StartSimulations()
@@ -45,9 +46,10 @@ namespace Caelicus.Simulation
             _simulations.ForEach(s => s.Item2.Cancel());
         }
 
-        public void SaveResults(List<SimulationResult> results)
+        public void SaveResults(List<SimulationHistory> results)
         {
             // TODO Save results to local storage
+            var a = "";
         }
 
         public void RemoveAllSimulations()

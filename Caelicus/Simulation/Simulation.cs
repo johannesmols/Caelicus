@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -9,6 +9,7 @@ using Caelicus.Graph;
 using Caelicus.Helpers;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
+using Caelicus.Simulation.History;
 using GeoCoordinatePortable;
 using Newtonsoft.Json;
 
@@ -18,6 +19,7 @@ namespace Caelicus.Simulation
     {
         public IProgress<SimulationProgress> ProgressReporter { get; private set; }
         public readonly SimulationParameters Parameters;
+        public readonly SimulationHistory SimulationHistory;
         public List<VehicleInstance> Vehicles { get; } = new List<VehicleInstance>();
         public List<Order> OpenOrders { get; } = new List<Order>();
         public List<CompletedOrder> ClosedOrders { get; set; } = new List<CompletedOrder>();
@@ -33,6 +35,7 @@ namespace Caelicus.Simulation
         public Simulation(SimulationParameters parameters)
         {
             Parameters = parameters;
+            SimulationHistory = new SimulationHistory(parameters);
             SecondsPerSimulationStep = 1d / Parameters.SimulationSpeed;
 
             var allBases = Parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Base).ToList();
@@ -65,7 +68,7 @@ namespace Caelicus.Simulation
         /// <param name="progress">Can be used to send status updates back to the UI</param>
         /// <param name="cancellationToken">Can be used to cancel the operation from the UI</param>
         /// <returns></returns>
-        public async Task<SimulationResult> Simulate(IProgress<SimulationProgress> progress, CancellationToken cancellationToken)
+        public async Task<SimulationHistory> Simulate(IProgress<SimulationProgress> progress, CancellationToken cancellationToken)
         {
             ProgressReporter = progress;
             ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Starting simulation with  { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
@@ -79,6 +82,14 @@ namespace Caelicus.Simulation
                     $"{ Vehicles.Where(v => v.CurrentOrder != null && v.State == VehicleState.MovingToTarget).ToList().Count } orders in progress, " +
                     $"{ Vehicles.Where(v => v.CurrentOrder != null && v.State == VehicleState.PickingUpOrder).ToList().Count } in pickup)"));
 
+                // Record the current state of the simulation
+                SimulationHistory.Steps.Add(new SimulationHistoryStep(
+                    SimulationStep, 
+                    Vehicles, 
+                    OpenOrders, 
+                    ClosedOrders));
+
+                // Advance the simulation by one step
                 Advance();
 
                 // Wait for an amount of time corresponding to the simulation speed (e.g. speed of 1 = 1 step per second, speed of 2 = 2 steps per second, ...)
@@ -95,7 +106,7 @@ namespace Caelicus.Simulation
             ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Finished simulation with { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
 
             // TODO: Return actual results
-            return new SimulationResult(Parameters.SimulationIdentifier, "Success");
+            return SimulationHistory;
         }
 
         /// <summary>
