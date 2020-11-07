@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using Caelicus.Models;
@@ -42,6 +43,16 @@ namespace Caelicus.Services
         {
             SimulationUpdates = updates;
             NotifyStateChanged(source, nameof(SimulationUpdates));
+        }
+
+
+        // Orders
+        public int NumberOfOrders { get; set; } = 100;
+
+        public void UpdateNumberOfOrders(ComponentBase source, int numberOfOrders)
+        {
+            NumberOfOrders = numberOfOrders;
+            NotifyStateChanged(source, nameof(NumberOfOrders));
         }
 
         // Events

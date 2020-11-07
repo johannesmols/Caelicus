@@ -18,17 +18,12 @@
 </form>
 
 <div class="row" style="position: absolute; bottom: 0; width: 100%; padding-bottom: 10px;">
-    <div class="col-4 align-self-end">
+    <div class="col-6 align-self-end">
         <button type="button" class="btn btn-success btn-block" disabled="@(_simulationRunning)" @onclick="StartSimulation">
             Start
         </button>
     </div>
-    <div class="col-4 align-self-end">
-        <button type="button" class="btn btn-warning btn-block" disabled="@(!_simulationRunning)" @onclick="PauseSimulation">
-            Pause
-        </button>
-    </div>
-    <div class="col-4 align-self-end">
+    <div class="col-6 align-self-end">
         <button type="button" class="btn btn-danger btn-block" disabled="@(!_simulationRunning)" @onclick="StopSimulation">
             Stop
         </button>
@@ -90,7 +85,8 @@
                     Graph = new GraphImporterService().GenerateGraph(_currentGraph ?? AppState.Graphs.FirstOrDefault()),
                     VehicleTemplate = vehicle,
                     NumberOfVehicles = i,
-                    SimulationSpeed = _simulationSpeed
+                    SimulationSpeed = _simulationSpeed,
+                    NumberOfOrders = AppState.NumberOfOrders
                 });
             }
         }
@@ -102,12 +98,6 @@
         _simulationRunning = true;
         await _simulationManager.StartSimulations();
         _simulationRunning = false;
-    }
-
-    private async Task PauseSimulation(MouseEventArgs e)
-    {
-        _simulationRunning = false;
-        await _simulationManager.PauseSimulations();
     }
 
     private async Task StopSimulation(MouseEventArgs e)

@@ -40,11 +40,6 @@ namespace Caelicus.Simulation
             }
         }
 
-        public async Task PauseSimulations()
-        {
-            // TODO implement pause
-        }
-
         public async Task StopSimulations()
         {
             _simulations.ForEach(s => s.Item2.Cancel());
