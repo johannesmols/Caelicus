@@ -85,7 +85,11 @@ namespace Caelicus.Simulation
                 // Record the current state of the simulation
                 SimulationHistory.Steps.Add(new SimulationHistoryStep(
                     SimulationStep, 
-                    Vehicles, 
+                    new List<VehicleStepState>(Vehicles.Select(v =>
+                        new VehicleStepState(
+                            v.Vehicle, v.State, v.CurrentVertexPosition.Id, v.Target.Id, v.CurrentOrder,
+                            v.PathToTarget.Select(p => p.Id).ToList(),
+                            v.DistanceToTarget, v.DistanceTraveled)).ToList()),
                     OpenOrders, 
                     ClosedOrders));
 

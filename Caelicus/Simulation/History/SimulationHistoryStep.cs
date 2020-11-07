@@ -12,13 +12,13 @@ namespace Caelicus.Simulation.History
     {
         public int SimulationStep { get; }
 
-        public List<VehicleInstance> Vehicles { get; }
+        public List<VehicleStepState> Vehicles { get; }
 
         public List<Order> OpenOrders { get; }
 
         public List<CompletedOrder> ClosedOrders { get; }
 
-        public SimulationHistoryStep(int simulationStep, List<VehicleInstance> vehicles, List<Order> openOrders, List<CompletedOrder> closedOrders)
+        public SimulationHistoryStep(int simulationStep, List<VehicleStepState> vehicles, List<Order> openOrders, List<CompletedOrder> closedOrders)
         {
             SimulationStep = simulationStep;
             Vehicles = vehicles;

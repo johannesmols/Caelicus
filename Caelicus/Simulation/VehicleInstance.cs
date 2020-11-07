@@ -23,18 +23,20 @@ namespace Caelicus.Simulation
         public VehicleInstance(Simulation simulation, Vehicle vehicle, Vertex<VertexInfo, EdgeInfo> startingVertex) : base(vehicle)
         {
             Simulation = simulation;
+            Vehicle = vehicle;
             CurrentVertexPosition = startingVertex;
             State = VehicleState.Idle;
         }
 
+        public Vehicle Vehicle { get; }
         public VehicleState State { get; set; }
         public Vertex<VertexInfo, EdgeInfo> CurrentVertexPosition { get; set; } 
         public Vertex<VertexInfo, EdgeInfo> Target { get; set; }
         public CompletedOrder CurrentOrder { get; set; }
 
-        private List<Vertex<VertexInfo, EdgeInfo>> PathToTarget { get; set; }
-        private double DistanceToTarget { get; set; }
-        private double DistanceTraveled { get; set; }
+        public List<Vertex<VertexInfo, EdgeInfo>> PathToTarget { get; private set; }
+        public double DistanceToTarget { get; private set; }
+        public double DistanceTraveled { get; private set; }
 
         public void AssignOrder(Order order)
         {
