@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Caelicus.Graph;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
+using Newtonsoft.Json;
 
 namespace Caelicus.Simulation
 {
@@ -14,6 +15,9 @@ namespace Caelicus.Simulation
 
         public int RandomSeed { get; set; }
 
+        public JsonGraphRootObject JsonGraph { get; set; }
+
+        [JsonIgnore]
         public Graph<VertexInfo, EdgeInfo> Graph { get; set; } = new Graph<VertexInfo, EdgeInfo>();
 
         public Vehicle VehicleTemplate { get; set; }

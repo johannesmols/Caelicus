@@ -98,6 +98,7 @@
                 {
                     SimulationIdentifier = Guid.NewGuid(),
                     RandomSeed = randomSeed,
+                    JsonGraph =  _currentGraph ?? AppState.Graphs.FirstOrDefault(),
                     Graph = new GraphImporterService().GenerateGraph(_currentGraph ?? AppState.Graphs.FirstOrDefault()),
                     VehicleTemplate = vehicle,
                     NumberOfVehicles = i,
