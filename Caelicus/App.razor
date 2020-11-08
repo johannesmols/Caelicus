@@ -2,6 +2,7 @@
 @inject HttpClient Http
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @implements IDisposable
+@inject IJSRuntime JSruntime
 
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
@@ -27,6 +28,8 @@
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
 
         _localStorageService = new LocalStorageService(LocalStorage);
+
+        GoogleMapsDistance.init(JSruntime);
 
         await LoadGraphs();
         await LoadVehicles();
