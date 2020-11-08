@@ -237,7 +237,7 @@ namespace Caelicus.Simulation
                             vehicle.CurrentOrder?.DeliveryPath?.Select(p => p.Id).ToList()
                         ),
                         PathToTarget = vehicle.PathToTarget?.Select(p => p.Id).ToList(),
-                        DistanceToTarget = vehicle.DistanceToTarget,
+                        DistanceToTarget = vehicle.TotalDistanceToTarget,
                         DistanceTraveled = vehicle.DistanceTraveled
                     };
 

@@ -12,6 +12,7 @@ namespace Caelicus.Simulation
     public enum VehicleState
     {
         Idle,
+        Refueling,
         MovingToTarget,
         PickingUpOrder
     }
@@ -35,33 +36,33 @@ namespace Caelicus.Simulation
         public CompletedOrder CurrentOrder { get; private set; }
 
         public List<Vertex<VertexInfo, EdgeInfo>> PathToTarget { get; private set; }
-        public double DistanceToTarget { get; private set; }
+        public double TotalDistanceToTarget { get; private set; }
+        public List<Tuple<Vertex<VertexInfo, EdgeInfo>, double>> DistanceToWaypoints { get; private set; }
         public double DistanceTraveled { get; private set; }
+        public double CurrentFuel { get; private set; }
 
         public void AssignOrder(Order order)
         {
-            CurrentOrder = new CompletedOrder(order);
             Target = order.Target;
             State = VehicleState.MovingToTarget;
-            DistanceTraveled = 0d;
-            Simulation.OpenOrders.Remove(order);
-
-            var (path, distance) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target);
-            PathToTarget = path;
-            DistanceToTarget = distance;
+            PrepareOrder(order);
         }
 
         public void AssignOrderAtDifferentBase(Order order, Vertex<VertexInfo, EdgeInfo> target)
         {
-            CurrentOrder = new CompletedOrder(order);
             Target = target;
             State = VehicleState.PickingUpOrder;
+            PrepareOrder(order);
+        }
+
+        private void PrepareOrder(Order order)
+        {
+            CurrentOrder = new CompletedOrder(order);
             DistanceTraveled = 0d;
             Simulation.OpenOrders.Remove(order);
-
-            var (path, distance) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, Target);
+            var (path, distance) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target);
             PathToTarget = path;
-            DistanceToTarget = distance;
+            TotalDistanceToTarget = distance;
         }
 
         public void Advance()
@@ -71,6 +72,10 @@ namespace Caelicus.Simulation
                 Simulation.ProgressReporter.Report(
                     new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
                         $"Vehicle { GetHashCode() } idling at base station { CurrentVertexPosition.Info.Name }"));
+            }
+            else if (State == VehicleState.Refueling)
+            {
+
             }
             else if (State == VehicleState.PickingUpOrder)
             {
@@ -82,10 +87,10 @@ namespace Caelicus.Simulation
 
                     Simulation.ProgressReporter.Report(
                         new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
-                            $"Moving vehicle { GetHashCode() } to base { Target.Info.Name } from { CurrentVertexPosition.Info.Name } to pick up next order ({ DistanceTraveled / DistanceToTarget * 100d:n2}%)"));
+                            $"Moving vehicle { GetHashCode() } to base { Target.Info.Name } from { CurrentVertexPosition.Info.Name } to pick up next order ({ DistanceTraveled / TotalDistanceToTarget * 100d:n2}%)"));
 
                     // Arrived at base station
-                    if (DistanceTraveled >= DistanceToTarget)
+                    if (DistanceTraveled >= TotalDistanceToTarget)
                     {
                         // Set new position of the vehicle
                         CurrentVertexPosition = Target;
@@ -103,10 +108,10 @@ namespace Caelicus.Simulation
 
                     Simulation.ProgressReporter.Report(
                         new SimulationProgress(Simulation.Parameters.SimulationIdentifier, 
-                            $"Moving vehicle { GetHashCode() } to target { CurrentOrder.Target.Info.Name } from { CurrentOrder.Start.Info.Name } ({ DistanceTraveled / DistanceToTarget * 100d:n2}%)"));
+                            $"Moving vehicle { GetHashCode() } to target { CurrentOrder.Target.Info.Name } from { CurrentOrder.Start.Info.Name } ({ DistanceTraveled / TotalDistanceToTarget * 100d:n2}%)"));
 
                     // Arrived at target
-                    if (DistanceTraveled >= DistanceToTarget)
+                    if (DistanceTraveled >= TotalDistanceToTarget)
                     {
                         // Close order
                         Simulation.ClosedOrders.Add(CurrentOrder);

@@ -70,7 +70,7 @@ namespace Caelicus.Models.Vehicles
 
         public double GetMaximumTravelDistance(double payload)
         {
-            // TODO: Account for payload somehow
+            // TODO: Account for payload if possible
             return FuelCapacity / FuelConsumption;
         }
     }
