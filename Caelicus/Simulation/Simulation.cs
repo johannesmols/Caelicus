@@ -110,7 +110,30 @@ namespace Caelicus.Simulation
         /// <returns></returns>
         public bool IsDone()
         {
-            return OpenOrders.Count == 0 && Vehicles.All(v => v.CurrentOrder == null);
+            if (OpenOrders.Count == 0 && Vehicles.All(v => v.CurrentOrder == null))
+            {
+                return true;
+            }
+
+            // Check whether there are any open orders that can not be completed because the distance is too great, or because the payload exceeds the vehicles maximum
+            if (OpenOrders.Count > 0)
+            {
+                if (Vehicles.All(v => v.State == VehicleState.Idle))
+                {
+                    foreach (var order in OpenOrders)
+                    {
+                        var vehicleTypeValues = Vehicles.First();
+                        var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
+                        var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target).Item2;
+                        if (orderTravelDistance > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -121,17 +144,20 @@ namespace Caelicus.Simulation
             // Assign open orders to any available vehicle
             foreach (var vehicle in Vehicles.Where(vehicle => vehicle.State == VehicleState.Idle))
             {
-                if (OpenOrders.Where(o => o.Start == vehicle.CurrentVertexPosition).ToList().Count > 0)
+                var availableOrders = OpenOrders.Where(o =>
+                    o.Start == vehicle.CurrentVertexPosition &&
+                    o.PayloadWeight <= vehicle.MaxPayload &&
+                    Parameters.Graph.FindShortestPath(Parameters.Graph, o.Start, o.Target).Item2 <=
+                    vehicle.GetMaximumTravelDistance(o.PayloadWeight)
+                ).ToList();
+
+                if (availableOrders.Count > 0)
                 {
-                    var order = OpenOrders.First(o => o.Start == vehicle.CurrentVertexPosition);
-                    if (order != null)
-                    {
-                        vehicle.AssignOrder(order);
-                    }
+                    vehicle.AssignOrder(availableOrders.First());
                 }
                 else
                 {
-                    var (order, target) = GetNearestOpenOrder(vehicle.CurrentVertexPosition);
+                    var (order, target) = GetNearestOpenOrder(vehicle);
                     if (order != null && target != null)
                     {
                         vehicle.AssignOrderAtDifferentBase(order, target);
@@ -148,11 +174,11 @@ namespace Caelicus.Simulation
         /// <summary>
         /// Get the nearest open order available for pickup from the current location
         /// </summary>
-        /// <param name="currentPosition"></param>
+        /// <param name="vehicle"></param>
         /// <returns></returns>
-        public Tuple<Order, Vertex<VertexInfo, EdgeInfo>> GetNearestOpenOrder(Vertex<VertexInfo, EdgeInfo> currentPosition)
+        public Tuple<Order, Vertex<VertexInfo, EdgeInfo>> GetNearestOpenOrder(VehicleInstance vehicle)
         {
-            var nearestBaseStation = GetNearestBaseStationWithOpenOrder(currentPosition);
+            var nearestBaseStation = GetNearestBaseStationWithOpenOrder(vehicle);
             var order = OpenOrders.FirstOrDefault(o => o.Start == nearestBaseStation);
 
             return Tuple.Create(order, nearestBaseStation);
@@ -161,14 +187,16 @@ namespace Caelicus.Simulation
         /// <summary>
         /// Get the nearest base station to the current position that has open orders available
         /// </summary>
-        /// <param name="currentPosition">The vertex where the vehicle currently is</param>
+        /// <param name="vehicle">The vehicle</param>
         /// <returns></returns>
-        public Vertex<VertexInfo, EdgeInfo> GetNearestBaseStationWithOpenOrder(Vertex<VertexInfo, EdgeInfo> currentPosition)
+        public Vertex<VertexInfo, EdgeInfo> GetNearestBaseStationWithOpenOrder(VehicleInstance vehicle)
         {
             var nearestBaseStation = Parameters.Graph
                 .Where(x => x.Info.Type == VertexType.Base)
-                .Where(x => OpenOrders.Any(y => y.Start.Info == x.Info))
-                .Select(x => Tuple.Create(Parameters.Graph.FindShortestPath(Parameters.Graph, currentPosition, x).Item2, x))
+                .Where(x => OpenOrders.Any(y => 
+                    y.Start.Info == x.Info &&
+                    Parameters.Graph.FindShortestPath(Parameters.Graph, y.Start, y.Target).Item2 <= vehicle.GetMaximumTravelDistance(y.PayloadWeight)))
+                .Select(x => Tuple.Create(Parameters.Graph.FindShortestPath(Parameters.Graph, vehicle.CurrentVertexPosition, x).Item2, x))
                 .OrderBy(x => x.Item1)
                 .FirstOrDefault();
 

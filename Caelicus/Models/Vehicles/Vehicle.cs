@@ -15,10 +15,13 @@ namespace Caelicus.Models.Vehicles
         protected Vehicle(Vehicle vehicle)
         {
             Name = vehicle.Name;
-            Speed = vehicle.Speed;
+            AverageSpeed = vehicle.AverageSpeed;
             MaxPayload = vehicle.MaxPayload;
-            MaxRange = vehicle.MaxRange;
-            MovementPenalty = vehicle.MovementPenalty;
+            FuelCapacity = vehicle.FuelCapacity;
+            FuelConsumption = vehicle.FuelConsumption;
+            RefuelingTime = vehicle.RefuelingTime;
+            AllowRefuelAtTarget = vehicle.AllowRefuelAtTarget;
+            PurchasingCost = vehicle.PurchasingCost;
             CostPerHour = vehicle.CostPerHour;
             CostPerKm = vehicle.CostPerKm;
         }
@@ -27,14 +30,17 @@ namespace Caelicus.Models.Vehicles
         public string Name { get; set; }
 
         // Movement
-        public double Speed { get; set; }
-        public double MaxRange { get; set; }
-        public double MovementPenalty { get; set; }
+        public double AverageSpeed { get; set; }
+        public double FuelCapacity { get; set; }
+        public double FuelConsumption { get; set; }
+        public double RefuelingTime { get; set; }
+        public bool AllowRefuelAtTarget { get; set; }
 
         // Transport
         public double MaxPayload { get; set; }
         
         // Cost
+        public double PurchasingCost { get; set; }
         public double CostPerHour { get; set; }
         public double CostPerKm { get; set; }
 
@@ -46,10 +52,26 @@ namespace Caelicus.Models.Vehicles
         /// <returns></returns>
         public double CalculateJourneyCost(double distanceInMetres)
         {
-            var travelTimeInHours = (distanceInMetres / 1000d) / Speed;
+            var travelTimeInHours = (distanceInMetres / 1000d) / AverageSpeed;
             var baseHourlyCost = CostPerHour * travelTimeInHours;
             var baseDistanceCost = CostPerKm * (distanceInMetres / 1000d);
             return baseHourlyCost + baseDistanceCost;
+        }
+
+        /// <summary>
+        /// Calculate how far the vehicle can travel given the fuel capacity and fuel consumption.
+        /// Not considering the average speed as it is quite complicated (e.g. http://www.pv4.eu/calculate-fuel-consumption-drag-coefficient-speed-and-weight_912.html)
+        /// </summary>
+        /// <returns></returns>
+        public double GetMaximumTravelDistance()
+        {
+            return FuelCapacity / FuelConsumption;
+        }
+
+        public double GetMaximumTravelDistance(double payload)
+        {
+            // TODO: Account for payload somehow
+            return FuelCapacity / FuelConsumption;
         }
     }
 }

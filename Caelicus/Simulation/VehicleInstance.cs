@@ -77,8 +77,8 @@ namespace Caelicus.Simulation
                 if (Target != null)
                 {
                     // Calculate how many meters the vehicle travels in one simulation step
-                    // Speed is in km/h, dividing by 3.6 gives it in m/s.
-                    DistanceTraveled += Speed / 3.6d;
+                    // AverageSpeed is in km/h, dividing by 3.6 gives it in m/s.
+                    DistanceTraveled += AverageSpeed / 3.6d;
 
                     Simulation.ProgressReporter.Report(
                         new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
@@ -98,8 +98,8 @@ namespace Caelicus.Simulation
                 if (CurrentOrder != null)
                 {
                     // Calculate how many meters the vehicle travels in one simulation step
-                    // Speed is in km/h, dividing by 3.6 gives it in m/s.
-                    DistanceTraveled += Speed / 3.6d;
+                    // AverageSpeed is in km/h, dividing by 3.6 gives it in m/s.
+                    DistanceTraveled += AverageSpeed / 3.6d;
 
                     Simulation.ProgressReporter.Report(
                         new SimulationProgress(Simulation.Parameters.SimulationIdentifier, 

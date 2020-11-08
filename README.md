@@ -29,12 +29,16 @@ The following parameters describe values that the simulation can be evaluated up
 ### Vehicle
 
 - Movement
-    1. Speed (km/h)
-    1. Maximum range (km)
-    1. Movement penalty (e.g. `1.5x` for road vehicles due to traffic and road networks)
+    1. Average Speed (km/h)
+- Fuel (any fuel type, capacity and consumption just has to be consistent)
+    1. Fuel Capacity (liters, mAh, etc.)
+    1. Fuel Consumption (per m)
+    1. Refueling time (seconds)
+    1. Allow refueling at targets (`true` or `false`)
 - Transport
     1. Maximum payload weight (kg)
 - Cost
+    1. Purchasing cost (€)
     1. Cost per hour (€)
     1. Cost per km (€)
 
@@ -59,7 +63,6 @@ The following parameters describe values that the simulation can be evaluated up
 ## Tech Stack
 - C#
 - Blazor WebAssembly
-- Magic 🔮
 
 ## The Team
 
