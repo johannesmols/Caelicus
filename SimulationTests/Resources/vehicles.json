@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Drone",
+    "speed": 30,
+    "maxRange": 80,
+    "movementPenalty": 1.0,
+    "maxPayload": 5,
+    "costPerHour": 10,
+    "costPerKm": 5
+  },
+  {
+    "name": "Truck",
+    "speed": 80,
+    "maxRange": 500,
+    "movementPenalty": 1.5,
+    "maxPayload": 30000,
+    "costPerHour": 50,
+    "costPerKm": 2
+  },
+  {
+    "name": "Ship",
+    "speed": 10,
+    "maxRange": 2000,
+    "movementPenalty": 1.0,
+    "maxPayload": 80000,
+    "costPerHour": 35,
+    "costPerKm": 0.5
+  },
+  {
+    "name": "Lockheed SR-71 Blackbird",
+    "speed": 3529,
+    "maxRange": 5400,
+    "movementPenalty": 1.0,
+    "maxPayload": 5000,
+    "costPerHour": 1000000,
+    "costPerKm": 1
+  }
+]
