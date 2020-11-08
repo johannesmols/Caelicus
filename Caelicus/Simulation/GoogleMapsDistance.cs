@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -77,13 +77,13 @@ namespace Caelicus.Simulation
             //iterate over origins
             for (int i = 0; i < jsonGoogleMaps.rows.Count; i++)
             {
-                LatLng origin = new LatLng(_origins.ElementAt(i).lat, _origins.ElementAt(i).lng);
+                LatLng origin = _origins.ElementAt(i);
                 //iterate over all possible destinations for the current origin
                 for (int j = 0; j < jsonGoogleMaps.rows.ElementAt(i).elements.Count; j++)
                 {
                     if (jsonGoogleMaps.rows.ElementAt(i).elements.ElementAt(j).status == "OK")
                     {
-                        LatLng destination = new LatLng(_destinations.ElementAt(i).lat, _destinations.ElementAt(i).lng);
+                        LatLng destination = _destinations.ElementAt(j);
                         var route = new Route(_mode, origin, destination);
                         if (!_distances_and_time.ContainsKey(route))
                         {

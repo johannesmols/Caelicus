@@ -8,7 +8,6 @@ var service = new google.maps.DistanceMatrixService();
 //javascript is a pain in the ass....
 function getDistance(OriginDestinationMatrix)
 {
-    console.log("js getdistance");
     var Matrix = JSON.parse(OriginDestinationMatrix);
     var origins = [];
     var destinations = [];
@@ -34,6 +33,5 @@ function getDistance(OriginDestinationMatrix)
 //just pass the result back to C#
 function callback(response, status)
 {
-    console.log("js callback");
     DotNet.invokeMethodAsync("Caelicus", "GoogleMapsDistanceCallback", response);
 }
