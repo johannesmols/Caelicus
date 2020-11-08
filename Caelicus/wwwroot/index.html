@@ -12,6 +12,17 @@
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcREOduyOuId8If7TU2DjkwvIJzaE4gS4&v=3"></script>
     <script src="_content/BlazorGoogleMaps/objectManager.js"></script>
+    
+    <script type="text/javascript">
+        function saveAsFile(filename, bytesBase64) {
+            var link = document.createElement('a');
+            link.download = filename;
+            link.href = "data:application/octet-stream;base64," + bytesBase64;
+            document.body.appendChild(link); // Needed for Firefox
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
 </head>
 
 <body>

@@ -1,4 +1,8 @@
 ﻿@inject AppState AppState
+@inject IJSRuntime JsRuntime
+@using Caelicus.Simulation.History
+@using System.Text
+@using Caelicus.Helpers
 @implements IDisposable
 
 <form class="form-inline">
@@ -18,14 +22,23 @@
 </form>
 
 <div class="row" style="position: absolute; bottom: 0; width: 100%; padding-bottom: 10px;">
-    <div class="col-6 align-self-end">
+    <div class="col-4 align-self-end">
         <button type="button" class="btn btn-success btn-block" disabled="@(_simulationRunning)" @onclick="StartSimulation">
             Start
         </button>
     </div>
-    <div class="col-6 align-self-end">
+    <div class="col-4 align-self-end">
         <button type="button" class="btn btn-danger btn-block" disabled="@(!_simulationRunning)" @onclick="StopSimulation">
             Stop
+        </button>
+    </div>
+    <div class="col-4 align-self-end">
+        <button type="button" class="btn btn-primary" style="width: 100%" disabled="@(!(!_simulationRunning && _results != null))" @onclick="DownloadResults">
+            Save
+            @if (_generatingZipFile)
+            {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            }
         </button>
     </div>
 </div>
@@ -37,6 +50,9 @@
     private JsonGraphRootObject _currentGraph;
     private string _currentGraphSelected = string.Empty;
     private double _simulationSpeed = 1d;
+
+    private List<SimulationHistory> _results;
+    private bool _generatingZipFile;
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,7 +77,7 @@
 
     private async Task StartSimulation(MouseEventArgs e)
     {
-        // TODO: Create several versions of the simulation where each one has a different number of vehicles for each vehicle type
+        _results.Clear();
 
         var randomSeed = Guid.NewGuid().GetHashCode();
 
@@ -96,7 +112,7 @@
 
         // Start the simulations
         _simulationRunning = true;
-        await _simulationManager.StartSimulations();
+        _results = await _simulationManager.StartSimulations();
         _simulationRunning = false;
     }
 
@@ -111,6 +127,39 @@
         var simUpdates = AppState.SimulationUpdates;
         simUpdates += $"{progress.SimulationIdentifier}: {progress.Message}{ Environment.NewLine }";
         AppState.UpdateSimulationUpdates(this, simUpdates);
+    }
+
+    /// <summary>
+    /// Download results of all simulations to a ZIP file containing a JSON file for each simulation
+    /// </summary>
+    /// <returns></returns>
+    private async Task DownloadResults()
+    {
+        if (_results != null)
+        {
+            _generatingZipFile = true;
+
+            try
+            {
+                await Task.Run(async () =>
+                {
+                    var values = _results.ToDictionary(
+                        result => result.Parameters.SimulationIdentifier.ToString(),
+                        result => JsonConvert.SerializeObject(result, new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
+
+                    var archive = FileUtilities.CreateZipFile(values);
+                    await FileUtilities.SaveAs(JsRuntime, "results.zip", archive);
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error while saving results to file. Exception: {e.Message}");
+            }
+            finally
+            {
+                _generatingZipFile = false;
+            }
+        }
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)
