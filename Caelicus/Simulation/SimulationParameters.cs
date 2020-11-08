@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +22,6 @@ namespace Caelicus.Simulation
 
         public double SimulationSpeed { get; set; } = 1f;
 
-        // TODO: Set the number of orders from the UI
-        public int NumberOfOrders { get; set; } = 25;
+        public int NumberOfOrders { get; set; } = 100;
     }
 }

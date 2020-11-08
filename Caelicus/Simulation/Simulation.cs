@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -9,6 +9,7 @@ using Caelicus.Graph;
 using Caelicus.Helpers;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
+using Caelicus.Simulation.History;
 using GeoCoordinatePortable;
 using Newtonsoft.Json;
 
@@ -18,6 +19,7 @@ namespace Caelicus.Simulation
     {
         public IProgress<SimulationProgress> ProgressReporter { get; private set; }
         public readonly SimulationParameters Parameters;
+        public readonly SimulationHistory SimulationHistory;
         public List<VehicleInstance> Vehicles { get; } = new List<VehicleInstance>();
         public List<Order> OpenOrders { get; } = new List<Order>();
         public List<CompletedOrder> ClosedOrders { get; set; } = new List<CompletedOrder>();
@@ -33,6 +35,7 @@ namespace Caelicus.Simulation
         public Simulation(SimulationParameters parameters)
         {
             Parameters = parameters;
+            SimulationHistory = new SimulationHistory(parameters);
             SecondsPerSimulationStep = 1d / Parameters.SimulationSpeed;
 
             var allBases = Parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Base).ToList();
@@ -65,7 +68,7 @@ namespace Caelicus.Simulation
         /// <param name="progress">Can be used to send status updates back to the UI</param>
         /// <param name="cancellationToken">Can be used to cancel the operation from the UI</param>
         /// <returns></returns>
-        public async Task<SimulationResult> Simulate(IProgress<SimulationProgress> progress, CancellationToken cancellationToken)
+        public async Task<SimulationHistory> Simulate(IProgress<SimulationProgress> progress, CancellationToken cancellationToken)
         {
             ProgressReporter = progress;
             ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Starting simulation with  { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
@@ -79,6 +82,10 @@ namespace Caelicus.Simulation
                     $"{ Vehicles.Where(v => v.CurrentOrder != null && v.State == VehicleState.MovingToTarget).ToList().Count } orders in progress, " +
                     $"{ Vehicles.Where(v => v.CurrentOrder != null && v.State == VehicleState.PickingUpOrder).ToList().Count } in pickup)"));
 
+                // Record the current state of the simulation
+                RecordSimulationStep();
+
+                // Advance the simulation by one step
                 Advance();
 
                 // Wait for an amount of time corresponding to the simulation speed (e.g. speed of 1 = 1 step per second, speed of 2 = 2 steps per second, ...)
@@ -94,8 +101,7 @@ namespace Caelicus.Simulation
 
             ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Finished simulation with { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
 
-            // TODO: Return actual results
-            return new SimulationResult(Parameters.SimulationIdentifier, "Success");
+            return SimulationHistory;
         }
 
         /// <summary>
@@ -118,12 +124,18 @@ namespace Caelicus.Simulation
                 if (OpenOrders.Where(o => o.Start == vehicle.CurrentVertexPosition).ToList().Count > 0)
                 {
                     var order = OpenOrders.First(o => o.Start == vehicle.CurrentVertexPosition);
-                    vehicle.AssignOrder(order);
-                    OpenOrders.Remove(order);
+                    if (order != null)
+                    {
+                        vehicle.AssignOrder(order);
+                    }
                 }
                 else
                 {
-                    // TODO Move vehicle to another base where there is an order available
+                    var (order, target) = GetNearestOpenOrder(vehicle.CurrentVertexPosition);
+                    if (order != null && target != null)
+                    {
+                        vehicle.AssignOrderAtDifferentBase(order, target);
+                    }
                 }
             }
 
@@ -131,6 +143,111 @@ namespace Caelicus.Simulation
             Vehicles.ForEach(v => v.Advance());
 
             SimulationStep++;
+        }
+
+        /// <summary>
+        /// Get the nearest open order available for pickup from the current location
+        /// </summary>
+        /// <param name="currentPosition"></param>
+        /// <returns></returns>
+        public Tuple<Order, Vertex<VertexInfo, EdgeInfo>> GetNearestOpenOrder(Vertex<VertexInfo, EdgeInfo> currentPosition)
+        {
+            var nearestBaseStation = GetNearestBaseStationWithOpenOrder(currentPosition);
+            var order = OpenOrders.FirstOrDefault(o => o.Start == nearestBaseStation);
+
+            return Tuple.Create(order, nearestBaseStation);
+        }
+
+        /// <summary>
+        /// Get the nearest base station to the current position that has open orders available
+        /// </summary>
+        /// <param name="currentPosition">The vertex where the vehicle currently is</param>
+        /// <returns></returns>
+        public Vertex<VertexInfo, EdgeInfo> GetNearestBaseStationWithOpenOrder(Vertex<VertexInfo, EdgeInfo> currentPosition)
+        {
+            var nearestBaseStation = Parameters.Graph
+                .Where(x => x.Info.Type == VertexType.Base)
+                .Where(x => OpenOrders.Any(y => y.Start.Info == x.Info))
+                .Select(x => Tuple.Create(GeographicalHelpers.CalculateGeographicalDistanceInMeters(currentPosition.Info.Position, x.Info.Position), x))
+                .OrderBy(x => x.Item1)
+                .FirstOrDefault();
+
+            return nearestBaseStation?.Item2;
+        }
+
+        /// <summary>
+        /// Record the current state of the simulation for analysis purposes
+        /// </summary>
+        private void RecordSimulationStep()
+        {
+            var simHistoryStep = new SimulationHistoryStep()
+            {
+                SimulationStep = SimulationStep,
+                Vehicles = new List<VehicleStepState>(),
+                OpenOrders = new List<HistoryOrder>(),
+                ClosedOrders = new List<HistoryCompletedOrder>()
+            };
+
+            foreach (var vehicle in Vehicles)
+            {
+                if (vehicle != null)
+                {
+                    var vehicleState = new VehicleStepState(vehicle.Vehicle)
+                    {
+                        State = vehicle.State,
+                        CurrentVertexPosition = vehicle.CurrentVertexPosition?.Id,
+                        Target = vehicle.Target?.Id,
+                        CurrentOrder = new HistoryCompletedOrder(
+                            new HistoryOrder()
+                            {
+                                Start = vehicle.CurrentOrder?.Order?.Start?.Id,
+                                Target = vehicle.CurrentOrder?.Order?.Target?.Id,
+                                PayloadWeight = vehicle.CurrentOrder?.Order?.PayloadWeight
+                            },
+                            vehicle.CurrentOrder?.DeliveryTime,
+                            vehicle.CurrentOrder?.DeliveryDistance,
+                            vehicle.CurrentOrder?.DeliveryPath?.Select(p => p.Id).ToList()
+                        ),
+                        PathToTarget = vehicle.PathToTarget?.Select(p => p.Id).ToList(),
+                        DistanceToTarget = vehicle.DistanceToTarget,
+                        DistanceTraveled = vehicle.DistanceTraveled
+                    };
+
+                    simHistoryStep.Vehicles.Add(vehicleState);
+                }
+            }
+
+            foreach (var openOrder in OpenOrders)
+            {
+                if (openOrder != null)
+                {
+                    var order = new HistoryOrder()
+                    {
+                        Start = openOrder.Start?.Id,
+                        Target = openOrder.Target?.Id,
+                        PayloadWeight = openOrder.PayloadWeight
+                    };
+
+                    simHistoryStep.OpenOrders.Add(order);
+                }
+            }
+
+            foreach (var closedOrder in ClosedOrders)
+            {
+                if (closedOrder != null)
+                {
+                    var order = new HistoryCompletedOrder(new HistoryOrder(closedOrder.Order?.Start?.Id, closedOrder.Order?.Target?.Id, closedOrder.Order?.PayloadWeight))
+                    {
+                        DeliveryDistance = closedOrder.DeliveryDistance,
+                        DeliveryTime = closedOrder.DeliveryTime,
+                        DeliveryPath = closedOrder.DeliveryPath?.Select(p => p.Id).ToList()
+                    };
+
+                    simHistoryStep.ClosedOrders.Add(order);
+                }
+            }
+
+            SimulationHistory.Steps.Add(simHistoryStep);
         }
     }
 }

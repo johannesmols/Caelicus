@@ -1,0 +1,42 @@
+﻿@inject AppState AppState
+@implements IDisposable
+
+<form class="form-inline">
+    <div class="form-group pb-3" style="width: 100%">
+        <label for="orders" style="margin-right: 10px">Orders:</label>
+        <input type="number" class="form-control" style="flex: 1" id="orders" value="@_orders" step="1" min="1" @onchange="OrdersChanged" />
+    </div>
+</form>
+
+@code {
+    private int _orders = 100;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+    }
+
+    private void OrdersChanged(ChangeEventArgs e)
+    {
+        var newValue = int.Parse(e.Value.ToString());
+        if (newValue >= 1)
+        {
+            _orders = newValue;
+            AppState.UpdateNumberOfOrders(this, _orders);
+        }
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}

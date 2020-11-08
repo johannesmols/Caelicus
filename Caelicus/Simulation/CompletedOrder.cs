@@ -11,8 +11,10 @@ namespace Caelicus.Simulation
     {
         public CompletedOrder(Order order) : base(order)
         {
-            
+            Order = order;
         }
+
+        public Order Order { get; }
 
         public double DeliveryTime { get; set; }
 
