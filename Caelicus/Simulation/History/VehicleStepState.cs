@@ -30,5 +30,10 @@ namespace Caelicus.Simulation.History
         public VehicleStepState(Vehicle vehicle) : base(vehicle)
         {
         }
+
+        public VehicleStepState()
+        {
+
+        }
     }
 }
