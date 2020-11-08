@@ -29,10 +29,10 @@ namespace Caelicus.Simulation
         }
 
         public Vehicle Vehicle { get; }
-        public VehicleState State { get; set; }
-        public Vertex<VertexInfo, EdgeInfo> CurrentVertexPosition { get; set; } 
-        public Vertex<VertexInfo, EdgeInfo> Target { get; set; }
-        public CompletedOrder CurrentOrder { get; set; }
+        public VehicleState State { get; private set; }
+        public Vertex<VertexInfo, EdgeInfo> CurrentVertexPosition { get; private set; } 
+        public Vertex<VertexInfo, EdgeInfo> Target { get; private set; }
+        public CompletedOrder CurrentOrder { get; private set; }
 
         public List<Vertex<VertexInfo, EdgeInfo>> PathToTarget { get; private set; }
         public double DistanceToTarget { get; private set; }
@@ -76,7 +76,9 @@ namespace Caelicus.Simulation
             {
                 if (Target != null)
                 {
-                    DistanceTraveled += (Speed / 3.6d) * Simulation.SecondsPerSimulationStep;
+                    // Calculate how many meters the vehicle travels in one simulation step
+                    // Speed is in km/h, dividing by 3.6 gives it in m/s.
+                    DistanceTraveled += Speed / 3.6d;
 
                     Simulation.ProgressReporter.Report(
                         new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
@@ -85,9 +87,9 @@ namespace Caelicus.Simulation
                     // Arrived at base station
                     if (DistanceTraveled >= DistanceToTarget)
                     {
-                        State = VehicleState.MovingToTarget;
+                        // Set new position of the vehicle
                         CurrentVertexPosition = Target;
-                        DistanceTraveled = 0d;
+                        AssignOrder(CurrentOrder.Order);
                     }
                 }
             }
@@ -97,8 +99,7 @@ namespace Caelicus.Simulation
                 {
                     // Calculate how many meters the vehicle travels in one simulation step
                     // Speed is in km/h, dividing by 3.6 gives it in m/s.
-                    // The seconds per simulation step adjusts the calculation to the simulation speed (e.g. 1 second per step, 0.5 seconds per step, ...)
-                    DistanceTraveled += (Speed / 3.6d) * Simulation.SecondsPerSimulationStep;
+                    DistanceTraveled += Speed / 3.6d;
 
                     Simulation.ProgressReporter.Report(
                         new SimulationProgress(Simulation.Parameters.SimulationIdentifier, 
@@ -110,6 +111,9 @@ namespace Caelicus.Simulation
                         // Close order
                         Simulation.ClosedOrders.Add(CurrentOrder);
                         CurrentOrder = null;
+
+                        // Set new position of the vehicle
+                        CurrentVertexPosition = Target;
                         State = VehicleState.Idle;
                     }
                 }

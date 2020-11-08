@@ -168,7 +168,7 @@ namespace Caelicus.Simulation
             var nearestBaseStation = Parameters.Graph
                 .Where(x => x.Info.Type == VertexType.Base)
                 .Where(x => OpenOrders.Any(y => y.Start.Info == x.Info))
-                .Select(x => Tuple.Create(GeographicalHelpers.CalculateGeographicalDistanceInMeters(currentPosition.Info.Position, x.Info.Position), x))
+                .Select(x => Tuple.Create(Parameters.Graph.FindShortestPath(Parameters.Graph, currentPosition, x).Item2, x))
                 .OrderBy(x => x.Item1)
                 .FirstOrDefault();
 
