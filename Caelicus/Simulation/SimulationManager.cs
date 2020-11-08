@@ -22,7 +22,7 @@ namespace Caelicus.Simulation
             Simulations.Add(new Tuple<Func<Task<SimulationHistory>>, Progress<SimulationProgress>, CancellationTokenSource>(() => new Simulation(parameters).Simulate(progress, cancellationTokenSource.Token), progress, cancellationTokenSource));
         }
 
-        public async Task StartSimulations()
+        public async Task<List<SimulationHistory>> StartSimulations()
         {
             // Start simulations
             _simulations = Simulations.Select(sim => Tuple.Create(sim.Item1(), sim.Item3)).ToList();
@@ -30,26 +30,24 @@ namespace Caelicus.Simulation
             // Wait for all simulations to finish before continuing
             await Task.WhenAll(_simulations.Select(x => x.Item1));
 
+            var results = new List<SimulationHistory>();
+
             if (_simulations.All(s => s.Item1.IsCompletedSuccessfully))
             {
-                SaveResults(_simulations.Select(x => x.Item1.Result).ToList());
+                results.AddRange(_simulations.Select(x => x.Item1.Result).ToList());
                 RemoveAllSimulations();
             }
             else
             {
                 Console.WriteLine("Not all simulations were completed successfully.");
             }
+
+            return results;
         }
 
         public void StopSimulations()
         {
             _simulations.ForEach(s => s.Item2.Cancel());
-        }
-
-        public void SaveResults(List<SimulationHistory> results)
-        {
-            // TODO Save results to storage
-            
         }
 
         public void RemoveAllSimulations()

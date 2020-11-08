@@ -1,4 +1,8 @@
 ﻿@inject AppState AppState
+@inject IJSRuntime JsRuntime
+@using Caelicus.Simulation.History
+@using System.Text
+@using Caelicus.Helpers
 @implements IDisposable
 
 <form class="form-inline">
@@ -16,6 +20,8 @@
         <input type="number" class="form-control" style="flex: 1" id="speed" value="@_simulationSpeed" step="0.1" min="1" @onchange="SimSpeedChanged" />
     </div>
 </form>
+
+<button type="button" class="btn btn-primary" @onclick="DownloadResults">Download Results</button>
 
 <div class="row" style="position: absolute; bottom: 0; width: 100%; padding-bottom: 10px;">
     <div class="col-6 align-self-end">
@@ -37,6 +43,8 @@
     private JsonGraphRootObject _currentGraph;
     private string _currentGraphSelected = string.Empty;
     private double _simulationSpeed = 1d;
+
+    private List<SimulationHistory> _results;
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,8 +69,6 @@
 
     private async Task StartSimulation(MouseEventArgs e)
     {
-        // TODO: Create several versions of the simulation where each one has a different number of vehicles for each vehicle type
-
         var randomSeed = Guid.NewGuid().GetHashCode();
 
         // Add the different simulation scenarios
@@ -96,7 +102,7 @@
 
         // Start the simulations
         _simulationRunning = true;
-        await _simulationManager.StartSimulations();
+        _results = await _simulationManager.StartSimulations();
         _simulationRunning = false;
     }
 
@@ -111,6 +117,24 @@
         var simUpdates = AppState.SimulationUpdates;
         simUpdates += $"{progress.SimulationIdentifier}: {progress.Message}{ Environment.NewLine }";
         AppState.UpdateSimulationUpdates(this, simUpdates);
+    }
+
+
+    private async Task DownloadResults()
+    {
+        if (_results != null)
+        {
+            try
+            {
+                var encoded = JsonConvert.SerializeObject(_results, new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
+                var bytes = Encoding.UTF8.GetBytes(encoded);
+                await FileUtilities.SaveAs(JsRuntime, "results.json", bytes);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error while saving results to file. Exception: { e.Message }");
+            }
+        }
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)
