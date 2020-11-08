@@ -100,10 +100,10 @@
         _simulationRunning = false;
     }
 
-    private async Task StopSimulation(MouseEventArgs e)
+    private void StopSimulation(MouseEventArgs e)
     {
         _simulationRunning = false;
-        await _simulationManager.StopSimulations();
+        _simulationManager.StopSimulations();
     }
 
     public void SimulationUpdate(object sender, SimulationProgress progress)

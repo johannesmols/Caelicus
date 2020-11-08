@@ -83,15 +83,7 @@ namespace Caelicus.Simulation
                     $"{ Vehicles.Where(v => v.CurrentOrder != null && v.State == VehicleState.PickingUpOrder).ToList().Count } in pickup)"));
 
                 // Record the current state of the simulation
-                SimulationHistory.Steps.Add(new SimulationHistoryStep(
-                    SimulationStep, 
-                    new List<VehicleStepState>(Vehicles.Select(v =>
-                        new VehicleStepState(
-                            v.Vehicle, v.State, v.CurrentVertexPosition.Id, v.Target.Id, v.CurrentOrder,
-                            v.PathToTarget.Select(p => p.Id).ToList(),
-                            v.DistanceToTarget, v.DistanceTraveled)).ToList()),
-                    OpenOrders, 
-                    ClosedOrders));
+                RecordSimulationStep();
 
                 // Advance the simulation by one step
                 Advance();
@@ -109,7 +101,6 @@ namespace Caelicus.Simulation
 
             ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Finished simulation with { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
 
-            // TODO: Return actual results
             return SimulationHistory;
         }
 
@@ -182,6 +173,81 @@ namespace Caelicus.Simulation
                 .FirstOrDefault();
 
             return nearestBaseStation?.Item2;
+        }
+
+        /// <summary>
+        /// Record the current state of the simulation for analysis purposes
+        /// </summary>
+        private void RecordSimulationStep()
+        {
+            var simHistoryStep = new SimulationHistoryStep()
+            {
+                SimulationStep = SimulationStep,
+                Vehicles = new List<VehicleStepState>(),
+                OpenOrders = new List<HistoryOrder>(),
+                ClosedOrders = new List<HistoryCompletedOrder>()
+            };
+
+            foreach (var vehicle in Vehicles)
+            {
+                if (vehicle != null)
+                {
+                    var vehicleState = new VehicleStepState(vehicle.Vehicle)
+                    {
+                        State = vehicle.State,
+                        CurrentVertexPosition = vehicle.CurrentVertexPosition?.Id,
+                        Target = vehicle.Target?.Id,
+                        CurrentOrder = new HistoryCompletedOrder(
+                            new HistoryOrder()
+                            {
+                                Start = vehicle.CurrentOrder?.Order?.Start?.Id,
+                                Target = vehicle.CurrentOrder?.Order?.Target?.Id,
+                                PayloadWeight = vehicle.CurrentOrder?.Order?.PayloadWeight
+                            },
+                            vehicle.CurrentOrder?.DeliveryTime,
+                            vehicle.CurrentOrder?.DeliveryDistance,
+                            vehicle.CurrentOrder?.DeliveryPath?.Select(p => p.Id).ToList()
+                        ),
+                        PathToTarget = vehicle.PathToTarget?.Select(p => p.Id).ToList(),
+                        DistanceToTarget = vehicle.DistanceToTarget,
+                        DistanceTraveled = vehicle.DistanceTraveled
+                    };
+
+                    simHistoryStep.Vehicles.Add(vehicleState);
+                }
+            }
+
+            foreach (var openOrder in OpenOrders)
+            {
+                if (openOrder != null)
+                {
+                    var order = new HistoryOrder()
+                    {
+                        Start = openOrder.Start?.Id,
+                        Target = openOrder.Target?.Id,
+                        PayloadWeight = openOrder.PayloadWeight
+                    };
+
+                    simHistoryStep.OpenOrders.Add(order);
+                }
+            }
+
+            foreach (var closedOrder in ClosedOrders)
+            {
+                if (closedOrder != null)
+                {
+                    var order = new HistoryCompletedOrder(new HistoryOrder(closedOrder.Order?.Start?.Id, closedOrder.Order?.Target?.Id, closedOrder.Order?.PayloadWeight))
+                    {
+                        DeliveryDistance = closedOrder.DeliveryDistance,
+                        DeliveryTime = closedOrder.DeliveryTime,
+                        DeliveryPath = closedOrder.DeliveryPath?.Select(p => p.Id).ToList()
+                    };
+
+                    simHistoryStep.ClosedOrders.Add(order);
+                }
+            }
+
+            SimulationHistory.Steps.Add(simHistoryStep);
         }
     }
 }

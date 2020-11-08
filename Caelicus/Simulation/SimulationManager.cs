@@ -41,15 +41,15 @@ namespace Caelicus.Simulation
             }
         }
 
-        public async Task StopSimulations()
+        public void StopSimulations()
         {
             _simulations.ForEach(s => s.Item2.Cancel());
         }
 
         public void SaveResults(List<SimulationHistory> results)
         {
-            // TODO Save results to local storage
-            var a = "";
+            // TODO Save results to storage
+            
         }
 
         public void RemoveAllSimulations()
