@@ -16,9 +16,9 @@ function getDistance(OriginDestinationMatrix)
     {
         origins.push(new google.maps.LatLng(Matrix.origins[i].lat, Matrix.origins[i].lng));
     }
-    for (var i in Matrix.destinations)
+    for (var j in Matrix.destinations)
     {
-        destinations.push(new google.maps.LatLng(Matrix.destinations[i].lat, Matrix.destinations[i].lng));
+        destinations.push(new google.maps.LatLng(Matrix.destinations[j].lat, Matrix.destinations[j].lng));
     }
     service.getDistanceMatrix(
         {
