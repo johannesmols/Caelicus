@@ -23,5 +23,10 @@ namespace Caelicus.Simulation.History
         public HistoryCompletedOrder(HistoryOrder order) : base(order)
         {
         }
+
+        public HistoryCompletedOrder()
+        {
+
+        }
     }
 }
