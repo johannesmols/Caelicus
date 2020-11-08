@@ -77,7 +77,7 @@
 
     private async Task StartSimulation(MouseEventArgs e)
     {
-        _results.Clear();
+        _results?.Clear();
 
         var randomSeed = Guid.NewGuid().GetHashCode();
 
