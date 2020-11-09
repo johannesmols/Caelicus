@@ -1,5 +1,6 @@
 ﻿@page "/results"
 @inject AppState AppState
+@inject TimerService Timer
 @implements IDisposable
 
 <div class="container-fluid h-100">
@@ -22,8 +23,11 @@
         <div class="col-12">
             <form class="form-inline">
                 <div class="form-group pb-3" style="width: 100%">
-                    <label for="steps" style="margin-right: 10px">Simulation steps</label>
-                    <input class="form-control" type="range" id="steps" style="flex: 1" min="0" @value="0">
+                    <button type="button" class="btn btn-primary" style="margin-right: 10px" @onclick="PlayClicked">
+                        @(_playing ? "Pause" : "Play")
+                    </button>
+                    <label for="steps" style="margin-right: 10px">@_simStep/@(AppState.CurrentSimulationHistory.Steps.Count == 0 ? 0 : AppState.CurrentSimulationHistory.Steps.Count - 1)</label>
+                    <input class="form-control" type="range" id="steps" style="flex: 1" min="0" max="@(AppState.CurrentSimulationHistory.Steps.Count - 1)" value="@_simStep" @onchange="SimStepChanged">
                 </div>
             </form>
         </div>
@@ -65,10 +69,53 @@
 </div>
 
 @code {
+    private int _simStep = 0;
+    private bool _playing = false;
+
     protected override async Task OnInitializedAsync()
     {
         // Register app state changed event
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+
+        StartTimer();
+    }
+
+    private void StartTimer()
+    {
+        Timer.SetTimer(1000, repeat: true);
+        Timer.OnElapsed += IncrementStep;
+    }
+
+    private void IncrementStep()
+    {
+        if (_playing)
+        {
+            if (_simStep == AppState.CurrentSimulationHistory.Steps.Count - 1)
+            {
+                _playing = false;
+            }
+            else
+            {
+                _simStep++;
+            }
+
+            StateHasChanged();
+        }
+    }
+
+    private void SimStepChanged(ChangeEventArgs e)
+    {
+        _simStep = int.Parse(e.Value.ToString());
+    }
+
+    private void PlayClicked(MouseEventArgs e)
+    {
+        if (_simStep == AppState.CurrentSimulationHistory.Steps.Count - 1)
+        {
+            _simStep = 0;
+        }
+
+        _playing = !_playing;
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)
@@ -82,5 +129,6 @@
     void IDisposable.Dispose()
     {
         AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+        Timer?.Dispose();
     }
 }

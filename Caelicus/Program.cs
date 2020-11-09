@@ -22,6 +22,7 @@ namespace Caelicus
             builder.Services.AddScoped<AppState>();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazorGoogleMaps();
+            builder.Services.AddTransient<TimerService>();
 
             await builder.Build().RunAsync();
         }
