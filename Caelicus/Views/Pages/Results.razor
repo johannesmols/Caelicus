@@ -2,9 +2,56 @@
 @inject AppState AppState
 @implements IDisposable
 
-<FileUploader/>
+<div class="container-fluid h-100">
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-6">
+            <FileUploader/>
+        </div>
+    </div>
 
-<h3>@AppState.CurrentSimulationHistory.Parameters.SimulationIdentifier</h3>
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-6">
+            <strong>Simulation ID:</strong> @AppState.CurrentSimulationHistory.Parameters.SimulationIdentifier
+        </div>
+        <div class="col-md-6">
+            <strong>Random Seed:</strong> @AppState.CurrentSimulationHistory.Parameters.RandomSeed
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-4 border border-secondary">
+            <div style="text-align: center">
+                <strong>Vehicles</strong>
+            </div>
+        </div>
+        <div class="col-4 border border-secondary">
+            <div style="text-align: center">
+                <strong>Open Orders</strong>
+            </div>
+        </div>
+        <div class="col-4 border border-secondary">
+            <div style="text-align: center">
+                <strong>Closed Orders</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-12 border border-secondary">
+            <div style="text-align: center">
+                <strong>Map</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-12 border border-secondary">
+            <div style="text-align: center">
+                <strong>Graphs / Stats</strong>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     protected override async Task OnInitializedAsync()
