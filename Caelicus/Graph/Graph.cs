@@ -65,12 +65,12 @@ namespace Caelicus.Graph
 
         public Edge<TVertex, TEdge> AddEdge<T>(T origin, T destination, TEdge info) where T : TVertex, IEquatable<TVertex>
         {
-            var originVertex = FirstOrDefault(v => ((IEquatable<T>)(v)).Equals(origin));
+            var originVertex = CustomFirstOrDefault(v => ((IEquatable<T>)(v)).Equals(origin));
 
             if (originVertex == null)
                 throw new ArgumentNullException(nameof(originVertex));
 
-            var destinationVertex = FirstOrDefault(v => ((IEquatable<T>)(v)).Equals(destination));
+            var destinationVertex = CustomFirstOrDefault(v => ((IEquatable<T>)(v)).Equals(destination));
 
             if (destinationVertex == null)
                 throw new ArgumentNullException(nameof(destinationVertex));
@@ -78,9 +78,14 @@ namespace Caelicus.Graph
             return AddEdge(originVertex, destinationVertex, info);
         }
 
-        public Vertex<TVertex, TEdge> FirstOrDefault(Func<TVertex, bool> predicate)
+        public Vertex<TVertex, TEdge> CustomFirstOrDefault(Func<TVertex, bool> predicate)
         {
             return _vertices.FirstOrDefault(v => predicate(v.Info));
+        }
+
+        public Vertex<TVertex, TEdge> CustomFirstOrDefaultWithInfo(Func<Vertex<TVertex, TEdge>, bool> predicate)
+        {
+            return _vertices.FirstOrDefault(v => predicate(v));
         }
 
         public bool Contains<T>(T value) where T : TVertex, IEquatable<TVertex>

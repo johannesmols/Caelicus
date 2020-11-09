@@ -36,8 +36,8 @@ namespace Caelicus.Services
             {
                 foreach (var edge in vertex.Edges)
                 {
-                    var origin = graph.FirstOrDefault(v => v.Name == vertex.Name);
-                    var destination = graph.FirstOrDefault(v => v.Name == edge);
+                    var origin = graph.CustomFirstOrDefault(v => v.Name == vertex.Name);
+                    var destination = graph.CustomFirstOrDefault(v => v.Name == edge);
 
                     if (origin != null && destination != null)
                     {

@@ -12,10 +12,10 @@
 
     <div class="row" style="margin-bottom: 20px">
         <div class="col-md-6">
-            <strong>Simulation ID:</strong> @AppState.CurrentSimulationHistory.Parameters.SimulationIdentifier
+            <strong>Simulation ID:</strong> @AppState.SimulationHistory.Parameters.SimulationIdentifier
         </div>
         <div class="col-md-6">
-            <strong>Random Seed:</strong> @AppState.CurrentSimulationHistory.Parameters.RandomSeed
+            <strong>Random Seed:</strong> @AppState.SimulationHistory.Parameters.RandomSeed
         </div>
     </div>
 
@@ -26,8 +26,8 @@
                     <button type="button" class="btn btn-primary" style="margin-right: 10px" @onclick="PlayClicked">
                         @(_playing ? "Pause" : "Play")
                     </button>
-                    <label for="steps" style="margin-right: 10px">@_simStep/@(AppState.CurrentSimulationHistory.Steps.Count == 0 ? 0 : AppState.CurrentSimulationHistory.Steps.Count - 1)</label>
-                    <input class="form-control" type="range" id="steps" style="flex: 1" min="0" max="@(AppState.CurrentSimulationHistory.Steps.Count - 1)" value="@_simStep" @onchange="SimStepChanged">
+                    <label for="steps" style="margin-right: 10px">@AppState.HistorySimulationStep/@(AppState.SimulationHistory.Steps.Count == 0 ? 0 : AppState.SimulationHistory.Steps.Count - 1)</label>
+                    <input class="form-control" type="range" id="steps" style="flex: 1" min="0" max="@(AppState.SimulationHistory.Steps.Count - 1)" value="@AppState.HistorySimulationStep" @onchange="SimStepChanged">
                 </div>
             </form>
         </div>
@@ -38,6 +38,8 @@
             <div style="text-align: center">
                 <strong>Vehicles</strong>
             </div>
+
+            <Vehicles />
         </div>
         <div class="col-4 border border-secondary">
             <div style="text-align: center">
@@ -69,7 +71,6 @@
 </div>
 
 @code {
-    private int _simStep = 0;
     private bool _playing = false;
 
     protected override async Task OnInitializedAsync()
@@ -90,13 +91,13 @@
     {
         if (_playing)
         {
-            if (_simStep == AppState.CurrentSimulationHistory.Steps.Count - 1)
+            if (AppState.HistorySimulationStep == AppState.SimulationHistory.Steps.Count - 1)
             {
                 _playing = false;
             }
             else
             {
-                _simStep++;
+                AppState.UpdateSimulationStep(this, AppState.HistorySimulationStep + 1);
             }
 
             StateHasChanged();
@@ -105,14 +106,14 @@
 
     private void SimStepChanged(ChangeEventArgs e)
     {
-        _simStep = int.Parse(e.Value.ToString());
+        AppState.UpdateSimulationStep(this, int.Parse(e.Value.ToString()));
     }
 
     private void PlayClicked(MouseEventArgs e)
     {
-        if (_simStep == AppState.CurrentSimulationHistory.Steps.Count - 1)
+        if (AppState.HistorySimulationStep == AppState.SimulationHistory.Steps.Count - 1)
         {
-            _simStep = 0;
+            AppState.UpdateSimulationStep(this, 0);
         }
 
         _playing = !_playing;

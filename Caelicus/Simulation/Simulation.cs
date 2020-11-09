@@ -99,6 +99,9 @@ namespace Caelicus.Simulation
                 }
             }
 
+            // Record last step as well
+            RecordSimulationStep();
+
             ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Finished simulation with { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
 
             return SimulationHistory;
