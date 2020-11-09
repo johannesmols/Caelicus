@@ -226,8 +226,8 @@ namespace Caelicus.Simulation
                     var vehicleState = new VehicleStepState(vehicle.Vehicle)
                     {
                         State = vehicle.State,
-                        CurrentVertexPosition = vehicle.CurrentVertexPosition?.Id,
-                        Target = vehicle.Target?.Id,
+                        CurrentVertexPosition = vehicle.CurrentVertexPosition?.Info.Name,
+                        Target = vehicle.Target?.Info.Name,
                         CurrentOrder = new HistoryCompletedOrder(
                             new HistoryOrder()
                             {
@@ -239,7 +239,7 @@ namespace Caelicus.Simulation
                             vehicle.CurrentOrder?.DeliveryDistance,
                             vehicle.CurrentOrder?.DeliveryPath?.Select(p => p.Id).ToList()
                         ),
-                        PathToTarget = vehicle.PathToTarget?.Select(p => p.Id).ToList(),
+                        PathToTarget = vehicle.PathToTarget?.Select(p => p.Info.Name).ToList(),
                         DistanceToTarget = vehicle.TotalDistanceToTarget,
                         DistanceTraveled = vehicle.DistanceTraveled
                     };
