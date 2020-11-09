@@ -102,7 +102,7 @@
                 await Task.Delay(500);
             }
 
-            await _mapRenderService.RenderMap(new GraphImporterService().GenerateGraph(graph));
+            await _mapRenderService.RenderMap(GraphImporterService.GenerateGraph(graph));
         }
     }
 

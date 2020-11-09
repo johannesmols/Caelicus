@@ -1,0 +1,38 @@
+﻿@inject AppState AppState
+@implements IDisposable
+
+<ul>
+    @if (AppState.SimulationHistory.Steps.Count > 0)
+    {
+        foreach(var vehicle in AppState.SimulationHistory.Steps[AppState.HistorySimulationStep].Vehicles)
+        {
+            <li>
+                @vehicle.State.ToString(): 
+                @vehicle.CurrentVertexPosition to 
+                @vehicle.Target 
+                (@(string.Format("{0:0.00}", vehicle.DistanceTraveled / 1000d)) / @(string.Format("{0:0.00}", vehicle.DistanceToTarget / 1000d)) km) 
+            </li>
+        }
+    }
+</ul>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}

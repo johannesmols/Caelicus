@@ -14,9 +14,9 @@ using GeoCoordinatePortable;
 
 namespace Caelicus.Services
 {
-    public class GraphImporterService
+    public static class GraphImporterService
     {
-        public Graph<VertexInfo, EdgeInfo> GenerateGraph(JsonGraphRootObject json)
+        public static Graph<VertexInfo, EdgeInfo> GenerateGraph(JsonGraphRootObject json)
         {
             var graph = new Graph<VertexInfo, EdgeInfo>();
 
@@ -36,8 +36,8 @@ namespace Caelicus.Services
             {
                 foreach (var edge in vertex.Edges)
                 {
-                    var origin = graph.FirstOrDefault(v => v.Name == vertex.Name);
-                    var destination = graph.FirstOrDefault(v => v.Name == edge);
+                    var origin = graph.CustomFirstOrDefault(v => v.Name == vertex.Name);
+                    var destination = graph.CustomFirstOrDefault(v => v.Name == edge);
 
                     if (origin != null && destination != null)
                     {

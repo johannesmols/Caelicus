@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
+using Caelicus.Graph;
 using Caelicus.Models;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
@@ -59,12 +60,28 @@ namespace Caelicus.Services
 
         // Simulation Results / History
 
-        public SimulationHistory CurrentSimulationHistory { get; set; } = new SimulationHistory(new SimulationParameters());
+        public SimulationHistory SimulationHistory { get; set; } = new SimulationHistory(new SimulationParameters());
 
         public void UpdateSimulationHistory(ComponentBase source, SimulationHistory simulationHistory)
         {
-            CurrentSimulationHistory = simulationHistory;
-            NotifyStateChanged(source, nameof(CurrentSimulationHistory));
+            SimulationHistory = simulationHistory;
+            NotifyStateChanged(source, nameof(SimulationHistory));
+        }
+
+        public int HistorySimulationStep { get; set; }
+
+        public void UpdateSimulationStep(ComponentBase source, int step)
+        {
+            HistorySimulationStep = step;
+            NotifyStateChanged(source, nameof(HistorySimulationStep));
+        }
+
+        public Graph<VertexInfo, EdgeInfo> HistoryGraph { get; set; } = new Graph<VertexInfo, EdgeInfo>();
+
+        public void UpdateHistoryGraph(ComponentBase source, Graph<VertexInfo, EdgeInfo> graph)
+        {
+            HistoryGraph = graph;
+            NotifyStateChanged(source, nameof(HistoryGraph));
         }
 
         // Events

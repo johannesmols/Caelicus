@@ -25,7 +25,7 @@ namespace SimulationTests
             {
                 SimulationIdentifier = Guid.NewGuid(),
                 RandomSeed = 42,
-                Graph = new GraphImporterService().GenerateGraph(graph),
+                Graph = GraphImporterService.GenerateGraph(graph),
                 VehicleTemplate = vehicle[0],
                 NumberOfVehicles = 1,
                 SimulationSpeed = 10

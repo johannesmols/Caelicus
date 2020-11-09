@@ -9,14 +9,14 @@ namespace Caelicus.Simulation.History
     public class VehicleStepState : Vehicle
     {
         public VehicleState State { get; set; }
-        public Guid? CurrentVertexPosition { get; set; }
-        public Guid? Target { get; set; }
+        public string CurrentVertexPosition { get; set; }
+        public string Target { get; set; }
         public HistoryCompletedOrder CurrentOrder { get; set; }
-        public List<Guid> PathToTarget { get; set; }
+        public List<string> PathToTarget { get; set; }
         public double DistanceToTarget { get; set; }
         public double DistanceTraveled { get; set; }
 
-        public VehicleStepState(Vehicle vehicle, VehicleState state, Guid? currentVertexPosition, Guid? target, HistoryCompletedOrder currentOrder, List<Guid> pathToTarget, double distanceToTarget, double distanceTraveled) : base(vehicle)
+        public VehicleStepState(Vehicle vehicle, VehicleState state, string currentVertexPosition, string target, HistoryCompletedOrder currentOrder, List<string> pathToTarget, double distanceToTarget, double distanceTraveled) : base(vehicle)
         {
             State = state;
             CurrentVertexPosition = currentVertexPosition;

@@ -1,16 +1,122 @@
 ﻿@page "/results"
 @inject AppState AppState
+@inject TimerService Timer
 @implements IDisposable
 
-<FileUploader/>
+<div class="container-fluid h-100">
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-6">
+            <FileUploader/>
+        </div>
+    </div>
 
-<h3>@AppState.CurrentSimulationHistory.Parameters.SimulationIdentifier</h3>
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-6">
+            <strong>Simulation ID:</strong> @AppState.SimulationHistory.Parameters.SimulationIdentifier
+        </div>
+        <div class="col-md-6">
+            <strong>Random Seed:</strong> @AppState.SimulationHistory.Parameters.RandomSeed
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-12">
+            <form class="form-inline">
+                <div class="form-group pb-3" style="width: 100%">
+                    <button type="button" class="btn btn-primary" style="margin-right: 10px" @onclick="PlayClicked">
+                        @(_playing ? "Pause" : "Play")
+                    </button>
+                    <label for="steps" style="margin-right: 10px">@AppState.HistorySimulationStep/@(AppState.SimulationHistory.Steps.Count == 0 ? 0 : AppState.SimulationHistory.Steps.Count - 1)</label>
+                    <input class="form-control" type="range" id="steps" style="flex: 1" min="0" max="@(AppState.SimulationHistory.Steps.Count - 1)" value="@AppState.HistorySimulationStep" @onchange="SimStepChanged">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-4 border border-secondary">
+            <div style="text-align: center">
+                <strong>Vehicles</strong>
+            </div>
+
+            <Vehicles />
+        </div>
+        <div class="col-4 border border-secondary">
+            <div style="text-align: center">
+                <strong>Open Orders</strong>
+            </div>
+        </div>
+        <div class="col-4 border border-secondary">
+            <div style="text-align: center">
+                <strong>Closed Orders</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-12 border border-secondary">
+            <div style="text-align: center">
+                <strong>Map</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-12 border border-secondary">
+            <div style="text-align: center">
+                <strong>Graphs / Stats</strong>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
+    private bool _playing = false;
+
     protected override async Task OnInitializedAsync()
     {
         // Register app state changed event
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+
+        StartTimer();
+    }
+
+    private void StartTimer()
+    {
+        Timer.SetTimer(1000, repeat: true);
+        Timer.OnElapsed += IncrementStep;
+    }
+
+    private void IncrementStep()
+    {
+        if (_playing)
+        {
+            if (AppState.HistorySimulationStep == AppState.SimulationHistory.Steps.Count - 1)
+            {
+                _playing = false;
+            }
+            else
+            {
+                AppState.UpdateSimulationStep(this, AppState.HistorySimulationStep + 1);
+            }
+
+            StateHasChanged();
+        }
+    }
+
+    private void SimStepChanged(ChangeEventArgs e)
+    {
+        AppState.UpdateSimulationStep(this, int.Parse(e.Value.ToString()));
+    }
+
+    private void PlayClicked(MouseEventArgs e)
+    {
+        if (AppState.HistorySimulationStep == AppState.SimulationHistory.Steps.Count - 1)
+        {
+            AppState.UpdateSimulationStep(this, 0);
+        }
+
+        _playing = !_playing;
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)
@@ -24,5 +130,6 @@
     void IDisposable.Dispose()
     {
         AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+        Timer?.Dispose();
     }
 }
