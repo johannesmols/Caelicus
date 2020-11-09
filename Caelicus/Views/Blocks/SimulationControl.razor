@@ -19,6 +19,10 @@
         <label for="speed" style="margin-right: 10px">Speed:</label>
         <input type="number" class="form-control" style="flex: 1" id="speed" value="@_simulationSpeed" step="0.1" min="1" @onchange="SimSpeedChanged" />
     </div>
+    <div class="form-group pb-3" style="width: 100%">
+        <label for="rnd_seed" style="margin-right: 10px">Random Seed:</label>
+        <input type="number" class="form-control" style="flex: 1" id="rnd_seed" step="1" @bind="_randomSeed" />
+    </div>
 </form>
 
 <div class="row" style="position: absolute; bottom: 0; width: 100%; padding-bottom: 10px;">
@@ -50,6 +54,7 @@
     private JsonGraphRootObject _currentGraph;
     private string _currentGraphSelected = string.Empty;
     private double _simulationSpeed = 1d;
+    private int _randomSeed = Guid.NewGuid().GetHashCode();
 
     private List<SimulationHistory> _results;
     private bool _generatingZipFile;
@@ -79,9 +84,7 @@
     {
         _results?.Clear();
 
-        var randomSeed = Guid.NewGuid().GetHashCode();
-
-        // Add the different simulation scenarios
+    // Add the different simulation scenarios
         foreach (var (vehicle, enabled, min, max, step) in AppState.Vehicles)
         {
             if (!enabled)
@@ -97,7 +100,7 @@
                 _simulationManager.AddSimulation(new SimulationParameters()
                 {
                     SimulationIdentifier = Guid.NewGuid(),
-                    RandomSeed = randomSeed,
+                    RandomSeed = _randomSeed,
                     JsonGraph =  _currentGraph ?? AppState.Graphs.FirstOrDefault(),
                     Graph = new GraphImporterService().GenerateGraph(_currentGraph ?? AppState.Graphs.FirstOrDefault()),
                     VehicleTemplate = vehicle,
