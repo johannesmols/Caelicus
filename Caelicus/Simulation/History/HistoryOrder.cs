@@ -7,11 +7,11 @@ namespace Caelicus.Simulation.History
 {
     public class HistoryOrder
     {
-        public Guid? Start { get; set; }
-        public Guid? Target { get; set; }
+        public string Start { get; set; }
+        public string Target { get; set; }
         public double? PayloadWeight { get; set; }
 
-        public HistoryOrder(Guid? start, Guid? target, double? payloadWeight)
+        public HistoryOrder(string start, string target, double? payloadWeight)
         {
             Start = start;
             Target = target;

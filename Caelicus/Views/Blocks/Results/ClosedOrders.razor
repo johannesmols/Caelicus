@@ -1,0 +1,37 @@
+﻿@inject AppState AppState
+@implements IDisposable
+
+<ul>
+    @if (AppState.SimulationHistory.Steps.Count > 0)
+    {
+        foreach(var order in AppState.SimulationHistory.Steps[AppState.HistorySimulationStep].ClosedOrders)
+        {
+            <li>
+                @order.Start to 
+                @order.Target 
+                (@(string.Format("{0:N2}", order.PayloadWeight / 1000d)) kg)
+            </li>
+        }
+    }
+</ul>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}

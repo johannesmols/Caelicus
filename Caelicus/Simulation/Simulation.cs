@@ -231,8 +231,8 @@ namespace Caelicus.Simulation
                         CurrentOrder = new HistoryCompletedOrder(
                             new HistoryOrder()
                             {
-                                Start = vehicle.CurrentOrder?.Order?.Start?.Id,
-                                Target = vehicle.CurrentOrder?.Order?.Target?.Id,
+                                Start = vehicle.CurrentOrder?.Order?.Start?.Info.Name,
+                                Target = vehicle.CurrentOrder?.Order?.Target?.Info.Name,
                                 PayloadWeight = vehicle.CurrentOrder?.Order?.PayloadWeight
                             },
                             vehicle.CurrentOrder?.DeliveryTime,
@@ -254,8 +254,8 @@ namespace Caelicus.Simulation
                 {
                     var order = new HistoryOrder()
                     {
-                        Start = openOrder.Start?.Id,
-                        Target = openOrder.Target?.Id,
+                        Start = openOrder.Start?.Info.Name,
+                        Target = openOrder.Target?.Info.Name,
                         PayloadWeight = openOrder.PayloadWeight
                     };
 
@@ -267,7 +267,7 @@ namespace Caelicus.Simulation
             {
                 if (closedOrder != null)
                 {
-                    var order = new HistoryCompletedOrder(new HistoryOrder(closedOrder.Order?.Start?.Id, closedOrder.Order?.Target?.Id, closedOrder.Order?.PayloadWeight))
+                    var order = new HistoryCompletedOrder(new HistoryOrder(closedOrder.Order?.Start?.Info.Name, closedOrder.Order?.Target?.Info.Name, closedOrder.Order?.PayloadWeight))
                     {
                         DeliveryDistance = closedOrder.DeliveryDistance,
                         DeliveryTime = closedOrder.DeliveryTime,
