@@ -1,0 +1,47 @@
+﻿@inject AppState AppState
+@implements IDisposable
+
+<InputFile OnChange="@OnInputFileChange"></InputFile>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+    }
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        var file = e.GetMultipleFiles().First();
+        if (file != null)
+        {
+            try
+            {
+                var stream = file.OpenReadStream(512000000);
+                using (var sr = new StreamReader(stream))
+                {
+                    string text = await sr.ReadToEndAsync();
+                    var simulationHistory = JsonConvert.DeserializeObject<SimulationHistory>(text);
+                    AppState.UpdateSimulationHistory(this, simulationHistory);
+                }
+            } 
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error reading file. Are you sure it is of the correct type and format? Message: " + ex.Message);
+            }
+        }
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}
