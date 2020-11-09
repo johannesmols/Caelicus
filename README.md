@@ -64,6 +64,10 @@ The following parameters describe values that the simulation can be evaluated up
 - C#
 - Blazor WebAssembly
 
+### Requirements
+- Visual Studio 2019 Preview: https://visualstudio.microsoft.com/vs/preview/
+- .NET 5.0 Preview: https://dotnet.microsoft.com/download/dotnet/5.0
+
 ## The Team
 
 <div align="left">

@@ -7,6 +7,7 @@ using Caelicus.Models;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
 using Caelicus.Simulation;
+using Caelicus.Simulation.History;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 
@@ -53,6 +54,17 @@ namespace Caelicus.Services
         {
             NumberOfOrders = numberOfOrders;
             NotifyStateChanged(source, nameof(NumberOfOrders));
+        }
+
+
+        // Simulation Results / History
+
+        public SimulationHistory CurrentSimulationHistory { get; set; } = new SimulationHistory(new SimulationParameters());
+
+        public void UpdateSimulationHistory(ComponentBase source, SimulationHistory simulationHistory)
+        {
+            CurrentSimulationHistory = simulationHistory;
+            NotifyStateChanged(source, nameof(CurrentSimulationHistory));
         }
 
         // Events
