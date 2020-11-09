@@ -17,8 +17,6 @@
 </ul>
 
 @code {
-    private Graph<VertexInfo, EdgeInfo> _graph = new Graph<VertexInfo, EdgeInfo>();
-
     protected override async Task OnInitializedAsync()
     {
         // Register app state changed event
@@ -30,11 +28,6 @@
         if (source != this)
         {
             await InvokeAsync(StateHasChanged);
-        }
-
-        if (AppState.SimulationHistory?.Parameters?.JsonGraph != null)
-        {
-            _graph = new GraphImporterService().GenerateGraph(AppState.SimulationHistory.Parameters.JsonGraph);
         }
     }
 

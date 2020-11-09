@@ -76,13 +76,13 @@ namespace Caelicus.Services
             NotifyStateChanged(source, nameof(HistorySimulationStep));
         }
 
-        //public Graph<VertexInfo, EdgeInfo> HistoryGraph { get; set; } = new Graph<VertexInfo, EdgeInfo>();
+        public Graph<VertexInfo, EdgeInfo> HistoryGraph { get; set; } = new Graph<VertexInfo, EdgeInfo>();
 
-        //public void UpdateHistoryGraph(ComponentBase source, Graph<VertexInfo, EdgeInfo> graph)
-        //{
-        //    HistoryGraph = graph;
-        //    NotifyStateChanged(source, nameof(HistoryGraph));
-        //}
+        public void UpdateHistoryGraph(ComponentBase source, Graph<VertexInfo, EdgeInfo> graph)
+        {
+            HistoryGraph = graph;
+            NotifyStateChanged(source, nameof(HistoryGraph));
+        }
 
         // Events
 

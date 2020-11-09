@@ -14,9 +14,9 @@ using GeoCoordinatePortable;
 
 namespace Caelicus.Services
 {
-    public class GraphImporterService
+    public static class GraphImporterService
     {
-        public Graph<VertexInfo, EdgeInfo> GenerateGraph(JsonGraphRootObject json)
+        public static Graph<VertexInfo, EdgeInfo> GenerateGraph(JsonGraphRootObject json)
         {
             var graph = new Graph<VertexInfo, EdgeInfo>();
 

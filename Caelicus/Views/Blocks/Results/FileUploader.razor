@@ -23,6 +23,7 @@
                     string text = await sr.ReadToEndAsync();
                     var simulationHistory = JsonConvert.DeserializeObject<SimulationHistory>(text);
                     AppState.UpdateSimulationHistory(this, simulationHistory);
+                    AppState.UpdateHistoryGraph(this, GraphImporterService.GenerateGraph(simulationHistory.Parameters.JsonGraph));
                 }
             } 
             catch (Exception ex)
