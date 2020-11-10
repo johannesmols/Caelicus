@@ -49,7 +49,7 @@
       "url": "css\/open-iconic\/README.md"
     },
     {
-      "hash": "sha256-xuGPDnFYoYovSNFt3zl2UJzbI2q3ybnjzzjdWShlj9c=",
+      "hash": "sha256-hu+wj6MZ\/ojoeLhoHEqx0vVIiOldgIrPxImczteZQjE=",
       "url": "data\/graphs\/copenhagen.json"
     },
     {
@@ -369,5 +369,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "evxUMzgF"
+  "version": "ittH+X\/Q"
 };
