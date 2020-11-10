@@ -12,7 +12,7 @@ jobs:
       # uses GitHub's checkout action to checkout code form the master branch
       - uses: actions/checkout@v2
         
-      # sets up .NET Core SDK 3.1
+      # sets up .NET Core SDK
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1.6.0
         with:
@@ -21,7 +21,11 @@ jobs:
       # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
         run: dotnet publish Caelicus/Caelicus.csproj -c Release -o release --nologo
-      
+        
+      # Unit Tests    
+      - name: UnitTests 
+        run: dotnet test SimulationTests/SimulationTests.csproj
+        
       # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
       - name: Change base-tag in index.html from / to Caelicus
         run: sed -i 's/<base href="\/" \/>/<base href="\/Caelicus\/" \/>/g' release/wwwroot/index.html
