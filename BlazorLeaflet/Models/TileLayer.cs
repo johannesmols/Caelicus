@@ -21,7 +21,7 @@
         /// <summary>
         /// Subdomains of the tile service.
         /// </summary>
-        public string[] Subdomains { get; set; } = new string[] { "abc" };
+        public string[] Subdomains { get; set; } = new string[] { "a", "b", "c" };
 
         /// <summary>
         /// URL to the tile image to show in place of the tile that failed to load.

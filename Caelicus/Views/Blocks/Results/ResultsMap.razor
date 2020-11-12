@@ -11,7 +11,7 @@
 
     private BlazorLeaflet.Models.LatLng _startAt = new BlazorLeaflet.Models.LatLng(47.5574007f, 16.3918687f);
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         // Register app state changed event
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
