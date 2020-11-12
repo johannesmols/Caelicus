@@ -10,6 +10,12 @@ namespace BlazorLeaflet.Models
         /// </summary>
         public string Url { get; set; }
 
+        // https://github.com/Mehigh17/BlazorLeaflet/issues/41
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public int AnchorX { get; set; }
+        public int AnchorY { get; set; }
+
         /// <summary>
         /// The URL to a retina sized version of the icon image (absolute or relative to your script path). Used for Retina screen devices.
         /// </summary>

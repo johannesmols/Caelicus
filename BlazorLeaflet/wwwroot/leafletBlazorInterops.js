@@ -228,8 +228,8 @@ function createIcon(icon) {
     return L.icon({
         iconUrl: icon.url,
         iconRetinaUrl: icon.retinaUrl,
-        iconSize: icon.size ? L.point(icon.size.value.width, icon.size.value.height) : null,
-        iconAnchor: icon.anchor ? L.point(icon.anchor.value.x, icon.anchor.value.y) : null,
+        iconSize: (icon.width != 0 && icon.height != 0) ? L.point(icon.width, icon.height) : null,
+        iconAnchor: (icon.anchorX != 0 || icon.anchorY != 0) ? L.point(icon.anchorX, icon.anchorY) : null,
         popupAnchor: L.point(icon.popupAnchor.x, icon.popupAnchor.y),
         tooltipAnchor: L.point(icon.tooltipAnchor.x, icon.tooltipAnchor.y),
         shadowUrl: icon.shadowUrl,

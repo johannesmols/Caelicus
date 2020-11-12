@@ -125,7 +125,9 @@ namespace Caelicus.Services
                 {
                     Icon = new Icon
                     {
-                        Url = "icons/car.png"
+                        Url = "icons/car.png",
+                        Width = 32,
+                        Height = 32
                     }
                 });
             }
