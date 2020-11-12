@@ -54,7 +54,7 @@ namespace Caelicus.Services
             });
         }
 
-        public void RenderGraph(Graph<VertexInfo, EdgeInfo> graph, SimulationHistoryStep step = null)
+        public void RenderGraph(Graph<VertexInfo, EdgeInfo> graph, bool panIntoView, SimulationHistoryStep step = null)
         {
             if (!_initialized)
                 Initialize();
@@ -93,8 +93,11 @@ namespace Caelicus.Services
             _paths.ForEach(_map.AddLayer);
             _vertices.ForEach(_map.AddLayer);
 
-            //PanToPoint(_vertices.First().Position);
-
+            if (panIntoView)
+            {
+                PanToPoint(_vertices.First().Position);
+            }
+            
             if (step != null)
             {
                 RenderVehicles(graph, step);

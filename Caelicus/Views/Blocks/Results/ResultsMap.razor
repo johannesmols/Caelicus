@@ -36,12 +36,12 @@
                     }
                 }
 
-                _leafletMapRenderer.RenderGraph(AppState.HistoryGraph, simStep);
+                _leafletMapRenderer.RenderGraph(AppState.HistoryGraph, true, simStep);
             }
 
             if (property == nameof(AppState.HistorySimulationStep))
             {
-                _leafletMapRenderer.RenderGraph(AppState.HistoryGraph, AppState.SimulationHistory?.Steps?[AppState.HistorySimulationStep]);
+                _leafletMapRenderer.RenderGraph(AppState.HistoryGraph, false, AppState.SimulationHistory?.Steps?[AppState.HistorySimulationStep]);
             }
         }
     }
