@@ -2,7 +2,7 @@
 @inject IJSRuntime JsRuntime
 @implements IDisposable
 
-<div id="mapContainer" style="width: 100%; height: 65vh;">
+<div id="mapContainer" style="width: 100%; height: 50vh;">
     <LeafletMap Map="_map" />
 </div>
 
@@ -20,6 +20,15 @@
         {
             Center = _startAt,
             Zoom = 4.8f
+        };
+
+        _map.OnInitialized += () =>
+        {
+            _map.AddLayer(new TileLayer
+            {
+                UrlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                Attribution = "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
+            });
         };
     }
 
