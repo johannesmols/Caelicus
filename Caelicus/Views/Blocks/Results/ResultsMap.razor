@@ -8,28 +8,15 @@
 
 @code {
     private BlazorLeaflet.Map _map;
+    private LeafletMapRenderService _leafletMapRenderer;
 
-    private BlazorLeaflet.Models.LatLng _startAt = new BlazorLeaflet.Models.LatLng(47.5574007f, 16.3918687f);
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         // Register app state changed event
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
 
-        _map = new BlazorLeaflet.Map(JsRuntime)
-        {
-            Center = _startAt,
-            Zoom = 4.8f
-        };
-
-        _map.OnInitialized += () =>
-        {
-            _map.AddLayer(new TileLayer
-            {
-                UrlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                Attribution = "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
-            });
-        };
+        _leafletMapRenderer = new LeafletMapRenderService(JsRuntime);
+        _map = _leafletMapRenderer.Initialize();
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)
@@ -37,6 +24,11 @@
         if (source != this)
         {
             await InvokeAsync(StateHasChanged);
+
+            if (AppState.HistoryGraph.VertexCount > 0)
+            {
+                _leafletMapRenderer.RenderGraph(AppState.HistoryGraph);
+            }
         }
     }
 
