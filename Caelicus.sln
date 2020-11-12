@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caelicus", "Caelicus\Caelic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulationTests", "SimulationTests\SimulationTests.csproj", "{CE1853DE-8BC6-4608-9BB7-5E6F9DB2E8FF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorLeaflet", "BlazorLeaflet\BlazorLeaflet.csproj", "{4096B59D-1CDD-4DA0-8605-63AECF0805B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CE1853DE-8BC6-4608-9BB7-5E6F9DB2E8FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE1853DE-8BC6-4608-9BB7-5E6F9DB2E8FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE1853DE-8BC6-4608-9BB7-5E6F9DB2E8FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4096B59D-1CDD-4DA0-8605-63AECF0805B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4096B59D-1CDD-4DA0-8605-63AECF0805B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4096B59D-1CDD-4DA0-8605-63AECF0805B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4096B59D-1CDD-4DA0-8605-63AECF0805B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

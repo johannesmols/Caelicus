@@ -24,6 +24,7 @@
                     var simulationHistory = JsonConvert.DeserializeObject<SimulationHistory>(text);
                     AppState.UpdateSimulationHistory(this, simulationHistory);
                     AppState.UpdateHistoryGraph(this, GraphImporterService.GenerateGraph(simulationHistory.Parameters.JsonGraph));
+                    AppState.UpdateSimulationStep(this, 0);
                 }
             } 
             catch (Exception ex)

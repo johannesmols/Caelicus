@@ -1,0 +1,53 @@
+﻿@inject AppState AppState
+@inject IJSRuntime JsRuntime
+@implements IDisposable
+
+<div id="mapContainer" style="width: 100%; height: 50vh;">
+    <LeafletMap Map="_map" />
+</div>
+
+@code {
+    private BlazorLeaflet.Map _map;
+    private LeafletMapRenderService _leafletMapRenderer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+
+        _leafletMapRenderer = new LeafletMapRenderService(JsRuntime);
+        _map = _leafletMapRenderer.Initialize();
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+
+            if (property == nameof(AppState.HistoryGraph) && AppState.HistoryGraph.VertexCount > 0)
+            {
+                SimulationHistoryStep simStep = null;
+                if (AppState.SimulationHistory?.Steps?.Count > 0)
+                {
+                    if (AppState.SimulationHistory.Steps.Count > AppState.HistorySimulationStep && AppState.HistorySimulationStep >= 0)
+                    {
+                        simStep = AppState.SimulationHistory?.Steps?[AppState.HistorySimulationStep];
+                    }
+                }
+
+                _leafletMapRenderer.RenderGraph(AppState.HistoryGraph, true, simStep);
+            }
+
+            if (property == nameof(AppState.HistorySimulationStep))
+            {
+                _leafletMapRenderer.RenderGraph(AppState.HistoryGraph, false, AppState.SimulationHistory?.Steps?[AppState.HistorySimulationStep]);
+            }
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}
