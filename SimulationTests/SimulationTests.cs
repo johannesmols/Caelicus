@@ -117,5 +117,48 @@ namespace SimulationTests
             simManager.AddSimulation(simParameters);
             Assert.IsTrue(simManager.Simulations.Count == 2);
         }
+
+        [TestMethod]
+        public void TestShortPath()
+        {
+            var graph = SimResources.Instance.Parameters.Graph;
+            List<string> firstPath = new List<string>(){"DTU", "Ballerup", "Glostrup"};
+            var path = graph.FindShortestPath(graph , graph.Vertices[0], graph.Vertices[1]);
+            var collect = path.Item1.Select(v => v.Info.Name).ToList();
+            CollectionAssert.AreEqual(collect, firstPath);            
+            List<string> secondPath = new List<string>(){"Dragor", "Brondby Strand", "Glostrup"};
+            path = graph.FindShortestPath(graph , graph.Vertices[4], graph.Vertices[1]);
+            collect = path.Item1.Select(v => v.Info.Name).ToList();
+            CollectionAssert.AreEqual(collect, secondPath);            
+        }
+
+        [TestMethod]
+        public void TestVehicleDistribution()
+        {
+            int bigNumber = 10000;
+            var parameters = SimResources.Instance.Parameters;
+            parameters.NumberOfVehicles = bigNumber;
+            var sim = new Simulation(parameters);
+            var base1 = parameters.Graph.Vertices[0];
+            var base2 = parameters.Graph.Vertices[1];
+            
+            int base1_count = 0;
+            int base2_count = 0;
+            
+            foreach (var v in sim.Vehicles)
+            {
+                if (v.CurrentVertexPosition == base1)
+                {
+                    base1_count++;
+                } else if (v.CurrentVertexPosition == base2)
+                {
+                    base2_count++;
+                }
+            }
+            
+            Assert.IsTrue(base1_count > (bigNumber / 2) * 0.9);
+            Assert.IsTrue(base2_count > (bigNumber / 2) * 0.9);
+        }
+        
     }
 }
