@@ -9,9 +9,11 @@ using Caelicus.Enums;
 using Caelicus.Graph;
 using Caelicus.Helpers;
 using Caelicus.Models.Graph;
+using Caelicus.Simulation;
 using Caelicus.Simulation.History;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
+using LatLng = BlazorLeaflet.Models.LatLng;
 
 namespace Caelicus.Services
 {
@@ -111,21 +113,22 @@ namespace Caelicus.Services
                 var start = graph.CustomFirstOrDefault(v => v.Name == vehicle.CurrentVertexPosition);
                 var target = graph.CustomFirstOrDefault(v => v.Name == vehicle.Target);
 
-                Tuple<double, double> currentPoint = null;
-                if (target == null)
-                {
-                    currentPoint = start.Info.Position;
-                }
-                else
-                {
-                    currentPoint = GeographicalHelpers.CalculatePointInBetweenTwoPoints(start.Info.Position, target.Info.Position, vehicle.DistanceTraveled / vehicle.DistanceToTarget);
-                }
+                var currentPoint = target == null ? 
+                    start.Info.Position : 
+                    GeographicalHelpers.CalculatePointInBetweenTwoPoints(start.Info.Position, target.Info.Position, vehicle.DistanceTraveled / vehicle.DistanceToTarget);
 
                 _vehicles.Add(new Marker(new LatLng((float) currentPoint.Item1, (float) currentPoint.Item2))
                 {
                     Icon = new Icon
                     {
-                        Url = "icons/car.png",
+                        Url = vehicle.State switch
+                        {
+                            VehicleState.Idle => "icons/parked.png",
+                            VehicleState.Refueling => "icons/refueling.png",
+                            VehicleState.MovingToTarget => "icons/delivering.png",
+                            VehicleState.PickingUpOrder => "icons/returning.png",
+                            _ => "icons/drone-black.png"
+                        },
                         Width = 32,
                         Height = 32
                     }
