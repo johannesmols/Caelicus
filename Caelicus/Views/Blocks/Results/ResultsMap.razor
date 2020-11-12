@@ -25,9 +25,23 @@
         {
             await InvokeAsync(StateHasChanged);
 
-            if (AppState.HistoryGraph.VertexCount > 0)
+            if (property == nameof(AppState.HistoryGraph) && AppState.HistoryGraph.VertexCount > 0)
             {
-                _leafletMapRenderer.RenderGraph(AppState.HistoryGraph);
+                SimulationHistoryStep simStep = null;
+                if (AppState.SimulationHistory?.Steps?.Count > 0)
+                {
+                    if (AppState.SimulationHistory.Steps.Count > AppState.HistorySimulationStep && AppState.HistorySimulationStep >= 0)
+                    {
+                        simStep = AppState.SimulationHistory?.Steps?[AppState.HistorySimulationStep];
+                    }
+                }
+
+                _leafletMapRenderer.RenderGraph(AppState.HistoryGraph, simStep);
+            }
+
+            if (property == nameof(AppState.HistorySimulationStep))
+            {
+                _leafletMapRenderer.RenderGraph(AppState.HistoryGraph, AppState.SimulationHistory?.Steps?[AppState.HistorySimulationStep]);
             }
         }
     }

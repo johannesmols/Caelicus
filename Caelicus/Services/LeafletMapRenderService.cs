@@ -7,8 +7,11 @@ using BlazorLeaflet;
 using BlazorLeaflet.Models;
 using Caelicus.Enums;
 using Caelicus.Graph;
+using Caelicus.Helpers;
 using Caelicus.Models.Graph;
+using Caelicus.Simulation.History;
 using Microsoft.JSInterop;
+using Newtonsoft.Json;
 
 namespace Caelicus.Services
 {
@@ -20,6 +23,7 @@ namespace Caelicus.Services
 
         private readonly List<Circle> _vertices = new List<Circle>();
         private readonly List<Polyline> _paths = new List<Polyline>();
+        private readonly List<Marker> _vehicles = new List<Marker>();
 
         public LeafletMapRenderService(IJSRuntime jsRuntime)
         {
@@ -50,7 +54,7 @@ namespace Caelicus.Services
             });
         }
 
-        public void RenderGraph(Graph<VertexInfo, EdgeInfo> graph)
+        public void RenderGraph(Graph<VertexInfo, EdgeInfo> graph, SimulationHistoryStep step = null)
         {
             if (!_initialized)
                 Initialize();
@@ -89,7 +93,41 @@ namespace Caelicus.Services
             _paths.ForEach(_map.AddLayer);
             _vertices.ForEach(_map.AddLayer);
 
-            PanToPoint(_vertices.First().Position);
+            //PanToPoint(_vertices.First().Position);
+
+            if (step != null)
+            {
+                RenderVehicles(graph, step);
+            }
+        }
+
+        private void RenderVehicles(Graph<VertexInfo, EdgeInfo> graph, SimulationHistoryStep step)
+        {
+            foreach (var vehicle in step.Vehicles)
+            {
+                var start = graph.CustomFirstOrDefault(v => v.Name == vehicle.CurrentVertexPosition);
+                var target = graph.CustomFirstOrDefault(v => v.Name == vehicle.Target);
+
+                Tuple<double, double> currentPoint = null;
+                if (target == null)
+                {
+                    currentPoint = start.Info.Position;
+                }
+                else
+                {
+                    currentPoint = GeographicalHelpers.CalculatePointInBetweenTwoPoints(start.Info.Position, target.Info.Position, vehicle.DistanceTraveled / vehicle.DistanceToTarget);
+                }
+
+                _vehicles.Add(new Marker(new LatLng((float) currentPoint.Item1, (float) currentPoint.Item2))
+                {
+                    Icon = new Icon
+                    {
+                        Url = "icons/car.png"
+                    }
+                });
+            }
+
+            _vehicles.ForEach(_map.AddLayer);
         }
 
         public void PanToPoint(LatLng point, float zoom = 0f)
@@ -107,9 +145,15 @@ namespace Caelicus.Services
 
             _vertices.Clear();
             _paths.Clear();
+            _vehicles.Clear();
 
-            _map.GetLayers().ToList().ForEach(l => _map.RemoveLayer(l));
-            AddOsmLayer();
+            foreach (var layer in _map.GetLayers())
+            {
+                if (layer.GetType() != typeof(TileLayer))
+                {
+                    _map.RemoveLayer(layer);
+                }
+            }
         }
     }
 }
