@@ -229,7 +229,7 @@
       "url": "_framework\/BlazorLeaflet.dll"
     },
     {
-      "hash": "sha256-YUgSPNdkIb1WJIGzJjWjqMeDDh0Gqenozey72iMNyGA=",
+      "hash": "sha256-9KB\/R6x3dQTIvfhsYL6Avs0WkKqPtBLn7XCsWh9BrQY=",
       "url": "_framework\/Caelicus.dll"
     },
     {
@@ -377,7 +377,7 @@
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
-      "hash": "sha256-odn048zVTfldP5hw8TdG\/O43q8WLOe+mPzwKsueUKu8=",
+      "hash": "sha256-CerA7S2QoX+WfnDnYx7HXwcrKZ2HcfXaYPOpnEJpolI=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -385,5 +385,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "FshyMrKL"
+  "version": "9l8htNuS"
 };
