@@ -83,8 +83,8 @@ namespace Caelicus.Simulation
                     $"Simulating at step { SimulationStep }: " +
                     $"({ OpenOrders.Count } open orders, " +
                     $"{ ClosedOrders.Count } closed orders, " +
-                    $"{ Vehicles.Where(v => v.CurrentOrder != null && v.State == VehicleState.MovingToTarget).ToList().Count } orders in progress, " +
-                    $"{ Vehicles.Where(v => v.CurrentOrder != null && v.State == VehicleState.PickingUpOrder).ToList().Count } in pickup)"));
+                    $"{ Vehicles.Where(v => v.CurrentOrders != null && v.State == VehicleState.MovingToTarget).ToList().Sum(v => v.CurrentOrders.Count) } orders in progress, " +
+                    $"{ Vehicles.Where(v => v.CurrentOrders != null && v.State == VehicleState.PickingUpOrder).ToList().Sum(v => v.CurrentOrders.Count) } in pickup)"));
 
                 // Record the current state of the simulation
                 RecordSimulationStep();
@@ -117,28 +117,27 @@ namespace Caelicus.Simulation
         /// <returns></returns>
         public bool IsDone()
         {
-            //if (OpenOrders.Count == 0 && Vehicles.All(v => v.CurrentOrder == null))
-            //{
-            //    return true;
-            //}
+            if (OpenOrders.Count == 0 && Vehicles.All(v => v.CurrentOrders.Count == 0 && v.State == VehicleState.Idle))
+            {
+                return true;
+            }
 
-            //// Check whether there are any open orders that can not be completed because the distance is too great, or because the payload exceeds the vehicles maximum
-            //if (OpenOrders.Count > 0)
-            //{
-            //    if (Vehicles.All(v => v.State == VehicleState.Idle))
-            //    {
-            //        foreach (var order in OpenOrders)
-            //        {
-            //            var vehicleTypeValues = Vehicles.First();
-            //            var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
-            //            var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target).Item2;
-            //            if (orderTravelDistance > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload)
-            //            {
-            //                return true;
-            //            }
-            //        }
-            //    }
-            //}
+            if (OpenOrders.Count > 0)
+            {
+                if (Vehicles.All(v => v.State == VehicleState.Idle))
+                {
+                    foreach (var order in OpenOrders)
+                    {
+                        var vehicleTypeValues = Vehicles.First();
+                        var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
+                        var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target).Item2;
+                        if (orderTravelDistance > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
 
             return false;
         }
@@ -148,30 +147,6 @@ namespace Caelicus.Simulation
         /// </summary>
         public void Advance()
         {
-            // Assign open orders to any available vehicle
-            //foreach (var vehicle in Vehicles.Where(vehicle => vehicle.State == VehicleState.Idle))
-            //{
-            //    var availableOrders = OpenOrders.Where(o =>
-            //        o.Start == vehicle.CurrentVertexPosition &&
-            //        o.PayloadWeight <= vehicle.MaxPayload &&
-            //        Parameters.Graph.FindShortestPath(Parameters.Graph, o.Start, o.Target).Item2 <=
-            //        vehicle.GetMaximumTravelDistance(o.PayloadWeight)
-            //    ).ToList();
-
-            //    if (availableOrders.Count > 0)
-            //    {
-            //        vehicle.AssignOrder(availableOrders.First());
-            //    }
-            //    else
-            //    {
-            //        var (order, target) = GetNearestOpenOrder(vehicle);
-            //        if (order != null && target != null)
-            //        {
-            //            vehicle.AssignOrderAtDifferentBase(order, target);
-            //        }
-            //    }
-            //}
-
             // Advance all vehicles and their assigned orders
             Vehicles.ForEach(v => v.AdvanceNew());
 

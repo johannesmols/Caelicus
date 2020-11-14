@@ -66,7 +66,7 @@ namespace Caelicus.Simulation
                     MoveTowardsTarget();
                     break;
                 case VehicleState.PickingUpOrder:
-                    MoveTowardsTarget();
+                    MoveTowardsPickup();
                     break;
             }
         }
@@ -115,7 +115,15 @@ namespace Caelicus.Simulation
 
         private void MoveTowardsPickup()
         {
+            if (Move())
+            {
+                PathToTarget = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentOrders.First().Start, CurrentOrders.First().Target).Item1;
+                DistanceToCurrentTarget = 0d;
+                DistanceTraveled = 0d;
 
+                // Change state to indicate the vehicle is now delivering the orders
+                State = VehicleState.MovingToTarget;
+            }
         }
 
         /// <summary>
