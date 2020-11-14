@@ -18,7 +18,8 @@ namespace Caelicus.Models.Vehicles
             AverageSpeed = vehicle.AverageSpeed;
             MaxPayload = vehicle.MaxPayload;
             FuelCapacity = vehicle.FuelCapacity;
-            FuelConsumption = vehicle.FuelConsumption;
+            BaseFuelConsumption = vehicle.BaseFuelConsumption;
+            ExtraFuelConsumptionPerKg = vehicle.ExtraFuelConsumptionPerKg;
             RefuelingTime = vehicle.RefuelingTime;
             AllowRefuelAtTarget = vehicle.AllowRefuelAtTarget;
             PurchasingCost = vehicle.PurchasingCost;
@@ -32,7 +33,8 @@ namespace Caelicus.Models.Vehicles
         // Movement
         public double AverageSpeed { get; set; }
         public double FuelCapacity { get; set; }
-        public double FuelConsumption { get; set; }
+        public double BaseFuelConsumption { get; set; }
+        public double ExtraFuelConsumptionPerKg { get; set; }
         public double RefuelingTime { get; set; }
         public bool AllowRefuelAtTarget { get; set; }
 
@@ -58,20 +60,33 @@ namespace Caelicus.Models.Vehicles
             return baseHourlyCost + baseDistanceCost;
         }
 
+        public double GetSpeedInMetersPerSecond()
+        {
+            return AverageSpeed / 3.6d;
+        }
+
+        public double GetFuelConsumptionForOneMeter(double payload)
+        {
+            return BaseFuelConsumption + ExtraFuelConsumptionPerKg * payload;
+        }
+
         /// <summary>
         /// Calculate how far the vehicle can travel given the fuel capacity and fuel consumption.
-        /// Not considering the average speed as it is quite complicated (e.g. http://www.pv4.eu/calculate-fuel-consumption-drag-coefficient-speed-and-weight_912.html)
         /// </summary>
         /// <returns></returns>
         public double GetMaximumTravelDistance()
         {
-            return FuelCapacity / FuelConsumption;
+            return FuelCapacity / BaseFuelConsumption;
         }
 
+        /// <summary>
+        /// Calculate how far the vehicle can travel given the fuel capacity, fuel consumption, and payload weight.
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <returns></returns>
         public double GetMaximumTravelDistance(double payload)
         {
-            // TODO: Account for payload if possible
-            return FuelCapacity / FuelConsumption;
+            return FuelCapacity / (BaseFuelConsumption + ExtraFuelConsumptionPerKg * payload);
         }
     }
 }

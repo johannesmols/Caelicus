@@ -111,11 +111,11 @@ namespace Caelicus.Services
             foreach (var vehicle in step.Vehicles)
             {
                 var start = graph.CustomFirstOrDefault(v => v.Name == vehicle.CurrentVertexPosition);
-                var target = graph.CustomFirstOrDefault(v => v.Name == vehicle.Target);
+                var target = graph.CustomFirstOrDefault(v => v.Name == vehicle.CurrentTarget);
 
                 var currentPoint = target == null ? 
                     start.Info.Position : 
-                    GeographicalHelpers.CalculatePointInBetweenTwoPoints(start.Info.Position, target.Info.Position, vehicle.DistanceTraveled / vehicle.DistanceToTarget);
+                    GeographicalHelpers.CalculatePointInBetweenTwoPoints(start.Info.Position, target.Info.Position, vehicle.DistanceTraveled / vehicle.DistanceToCurrentTarget);
 
                 _vehicles.Add(new Marker(new LatLng((float) currentPoint.Item1, (float) currentPoint.Item2))
                 {

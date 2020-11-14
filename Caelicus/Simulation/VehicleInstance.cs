@@ -6,6 +6,7 @@ using Caelicus.Graph;
 using Caelicus.Helpers;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
+using Newtonsoft.Json.Bson;
 
 namespace Caelicus.Simulation
 {
@@ -27,102 +28,210 @@ namespace Caelicus.Simulation
             Vehicle = vehicle;
             CurrentVertexPosition = startingVertex;
             State = VehicleState.Idle;
+            CurrentFuelLoaded = FuelCapacity;
         }
 
+        // State
         public Vehicle Vehicle { get; }
         public VehicleState State { get; private set; }
-        public Vertex<VertexInfo, EdgeInfo> CurrentVertexPosition { get; private set; } 
-        public Vertex<VertexInfo, EdgeInfo> Target { get; private set; }
-        public CompletedOrder CurrentOrder { get; private set; }
 
+        // Routing
         public List<Vertex<VertexInfo, EdgeInfo>> PathToTarget { get; private set; }
-        public double TotalDistanceToTarget { get; private set; }
-        public List<Tuple<Vertex<VertexInfo, EdgeInfo>, double>> DistanceToWaypoints { get; private set; }
+        public Vertex<VertexInfo, EdgeInfo> CurrentVertexPosition { get; private set; } 
+        public Vertex<VertexInfo, EdgeInfo> CurrentTarget { get; private set; }
+        public double DistanceToCurrentTarget { get; private set; }
         public double DistanceTraveled { get; private set; }
-        public double CurrentFuel { get; private set; }
 
-        public void AssignOrder(Order order)
-        {
-            Target = order.Target;
-            State = VehicleState.MovingToTarget;
-            PrepareOrder(order);
-        }
+        // Order management
+        public List<CompletedOrder> CurrentOrders { get; private set; }
 
-        public void AssignOrderAtDifferentBase(Order order, Vertex<VertexInfo, EdgeInfo> target)
-        {
-            Target = target;
-            State = VehicleState.PickingUpOrder;
-            PrepareOrder(order);
-        }
+        // Fuel
+        public double CurrentFuelLoaded { get; private set; }
 
-        private void PrepareOrder(Order order)
-        {
-            CurrentOrder = new CompletedOrder(order);
-            DistanceTraveled = 0d;
-            Simulation.OpenOrders.Remove(order);
-            var (path, distance) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target);
-            PathToTarget = path;
-            TotalDistanceToTarget = distance;
-        }
+        // Cost
 
-        public void Advance()
+        public void AdvanceNew()
         {
-            if (State == VehicleState.Idle)
+            switch (State)
             {
-                Simulation.ProgressReporter.Report(
-                    new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
-                        $"Vehicle { GetHashCode() } idling at base station { CurrentVertexPosition.Info.Name }"));
+                case VehicleState.Idle:
+                    AssignOrders(FindOptimalOrders());
+                    break;
+                case VehicleState.Refueling:
+                    Refuel();
+                    break;
+                case VehicleState.MovingToTarget:
+                    MoveTowardsTarget();
+                    break;
+                case VehicleState.PickingUpOrder:
+                    MoveTowardsPickup();
+                    break;
             }
-            else if (State == VehicleState.Refueling)
-            {
+        }
 
-            }
-            else if (State == VehicleState.PickingUpOrder)
+        private void AssignOrders(List<CompletedOrder> orders)
+        {
+            if (orders != null && orders.Count > 0)
             {
-                if (Target != null)
+                if (orders.All(o => o.Start == CurrentVertexPosition))
                 {
-                    // Calculate how many meters the vehicle travels in one simulation step
-                    // AverageSpeed is in km/h, dividing by 3.6 gives it in m/s.
-                    DistanceTraveled += AverageSpeed / 3.6d;
+                    CurrentOrders = orders;
+                    orders.ForEach(o => Simulation.OpenOrders.Remove(o.Order));
+                    PathToTarget = orders.First().DeliveryPath;
+                    State = VehicleState.MovingToTarget;
+                    DistanceTraveled = 0d;
+                }
+                else
+                {
+                    CurrentOrders = orders;
+                    orders.ForEach(o => Simulation.OpenOrders.Remove(o.Order));
+                    PathToTarget = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, orders.First().Start).Item1;
+                    State = VehicleState.PickingUpOrder;
+                    DistanceTraveled = 0d;
+                }
+            }
+        }
 
-                    Simulation.ProgressReporter.Report(
-                        new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
-                            $"Moving vehicle { GetHashCode() } to base { Target.Info.Name } from { CurrentVertexPosition.Info.Name } to pick up next order ({ DistanceTraveled / TotalDistanceToTarget * 100d:n2}%)"));
+        private void MoveTowardsTarget()
+        {
+            if (Move())
+            {
+                // Finish orders
+                Simulation.ClosedOrders.AddRange(CurrentOrders);
 
-                    // Arrived at base station
-                    if (DistanceTraveled >= TotalDistanceToTarget)
+                // Clear order-related variables
+                CurrentOrders.Clear();
+                PathToTarget.Clear();
+                CurrentTarget = null;
+                DistanceToCurrentTarget = 0d;
+                DistanceTraveled = 0d;
+
+                State = VehicleState.Idle;
+            }
+        }
+
+        private void MoveTowardsPickup()
+        {
+            if (Move())
+            {
+                PathToTarget = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentOrders.First().Start, CurrentOrders.First().Target).Item1;
+                DistanceToCurrentTarget = 0d;
+                DistanceTraveled = 0d;
+
+                // Refuel the vehicle before heading out to deliver
+                State = VehicleState.Refueling;
+            }
+        }
+
+        /// <summary>
+        /// Move along the path towards the specified target
+        /// <returns>Whether it arrived at the final target</returns>
+        /// </summary>
+        private bool Move()
+        {
+            if (CurrentTarget == null && PathToTarget.Count >= 2)
+            {
+                CurrentTarget = PathToTarget[1];
+                DistanceToCurrentTarget = PathToTarget[0].Edges.First(e => e.Destination == PathToTarget[1]).Info.Distance;
+            }
+
+            if (DistanceTraveled >= DistanceToCurrentTarget)
+            {
+                CurrentVertexPosition = CurrentTarget;
+
+                var currentIndexInPath = PathToTarget.IndexOf(CurrentVertexPosition);
+                if (currentIndexInPath == PathToTarget.Count - 1)
+                {
+                    return true;
+                }
+
+                CurrentTarget = PathToTarget[currentIndexInPath + 1];
+                DistanceTraveled = 0d;
+                DistanceToCurrentTarget = PathToTarget[currentIndexInPath].Edges.First(e => e.Destination == PathToTarget[currentIndexInPath + 1]).Info.Distance;
+            }
+            else
+            {
+                DistanceTraveled += GetSpeedInMetersPerSecond();
+                CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders.Sum(o => o.Order.PayloadWeight));
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Refuel the vehicle
+        /// </summary>
+        private void Refuel()
+        {
+            CurrentFuelLoaded += (FuelCapacity / RefuelingTime);
+
+            if (CurrentFuelLoaded > FuelCapacity)
+            {
+                CurrentFuelLoaded = FuelCapacity;
+                State = VehicleState.MovingToTarget;
+            }
+        }
+
+        /// <summary>
+        /// Find the nearest available orders that this vehicle can fulfill
+        /// </summary>
+        private List<CompletedOrder> FindOptimalOrders()
+        {
+            var fulfillableOrders = Simulation.OpenOrders.Where(o => o.PayloadWeight <= MaxPayload).ToList();
+
+            // Orders are available at the current position
+            if (fulfillableOrders.Any(o => o.Start == CurrentVertexPosition))
+            {
+                fulfillableOrders = fulfillableOrders.Where(o => o.Start == CurrentVertexPosition).ToList();
+            }
+            // Find orders at different positions
+            else
+            {
+                var ordersAtNearestBase = fulfillableOrders
+                    .GroupBy(o => o.Start)
+                    .OrderBy(o => Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, o.Key).Item2)
+                    .FirstOrDefault();
+
+                if (ordersAtNearestBase != null)
+                {
+                    fulfillableOrders = ordersAtNearestBase.ToList();
+                }
+            }
+
+            // Select which orders to accept based on target, weight, fuel requirements, etc.
+            var selectedOrders = new List<Tuple<Order, List<Vertex<VertexInfo, EdgeInfo>>>>();
+            if (fulfillableOrders.Count > 0)
+            {
+                var start = fulfillableOrders.First().Start;
+                var ordersSortedByNearestTarget = fulfillableOrders
+                    .GroupBy(o => o.Target)
+                    .OrderBy(o => Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, start, o.Key).Item2)
+                    .FirstOrDefault();
+
+                var payloadSoFar = 0d;
+
+                if (ordersSortedByNearestTarget != null)
+                {
+                    foreach (var order in ordersSortedByNearestTarget)
                     {
-                        // Set new position of the vehicle
-                        CurrentVertexPosition = Target;
-                        AssignOrder(CurrentOrder.Order);
+                        var (path, distance) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target);
+
+                        // Add distance between current position and to start, if any
+                        if (order.Start != CurrentVertexPosition)
+                        {
+                            distance += Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, order.Start).Item2;
+                        }
+
+                        if (GetMaximumTravelDistance(payloadSoFar + order.PayloadWeight) >= distance && payloadSoFar + order.PayloadWeight <= MaxPayload)
+                        {
+                            selectedOrders.Add(Tuple.Create(order, path));
+                            payloadSoFar += order.PayloadWeight;
+                        }
                     }
                 }
             }
-            else if (State == VehicleState.MovingToTarget)
-            {
-                if (CurrentOrder != null)
-                {
-                    // Calculate how many meters the vehicle travels in one simulation step
-                    // AverageSpeed is in km/h, dividing by 3.6 gives it in m/s.
-                    DistanceTraveled += AverageSpeed / 3.6d;
 
-                    Simulation.ProgressReporter.Report(
-                        new SimulationProgress(Simulation.Parameters.SimulationIdentifier, 
-                            $"Moving vehicle { GetHashCode() } to target { CurrentOrder.Target.Info.Name } from { CurrentOrder.Start.Info.Name } ({ DistanceTraveled / TotalDistanceToTarget * 100d:n2}%)"));
-
-                    // Arrived at target
-                    if (DistanceTraveled >= TotalDistanceToTarget)
-                    {
-                        // Close order
-                        Simulation.ClosedOrders.Add(CurrentOrder);
-                        CurrentOrder = null;
-
-                        // Set new position of the vehicle
-                        CurrentVertexPosition = Target;
-                        State = VehicleState.Idle;
-                    }
-                }
-            }  
+            return selectedOrders.Select(o => new CompletedOrder(o.Item1) { DeliveryPath = o.Item2 }).ToList();
         }
     }
 }
