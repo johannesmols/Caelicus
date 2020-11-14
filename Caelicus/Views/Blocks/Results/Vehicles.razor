@@ -10,7 +10,7 @@
                 @vehicle.State.ToString(): 
                 @vehicle.CurrentVertexPosition to 
                 @vehicle.CurrentTarget
-                (@($"{vehicle.DistanceTraveled / 1000d:0.00}") / @($"{vehicle.DistanceToCurrentTarget / 1000d:0.00}") km)
+                (@($"{vehicle.DistanceTraveled / 1000d:0.00}") / @($"{vehicle.DistanceToCurrentTarget / 1000d:0.00}") km) - Fuel: @($"{vehicle.CurrentFuelLoaded:0.00} / {vehicle.FuelCapacity:00}")
                 <ul>
                     @foreach (var order in vehicle.CurrentOrders)
                     {

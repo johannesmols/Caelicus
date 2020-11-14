@@ -222,7 +222,8 @@ namespace Caelicus.Simulation
                                 o?.DeliveryDistance, 
                                 o?.DeliveryPath?.Select(p => p.Info.Name).ToList())) ?? Array.Empty<HistoryCompletedOrder>()),
                         DistanceToCurrentTarget = vehicle.DistanceToCurrentTarget,
-                        DistanceTraveled = vehicle.DistanceTraveled
+                        DistanceTraveled = vehicle.DistanceTraveled,
+                        CurrentFuelLoaded = vehicle.CurrentFuelLoaded
                     };
 
                     simHistoryStep.Vehicles.Add(vehicleState);

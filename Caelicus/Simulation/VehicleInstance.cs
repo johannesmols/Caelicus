@@ -58,6 +58,7 @@ namespace Caelicus.Simulation
                     AssignOrders(FindOptimalOrders());
                     break;
                 case VehicleState.Refueling:
+                    Refuel();
                     break;
                 case VehicleState.MovingToTarget:
                     MoveTowardsTarget();
@@ -95,9 +96,6 @@ namespace Caelicus.Simulation
         {
             if (Move())
             {
-                // TODO Introduce real refueling
-                CurrentFuelLoaded = FuelCapacity;
-
                 // Finish orders
                 Simulation.ClosedOrders.AddRange(CurrentOrders);
 
@@ -108,7 +106,6 @@ namespace Caelicus.Simulation
                 DistanceToCurrentTarget = 0d;
                 DistanceTraveled = 0d;
 
-                // Change back to idle to receive new orders
                 State = VehicleState.Idle;
             }
         }
@@ -121,8 +118,8 @@ namespace Caelicus.Simulation
                 DistanceToCurrentTarget = 0d;
                 DistanceTraveled = 0d;
 
-                // Change state to indicate the vehicle is now delivering the orders
-                State = VehicleState.MovingToTarget;
+                // Refuel the vehicle before heading out to deliver
+                State = VehicleState.Refueling;
             }
         }
 
@@ -159,6 +156,20 @@ namespace Caelicus.Simulation
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Refuel the vehicle
+        /// </summary>
+        private void Refuel()
+        {
+            CurrentFuelLoaded += (FuelCapacity / RefuelingTime);
+
+            if (CurrentFuelLoaded > FuelCapacity)
+            {
+                CurrentFuelLoaded = FuelCapacity;
+                State = VehicleState.MovingToTarget;
+            }
         }
 
         /// <summary>
