@@ -28,6 +28,7 @@ namespace Caelicus.Simulation
             Vehicle = vehicle;
             CurrentVertexPosition = startingVertex;
             State = VehicleState.Idle;
+            CurrentFuelLoaded = FuelCapacity;
         }
 
         // State
@@ -77,7 +78,7 @@ namespace Caelicus.Simulation
                 if (orders.All(o => o.Start == CurrentVertexPosition))
                 {
                     CurrentOrders = orders;
-                    Simulation.OpenOrders = Simulation.OpenOrders.Except(orders).ToList();
+                    orders.ForEach(o => Simulation.OpenOrders.Remove(o.Order));
                     PathToTarget = orders.First().DeliveryPath;
                     State = VehicleState.MovingToTarget;
                     DistanceTraveled = 0d;
@@ -85,7 +86,7 @@ namespace Caelicus.Simulation
                 else
                 {
                     CurrentOrders = orders;
-                    Simulation.OpenOrders = Simulation.OpenOrders.Except(orders).ToList();
+                    orders.ForEach(o => Simulation.OpenOrders.Remove(o.Order));
                     PathToTarget = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, orders.First().Start).Item1;
                     State = VehicleState.PickingUpOrder;
                     DistanceTraveled = 0d;
@@ -95,7 +96,21 @@ namespace Caelicus.Simulation
 
         private void MoveTowardsTarget()
         {
+            if (Move())
+            {
+                // Finish orders
+                Simulation.ClosedOrders.AddRange(CurrentOrders);
 
+                // Clear order-related variables
+                CurrentOrders.Clear();
+                PathToTarget.Clear();
+                CurrentTarget = null;
+                DistanceToCurrentTarget = 0d;
+                DistanceTraveled = 0d;
+
+                // Change back to idle to receive new orders
+                State = VehicleState.Idle;
+            }
         }
 
         private void MoveTowardsPickup()
@@ -103,9 +118,39 @@ namespace Caelicus.Simulation
 
         }
 
-        private void Move()
+        /// <summary>
+        /// Move along the path towards the specified target
+        /// <returns>Whether it arrived at the final target</returns>
+        /// </summary>
+        private bool Move()
         {
+            if (CurrentTarget == null && PathToTarget.Count >= 2)
+            {
+                CurrentTarget = PathToTarget[1];
+                DistanceToCurrentTarget = PathToTarget[0].Edges.First(e => e.Destination == PathToTarget[1]).Info.Distance;
+            }
 
+            if (DistanceTraveled >= DistanceToCurrentTarget)
+            {
+                CurrentVertexPosition = CurrentTarget;
+
+                var currentIndexInPath = PathToTarget.IndexOf(CurrentVertexPosition);
+                if (currentIndexInPath == PathToTarget.Count - 1)
+                {
+                    return true;
+                }
+
+                CurrentTarget = PathToTarget[currentIndexInPath + 1];
+                DistanceTraveled = 0d;
+                DistanceToCurrentTarget = PathToTarget[currentIndexInPath].Edges.First(e => e.Destination == PathToTarget[currentIndexInPath + 1]).Info.Distance;
+            }
+            else
+            {
+                DistanceTraveled += GetSpeedInMetersPerSecond();
+                CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders.Sum(o => o.Order.PayloadWeight));
+            }
+
+            return false;
         }
 
         /// <summary>

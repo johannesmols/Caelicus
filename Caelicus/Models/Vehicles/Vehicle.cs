@@ -60,6 +60,16 @@ namespace Caelicus.Models.Vehicles
             return baseHourlyCost + baseDistanceCost;
         }
 
+        public double GetSpeedInMetersPerSecond()
+        {
+            return AverageSpeed / 3.6d;
+        }
+
+        public double GetFuelConsumptionForOneMeter(double payload)
+        {
+            return BaseFuelConsumption + ExtraFuelConsumptionPerKg * payload;
+        }
+
         /// <summary>
         /// Calculate how far the vehicle can travel given the fuel capacity and fuel consumption.
         /// </summary>

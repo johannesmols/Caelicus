@@ -27,6 +27,7 @@
   {
     "name": "Ship",
     "averageSpeed": 10,
+    "fuelCapacity": 100,
     "baseFuelConsumption": 5,
     "extraFuelConsumptionPerKg": 1,
     "refuelingTime": 60,
@@ -39,8 +40,9 @@
   {
     "name": "Lockheed SR-71 Blackbird",
     "averageSpeed": 3529,
-    "baseFuelConsumption": 5,
-    "extraFuelConsumptionPerKg": 1,
+    "fuelCapacity": 10000,
+    "baseFuelConsumption": 0.001,
+    "extraFuelConsumptionPerKg": 0,
     "refuelingTime": 60,
     "allowRefuelAtTarget": false,
     "maxPayload": 5000,

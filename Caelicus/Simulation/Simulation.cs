@@ -117,28 +117,28 @@ namespace Caelicus.Simulation
         /// <returns></returns>
         public bool IsDone()
         {
-            if (OpenOrders.Count == 0 && Vehicles.All(v => v.CurrentOrder == null))
-            {
-                return true;
-            }
+            //if (OpenOrders.Count == 0 && Vehicles.All(v => v.CurrentOrder == null))
+            //{
+            //    return true;
+            //}
 
-            // Check whether there are any open orders that can not be completed because the distance is too great, or because the payload exceeds the vehicles maximum
-            if (OpenOrders.Count > 0)
-            {
-                if (Vehicles.All(v => v.State == VehicleState.Idle))
-                {
-                    foreach (var order in OpenOrders)
-                    {
-                        var vehicleTypeValues = Vehicles.First();
-                        var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
-                        var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target).Item2;
-                        if (orderTravelDistance > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
+            //// Check whether there are any open orders that can not be completed because the distance is too great, or because the payload exceeds the vehicles maximum
+            //if (OpenOrders.Count > 0)
+            //{
+            //    if (Vehicles.All(v => v.State == VehicleState.Idle))
+            //    {
+            //        foreach (var order in OpenOrders)
+            //        {
+            //            var vehicleTypeValues = Vehicles.First();
+            //            var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
+            //            var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target).Item2;
+            //            if (orderTravelDistance > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload)
+            //            {
+            //                return true;
+            //            }
+            //        }
+            //    }
+            //}
 
             return false;
         }
