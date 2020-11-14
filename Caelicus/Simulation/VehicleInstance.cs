@@ -95,6 +95,9 @@ namespace Caelicus.Simulation
         {
             if (Move())
             {
+                // TODO Introduce real refueling
+                CurrentFuelLoaded = FuelCapacity;
+
                 // Finish orders
                 Simulation.ClosedOrders.AddRange(CurrentOrders);
 
@@ -208,7 +211,7 @@ namespace Caelicus.Simulation
                             distance += Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, order.Start).Item2;
                         }
 
-                        if (GetMaximumTravelDistance(payloadSoFar + order.PayloadWeight) >= distance)
+                        if (GetMaximumTravelDistance(payloadSoFar + order.PayloadWeight) >= distance && payloadSoFar + order.PayloadWeight <= MaxPayload)
                         {
                             selectedOrders.Add(Tuple.Create(order, path));
                             payloadSoFar += order.PayloadWeight;

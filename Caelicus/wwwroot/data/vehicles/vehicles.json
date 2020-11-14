@@ -1,13 +1,13 @@
 [
   {
-    "name": "Drone",
-    "averageSpeed": 30,
-    "fuelCapacity": 100,
-    "baseFuelConsumption": 5, 
-    "extraFuelConsumptionPerKg": 1, 
+    "name": "DJI Matrice 600 Drone",
+    "averageSpeed": 64,
+    "fuelCapacity": 18844.4,
+    "baseFuelConsumption": 0.001, 
+    "extraFuelConsumptionPerKg": 0, 
     "refuelingTime": 60,
     "allowRefuelAtTarget": false,
-    "maxPayload": 5,
+    "maxPayload": 5.5,
     "purchasingCost": 3000, 
     "costPerHour": 10,
     "costPerKm": 5

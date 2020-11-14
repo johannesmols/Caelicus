@@ -62,7 +62,7 @@ namespace Caelicus.Simulation
                 OpenOrders.Add(new Order(
                     allBases[new Random((Parameters.RandomSeed + i) * 133742069).Next(allBases.Count)], 
                     allTargets[new Random((Parameters.RandomSeed + i) * 133742069).Next(allTargets.Count)], 
-                    10));
+                    5.5d));
             }
         }
 
@@ -117,7 +117,7 @@ namespace Caelicus.Simulation
         /// <returns></returns>
         public bool IsDone()
         {
-            if (OpenOrders.Count == 0 && Vehicles.All(v => v.CurrentOrders.Count == 0 && v.State == VehicleState.Idle))
+            if (OpenOrders.Count == 0 && Vehicles.All(v => v.State == VehicleState.Idle))
             {
                 return true;
             }
@@ -126,16 +126,19 @@ namespace Caelicus.Simulation
             {
                 if (Vehicles.All(v => v.State == VehicleState.Idle))
                 {
+                    var deliverable = 0;
                     foreach (var order in OpenOrders)
                     {
                         var vehicleTypeValues = Vehicles.First();
                         var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
                         var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target).Item2;
-                        if (orderTravelDistance > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload)
+                        if (!(orderTravelDistance > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload))
                         {
-                            return true;
+                            deliverable++;
                         }
                     }
+
+                    return deliverable <= 0;
                 }
             }
 
