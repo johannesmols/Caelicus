@@ -27,5 +27,7 @@ namespace Caelicus.Simulation
         public double SimulationSpeed { get; set; } = 1f;
 
         public int NumberOfOrders { get; set; } = 100;
+
+        public Tuple<double, double> MinMaxPayload = Tuple.Create(0.1d, 5d);
     }
 }

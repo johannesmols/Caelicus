@@ -14,7 +14,7 @@
                 <ul>
                     @foreach (var order in vehicle.CurrentOrders)
                     {
-                        <li>@order.Start to @order.Target (@order.PayloadWeight kg)</li>
+                        <li>@order.Start to @order.Target (@($"{order.PayloadWeight:0.00}") kg)</li>
                     }
                 </ul>
             </li>

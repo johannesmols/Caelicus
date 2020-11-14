@@ -57,6 +57,13 @@ namespace Caelicus.Services
             NotifyStateChanged(source, nameof(NumberOfOrders));
         }
 
+        public Tuple<double, double> MinMaxPayload { get; set; } = Tuple.Create(0.1d, 5d);
+
+        public void UpdateMinMaxPayload(ComponentBase source, Tuple<double, double> minMaxPayload)
+        {
+            MinMaxPayload = minMaxPayload;
+            NotifyStateChanged(source, nameof(MinMaxPayload));
+        }
 
         // Simulation Results / History
 

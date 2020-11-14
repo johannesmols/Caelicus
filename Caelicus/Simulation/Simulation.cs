@@ -62,7 +62,7 @@ namespace Caelicus.Simulation
                 OpenOrders.Add(new Order(
                     allBases[new Random((Parameters.RandomSeed + i) * 133742069).Next(allBases.Count)], 
                     allTargets[new Random((Parameters.RandomSeed + i) * 133742069).Next(allTargets.Count)], 
-                    5.5d));
+                    new Random((Parameters.RandomSeed + i) * 133742069).NextDouble() * (Parameters.MinMaxPayload.Item2 - Parameters.MinMaxPayload.Item1) + Parameters.MinMaxPayload.Item1));
             }
         }
 
