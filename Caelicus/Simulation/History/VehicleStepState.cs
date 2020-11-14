@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Caelicus.Graph;
+using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
 
 namespace Caelicus.Simulation.History
@@ -9,22 +11,33 @@ namespace Caelicus.Simulation.History
     public class VehicleStepState : Vehicle
     {
         public VehicleState State { get; set; }
-        public string CurrentVertexPosition { get; set; }
-        public string Target { get; set; }
-        public HistoryCompletedOrder CurrentOrder { get; set; }
         public List<string> PathToTarget { get; set; }
-        public double DistanceToTarget { get; set; }
+        public string CurrentVertexPosition { get; set; }
+        public string CurrentTarget { get; set; }
+        public double DistanceToCurrentTarget { get; set; }
         public double DistanceTraveled { get; set; }
+        public List<HistoryCompletedOrder> CurrentOrders { get; set; }
+        public double CurrentFuelLoaded { get; set; }
 
-        public VehicleStepState(Vehicle vehicle, VehicleState state, string currentVertexPosition, string target, HistoryCompletedOrder currentOrder, List<string> pathToTarget, double distanceToTarget, double distanceTraveled) : base(vehicle)
+        public VehicleStepState(
+            Vehicle vehicle, 
+            VehicleState state, 
+            string currentVertexPosition, 
+            string currentTarget, 
+            List<HistoryCompletedOrder> currentOrders, 
+            List<string> pathToTarget, 
+            double distanceToCurrentTarget, 
+            double distanceTraveled, 
+            double currentFuelLoaded) : base(vehicle)
         {
             State = state;
             CurrentVertexPosition = currentVertexPosition;
-            Target = target;
-            CurrentOrder = currentOrder;
+            CurrentTarget = currentTarget;
+            CurrentOrders = currentOrders;
             PathToTarget = pathToTarget;
-            DistanceToTarget = distanceToTarget;
+            DistanceToCurrentTarget = distanceToCurrentTarget;
             DistanceTraveled = distanceTraveled;
+            CurrentFuelLoaded = currentFuelLoaded;
         }
 
         public VehicleStepState(Vehicle vehicle) : base(vehicle)

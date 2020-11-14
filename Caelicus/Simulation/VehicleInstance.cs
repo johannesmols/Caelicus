@@ -45,9 +45,6 @@ namespace Caelicus.Simulation
         // Order management
         public List<CompletedOrder> CurrentOrders { get; private set; }
 
-        // Will be obsolete
-        public CompletedOrder CurrentOrder { get; private set; }
-
         // Fuel
         public double CurrentFuelLoaded { get; private set; }
 
@@ -221,93 +218,6 @@ namespace Caelicus.Simulation
             }
 
             return selectedOrders.Select(o => new CompletedOrder(o.Item1) { DeliveryPath = o.Item2 }).ToList();
-        }
-
-
-        // Old stuff
-
-        public void AssignOrder(Order order)
-        {
-            CurrentTarget = order.Target;
-            State = VehicleState.MovingToTarget;
-            PrepareOrder(order);
-        }
-
-        public void AssignOrderAtDifferentBase(Order order, Vertex<VertexInfo, EdgeInfo> target)
-        {
-            CurrentTarget = target;
-            State = VehicleState.PickingUpOrder;
-            PrepareOrder(order);
-        }
-
-        private void PrepareOrder(Order order)
-        {
-            CurrentOrder = new CompletedOrder(order);
-            DistanceTraveled = 0d;
-            Simulation.OpenOrders.Remove(order);
-            var (path, distance) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target);
-            PathToTarget = path;
-            DistanceToCurrentTarget = distance;
-        }
-
-        public void Advance()
-        {
-            if (State == VehicleState.Idle)
-            {
-                Simulation.ProgressReporter.Report(
-                    new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
-                        $"Vehicle { GetHashCode() } idling at base station { CurrentVertexPosition.Info.Name }"));
-            }
-            else if (State == VehicleState.Refueling)
-            {
-
-            }
-            else if (State == VehicleState.PickingUpOrder)
-            {
-                if (CurrentTarget != null)
-                {
-                    // Calculate how many meters the vehicle travels in one simulation step
-                    // AverageSpeed is in km/h, dividing by 3.6 gives it in m/s.
-                    DistanceTraveled += AverageSpeed / 3.6d;
-
-                    Simulation.ProgressReporter.Report(
-                        new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
-                            $"Moving vehicle { GetHashCode() } to base { CurrentTarget.Info.Name } from { CurrentVertexPosition.Info.Name } to pick up next order ({ DistanceTraveled / DistanceToCurrentTarget * 100d:n2}%)"));
-
-                    // Arrived at base station
-                    if (DistanceTraveled >= DistanceToCurrentTarget)
-                    {
-                        // Set new position of the vehicle
-                        CurrentVertexPosition = CurrentTarget;
-                        AssignOrder(CurrentOrder.Order);
-                    }
-                }
-            }
-            else if (State == VehicleState.MovingToTarget)
-            {
-                if (CurrentOrder != null)
-                {
-                    // Calculate how many meters the vehicle travels in one simulation step
-                    // AverageSpeed is in km/h, dividing by 3.6 gives it in m/s.
-                    DistanceTraveled += AverageSpeed / 3.6d;
-
-                    Simulation.ProgressReporter.Report(
-                        new SimulationProgress(Simulation.Parameters.SimulationIdentifier, 
-                            $"Moving vehicle { GetHashCode() } to target { CurrentOrder.Target.Info.Name } from { CurrentOrder.Start.Info.Name } ({ DistanceTraveled / DistanceToCurrentTarget * 100d:n2}%)"));
-
-                    // Arrived at target
-                    if (DistanceTraveled >= DistanceToCurrentTarget)
-                    {
-                        // Close order
-                        Simulation.ClosedOrders.Add(CurrentOrder);
-                        CurrentOrder = null;
-
-                        // Set new position of the vehicle
-                        CurrentVertexPosition = CurrentTarget;
-                        State = VehicleState.Idle;
-                    }
-                }
-            }  
         }
     }
 }

@@ -205,21 +205,20 @@ namespace Caelicus.Simulation
                     var vehicleState = new VehicleStepState(vehicle.Vehicle)
                     {
                         State = vehicle.State,
-                        CurrentVertexPosition = vehicle.CurrentVertexPosition?.Info.Name,
-                        Target = vehicle.CurrentTarget?.Info.Name,
-                        CurrentOrder = new HistoryCompletedOrder(
-                            new HistoryOrder()
-                            {
-                                Start = vehicle.CurrentOrder?.Order?.Start?.Info.Name,
-                                Target = vehicle.CurrentOrder?.Order?.Target?.Info.Name,
-                                PayloadWeight = vehicle.CurrentOrder?.Order?.PayloadWeight
-                            },
-                            vehicle.CurrentOrder?.DeliveryTime,
-                            vehicle.CurrentOrder?.DeliveryDistance,
-                            vehicle.CurrentOrder?.DeliveryPath?.Select(p => p.Id).ToList()
-                        ),
                         PathToTarget = vehicle.PathToTarget?.Select(p => p.Info.Name).ToList(),
-                        DistanceToTarget = vehicle.DistanceToCurrentTarget,
+                        CurrentVertexPosition = vehicle.CurrentVertexPosition?.Info?.Name,
+                        CurrentTarget = vehicle.CurrentTarget?.Info?.Name,
+                        CurrentOrders = new List<HistoryCompletedOrder>(vehicle.CurrentOrders?.Select(o => 
+                            new HistoryCompletedOrder(new HistoryOrder
+                                {
+                                    Start = o?.Start?.Info?.Name,
+                                    Target = o?.Target?.Info?.Name,
+                                    PayloadWeight = o?.PayloadWeight
+                                }, 
+                                o?.DeliveryTime, 
+                                o?.DeliveryDistance, 
+                                o?.DeliveryPath?.Select(p => p.Id).ToList())) ?? Array.Empty<HistoryCompletedOrder>()),
+                        DistanceToCurrentTarget = vehicle.DistanceToCurrentTarget,
                         DistanceTraveled = vehicle.DistanceTraveled
                     };
 

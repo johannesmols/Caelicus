@@ -23,6 +23,9 @@ namespace Caelicus.Helpers
         // TODO: This is probably pretty inaccurate over long distances but since it is only used to display vehicles on the map, it's fine for now
         public static Tuple<double, double> CalculatePointInBetweenTwoPoints(Tuple<double, double> start, Tuple<double, double> end, double progress)
         {
+            if (progress >= 1d)
+                progress = 1d;
+
             var difference = Tuple.Create(start.Item1 - end.Item1, start.Item2 - end.Item2);
             var middlePoint = Tuple.Create(start.Item1 - (difference.Item1 * progress), start.Item2 - (difference.Item2 * progress));
 
