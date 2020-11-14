@@ -16,10 +16,12 @@ namespace Caelicus.Simulation
 
         public Order Order { get; }
 
+        public List<Vertex<VertexInfo, EdgeInfo>> DeliveryPath { get; set; }
+
+
+        // Statistics about order delivery
         public double DeliveryTime { get; set; }
 
         public double DeliveryDistance { get; set; }
-
-        public List<Vertex<VertexInfo, EdgeInfo>> DeliveryPath { get; set; }
     }
 }
