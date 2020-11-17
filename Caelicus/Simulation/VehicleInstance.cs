@@ -63,6 +63,7 @@ namespace Caelicus.Simulation
             var (path, distance) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target);
             PathToTarget = path;
             TotalDistanceToTarget = distance;
+            CurrentOrder.DeliveryDistance = distance;
         }
 
         public void Advance()
@@ -105,6 +106,8 @@ namespace Caelicus.Simulation
                     // Calculate how many meters the vehicle travels in one simulation step
                     // AverageSpeed is in km/h, dividing by 3.6 gives it in m/s.
                     DistanceTraveled += AverageSpeed / 3.6d;
+                    //each step is 1 second
+                    CurrentOrder.DeliveryTime++;
 
                     Simulation.ProgressReporter.Report(
                         new SimulationProgress(Simulation.Parameters.SimulationIdentifier, 
