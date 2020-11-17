@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using Caelicus.Graph;
 using Caelicus.Models.Graph;
 
@@ -31,19 +32,36 @@ namespace Caelicus.Models.Vehicles
         public string Name { get; set; }
 
         // Movement
+        [Description("km/h")]
         public double AverageSpeed { get; set; }
+
+        [Description("liters, mAh, etc.")]
         public double FuelCapacity { get; set; }
+
+        [Description("per meter")]
         public double BaseFuelConsumption { get; set; }
+
+        [Description("per kg per meter")]
         public double ExtraFuelConsumptionPerKg { get; set; }
+
+        [Description("seconds")]
         public double RefuelingTime { get; set; }
+
+        [Description("true/false")]
         public bool AllowRefuelAtTarget { get; set; }
 
         // Transport
+        [Description("kg")]
         public double MaxPayload { get; set; }
         
         // Cost
+        [Description("€")]
         public double PurchasingCost { get; set; }
+
+        [Description("€")]
         public double CostPerHour { get; set; }
+
+        [Description("€")]
         public double CostPerKm { get; set; }
 
         /// <summary>
