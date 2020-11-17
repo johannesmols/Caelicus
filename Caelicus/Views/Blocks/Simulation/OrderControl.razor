@@ -6,19 +6,20 @@
         <label for="orders" style="margin-right: 10px">Orders:</label>
         <input type="number" class="form-control" style="flex: 1" id="orders" value="@_orders" step="1" min="1" @onchange="OrdersChanged" />
     </div>
-    <div class="form-group">
-        <div class="row no-gutters">
-            <div class="col" style="padding: 0 5px">
-                <label for="minPayload" style="margin-right: 10px">Min Payload</label>
-                <input type="number" id="minPayload" class="form-control" placeholder="Minimum" min="0.01" max="@int.MaxValue" value="0.1" step="0.1" @onchange="PayloadMinChanged"/>
-            </div>
-            <div class="col" style="padding: 0 5px">
-                <label for="maxPayload" style="margin-right: 10px">Max Payload</label>
-                <input type="number" id="maxPayload" class="form-control" placeholder="Maximum" min="0.01" max="@int.MaxValue" value="5" step="0.1" @onchange="PayloadMaxChanged"/>
-            </div>
+</form>
+
+<div class="form-group pb-3" style="width: 100%">
+    <div class="row no-gutters">
+        <div class="col" style="padding: 0 5px">
+            <label for="minPayload" style="margin-right: 10px">Min Payload:</label>
+            <input type="number" id="minPayload" class="form-control" placeholder="Minimum" min="0.01" max="@int.MaxValue" value="0.1" step="0.1" @onchange="PayloadMinChanged"/>
+        </div>
+        <div class="col" style="padding: 0 5px">
+            <label for="maxPayload" style="margin-right: 10px">Max Payload:</label>
+            <input type="number" id="maxPayload" class="form-control" placeholder="Maximum" min="0.01" max="@int.MaxValue" value="5" step="0.1" @onchange="PayloadMaxChanged"/>
         </div>
     </div>
-</form>
+</div>
 
 @code {
     private int _orders = 100;
