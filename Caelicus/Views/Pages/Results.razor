@@ -1,6 +1,8 @@
 ﻿@page "/results"
 @inject AppState AppState
 @inject TimerService Timer
+@using System.ComponentModel
+@using Caelicus.Helpers
 @implements IDisposable
 
 <div class="container-fluid h-100">
@@ -16,6 +18,36 @@
         </div>
         <div class="col-md-6">
             <strong>Random Seed:</strong> @AppState.SimulationHistory.Parameters.RandomSeed
+        </div>
+    </div>
+    
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Property</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Unit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var property in typeof(Vehicle).GetProperties())
+                    {
+                        <tr>
+                            <td>@property.Name.SplitCamelCase()</td>
+                            <td>@(AppState.SimulationHistory?.Parameters?.VehicleTemplate != null ? property.GetValue(AppState.SimulationHistory.Parameters.VehicleTemplate) : string.Empty)</td>
+                            @{
+                                var customAttributes = property.GetCustomAttributes(typeof(DescriptionAttribute), true);
+                                if (customAttributes.Any())
+                                {
+                                    <td>@(((DescriptionAttribute) customAttributes[0]).Description)</td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -39,21 +71,21 @@
                 <strong>Vehicles</strong>
             </div>
 
-            <Vehicles />
+            <Vehicles/>
         </div>
         <div class="col-4 border border-secondary">
             <div style="text-align: center">
                 <strong>Open Orders</strong>
             </div>
 
-            <OpenOrders />
+            <OpenOrders/>
         </div>
         <div class="col-4 border border-secondary">
             <div style="text-align: center">
                 <strong>Closed Orders</strong>
             </div>
 
-            <ClosedOrders />
+            <ClosedOrders/>
         </div>
     </div>
 
@@ -62,7 +94,7 @@
             <div style="text-align: center">
                 <strong>Map</strong>
             </div>
-            
+
             <ResultsMap/>
         </div>
     </div>
