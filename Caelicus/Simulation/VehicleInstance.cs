@@ -41,6 +41,8 @@ namespace Caelicus.Simulation
         public Vertex<VertexInfo, EdgeInfo> CurrentTarget { get; private set; }
         public double DistanceToCurrentTarget { get; private set; }
         public double DistanceTraveled { get; private set; }
+        public double TotalTravelDistance { get; private set; }
+        public double TotalTravelTime { get; private set; }
 
         // Order management
         public List<CompletedOrder> CurrentOrders { get; private set; }
@@ -153,6 +155,9 @@ namespace Caelicus.Simulation
             {
                 DistanceTraveled += GetSpeedInMetersPerSecond();
                 CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders.Sum(o => o.Order.PayloadWeight));
+                //statistics
+                TotalTravelDistance += GetSpeedInMetersPerSecond();
+                TotalTravelTime++;
             }
 
             return false;

@@ -68,7 +68,10 @@ namespace Caelicus.Services
 
                 if (!DataPoints.ContainsKey(item.Parameters.NumberOfVehicles))
                 {
-                    DataPoints.Add(item.Parameters.NumberOfVehicles, new Dictionary<string, Dictionary<DataPointType, double>>());
+                    DataPoints.Add(item.Parameters.NumberOfVehicles, new Dictionary<string, Dictionary<DataPointType, double>>());                    
+                }
+                if(!DataPoints[item.Parameters.NumberOfVehicles].ContainsKey(item.Parameters.VehicleTemplate.Name))
+                {
                     DataPoints[item.Parameters.NumberOfVehicles][item.Parameters.VehicleTemplate.Name] = new Dictionary<DataPointType, double>();
                 }
                 DataPoints[item.Parameters.NumberOfVehicles][item.Parameters.VehicleTemplate.Name][DataPointType.avgDeliveryTime] = avgDeliveryTime;

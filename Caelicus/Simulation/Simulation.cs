@@ -35,7 +35,7 @@ namespace Caelicus.Simulation
         public Simulation(SimulationParameters parameters)
         {
             Parameters = parameters;
-            SimulationHistory = new SimulationHistory(parameters, Vehicles);
+            SimulationHistory = new SimulationHistory(parameters);
             SecondsPerSimulationStep = 1d / Parameters.SimulationSpeed;
 
             var allBases = Parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Base).ToList();
@@ -105,9 +105,8 @@ namespace Caelicus.Simulation
 
             // Record last step as well
             RecordSimulationStep();
-
+            SimulationHistory.Vehicles = Vehicles;
             ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Finished simulation with { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
-
             return SimulationHistory;
         }
 
