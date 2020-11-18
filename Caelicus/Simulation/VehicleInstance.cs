@@ -39,6 +39,8 @@ namespace Caelicus.Simulation
         public double TotalDistanceToTarget { get; private set; }
         public List<Tuple<Vertex<VertexInfo, EdgeInfo>, double>> DistanceToWaypoints { get; private set; }
         public double DistanceTraveled { get; private set; }
+        public double TotalTravelTime { get; private set; }
+        public double TotalTravelDistance { get; private set; }
         public double CurrentFuel { get; private set; }
 
         public void AssignOrder(Order order)
@@ -76,7 +78,7 @@ namespace Caelicus.Simulation
             }
             else if (State == VehicleState.Refueling)
             {
-
+                TotalTravelTime++;
             }
             else if (State == VehicleState.PickingUpOrder)
             {
@@ -85,6 +87,10 @@ namespace Caelicus.Simulation
                     // Calculate how many meters the vehicle travels in one simulation step
                     // AverageSpeed is in km/h, dividing by 3.6 gives it in m/s.
                     DistanceTraveled += AverageSpeed / 3.6d;
+
+                    //Tracking for statistics
+                    TotalTravelDistance += AverageSpeed / 3.6d;
+                    TotalTravelTime++;
 
                     Simulation.ProgressReporter.Report(
                         new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
@@ -106,11 +112,14 @@ namespace Caelicus.Simulation
                     // Calculate how many meters the vehicle travels in one simulation step
                     // AverageSpeed is in km/h, dividing by 3.6 gives it in m/s.
                     DistanceTraveled += AverageSpeed / 3.6d;
-                    //each step is 1 second
+
+                    //Tracking for statistics
+                    TotalTravelDistance += AverageSpeed / 3.6d;
+                    TotalTravelTime++;
                     CurrentOrder.DeliveryTime++;
 
                     Simulation.ProgressReporter.Report(
-                        new SimulationProgress(Simulation.Parameters.SimulationIdentifier, 
+                        new SimulationProgress(Simulation.Parameters.SimulationIdentifier,
                             $"Moving vehicle { GetHashCode() } to target { CurrentOrder.Target.Info.Name } from { CurrentOrder.Start.Info.Name } ({ DistanceTraveled / TotalDistanceToTarget * 100d:n2}%)"));
 
                     // Arrived at target

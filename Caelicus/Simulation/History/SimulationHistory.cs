@@ -13,10 +13,11 @@ namespace Caelicus.Simulation.History
         public SimulationParameters Parameters { get; }
 
         public readonly List<SimulationHistoryStep> Steps = new List<SimulationHistoryStep>();
-
-        public SimulationHistory(SimulationParameters parameters)
+        public readonly List<VehicleInstance> Vehicles = new List<VehicleInstance>();
+        public SimulationHistory(SimulationParameters parameters, List<VehicleInstance> vehicles)
         {
             Parameters = parameters;
+            Vehicles = vehicles;
         }
     }
 }

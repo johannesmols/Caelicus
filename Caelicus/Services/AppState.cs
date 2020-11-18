@@ -58,9 +58,17 @@ namespace Caelicus.Services
         }
 
 
+        public List<SimulationHistory> SimulationHistories { get; set; } = new List<SimulationHistory>();
+
+        public void UpdateSimulationHistoryList(ComponentBase source, List<SimulationHistory> simulationHistories)
+        {
+            SimulationHistories = simulationHistories;
+            NotifyStateChanged(source, nameof(SimulationHistory));
+        }
+
         // Simulation Results / History
 
-        public SimulationHistory SimulationHistory { get; set; } = new SimulationHistory(new SimulationParameters());
+        public SimulationHistory SimulationHistory { get; set; } = new SimulationHistory(new SimulationParameters(), new List<VehicleInstance>());
 
         public void UpdateSimulationHistory(ComponentBase source, SimulationHistory simulationHistory)
         {

@@ -117,6 +117,7 @@
         // Start the simulations
         _simulationRunning = true;
         _results = await _simulationManager.StartSimulations();
+        AppState.UpdateSimulationHistoryList(this, _results);
         _simulationRunning = false;
     }
 

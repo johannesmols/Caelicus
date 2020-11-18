@@ -35,7 +35,7 @@ namespace Caelicus.Simulation
         public Simulation(SimulationParameters parameters)
         {
             Parameters = parameters;
-            SimulationHistory = new SimulationHistory(parameters);
+            SimulationHistory = new SimulationHistory(parameters, Vehicles);
             SecondsPerSimulationStep = 1d / Parameters.SimulationSpeed;
 
             var allBases = Parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Base).ToList();
