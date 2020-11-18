@@ -9,8 +9,14 @@
             <li>
                 @vehicle.State.ToString(): 
                 @vehicle.CurrentVertexPosition to 
-                @vehicle.Target 
-                (@(string.Format("{0:0.00}", vehicle.DistanceTraveled / 1000d)) / @(string.Format("{0:0.00}", vehicle.DistanceToTarget / 1000d)) km) 
+                @vehicle.CurrentTarget
+                (@($"{vehicle.DistanceTraveled / 1000d:0.00}") / @($"{vehicle.DistanceToCurrentTarget / 1000d:0.00}") km) - Fuel: @($"{vehicle.CurrentFuelLoaded:0.00} / {vehicle.FuelCapacity:00}")
+                <ul>
+                    @foreach (var order in vehicle.CurrentOrders)
+                    {
+                        <li>@order.Start to @order.Target (@($"{order.PayloadWeight:0.00}") kg)</li>
+                    }
+                </ul>
             </li>
         }
     }

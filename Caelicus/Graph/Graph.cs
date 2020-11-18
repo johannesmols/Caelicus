@@ -198,16 +198,18 @@ namespace Caelicus.Graph
                 if (current.Equals(target.Id))
                     break;
 
-                foreach (var edge in graph._vertices.Find(v => v.Id.Equals(current)).Edges)
-                {
-                    var newCost = costSoFar[current] + edge.Info.Distance;
-                    if (!costSoFar.ContainsKey(edge.Destination.Id) || newCost < costSoFar[edge.Destination.Id])
+                var enumerable = graph._vertices.Find(v => v.Id.Equals(current))?.Edges;
+                if (enumerable != null)
+                    foreach (var edge in enumerable)
                     {
-                        costSoFar[edge.Destination.Id] = newCost;
-                        frontier.Enqueue(edge.Destination.Id, newCost);
-                        cameFrom[edge.Destination.Id] = current;
+                        var newCost = costSoFar[current] + edge.Info.Distance;
+                        if (!costSoFar.ContainsKey(edge.Destination.Id) || newCost < costSoFar[edge.Destination.Id])
+                        {
+                            costSoFar[edge.Destination.Id] = newCost;
+                            frontier.Enqueue(edge.Destination.Id, newCost);
+                            cameFrom[edge.Destination.Id] = current;
+                        }
                     }
-                }
             }
 
             // Get shortest path

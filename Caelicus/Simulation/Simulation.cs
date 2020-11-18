@@ -21,7 +21,7 @@ namespace Caelicus.Simulation
         public readonly SimulationParameters Parameters;
         public readonly SimulationHistory SimulationHistory;
         public List<VehicleInstance> Vehicles { get; } = new List<VehicleInstance>();
-        public List<Order> OpenOrders { get; } = new List<Order>();
+        public List<Order> OpenOrders { get; set; } = new List<Order>();
         public List<CompletedOrder> ClosedOrders { get; set; } = new List<CompletedOrder>();
 
         public readonly double SecondsPerSimulationStep;
@@ -62,7 +62,7 @@ namespace Caelicus.Simulation
                 OpenOrders.Add(new Order(
                     allBases[new Random((Parameters.RandomSeed + i) * 133742069).Next(allBases.Count)], 
                     allTargets[new Random((Parameters.RandomSeed + i) * 133742069).Next(allTargets.Count)], 
-                    10));
+                    new Random((Parameters.RandomSeed + i) * 133742069).NextDouble() * (Parameters.MinMaxPayload.Item2 - Parameters.MinMaxPayload.Item1) + Parameters.MinMaxPayload.Item1));
             }
         }
 
@@ -83,8 +83,8 @@ namespace Caelicus.Simulation
                     $"Simulating at step { SimulationStep }: " +
                     $"({ OpenOrders.Count } open orders, " +
                     $"{ ClosedOrders.Count } closed orders, " +
-                    $"{ Vehicles.Where(v => v.CurrentOrder != null && v.State == VehicleState.MovingToTarget).ToList().Count } orders in progress, " +
-                    $"{ Vehicles.Where(v => v.CurrentOrder != null && v.State == VehicleState.PickingUpOrder).ToList().Count } in pickup)"));
+                    $"{ Vehicles.Where(v => v.CurrentOrders != null && v.State == VehicleState.MovingToTarget).ToList().Sum(v => v.CurrentOrders.Count) } orders in progress, " +
+                    $"{ Vehicles.Where(v => v.CurrentOrders != null && v.State == VehicleState.PickingUpOrder).ToList().Sum(v => v.CurrentOrders.Count) } in pickup)"));
 
                 // Record the current state of the simulation
                 RecordSimulationStep();
@@ -117,26 +117,28 @@ namespace Caelicus.Simulation
         /// <returns></returns>
         public bool IsDone()
         {
-            if (OpenOrders.Count == 0 && Vehicles.All(v => v.CurrentOrder == null))
+            if (OpenOrders.Count == 0 && Vehicles.All(v => v.State == VehicleState.Idle))
             {
                 return true;
             }
 
-            // Check whether there are any open orders that can not be completed because the distance is too great, or because the payload exceeds the vehicles maximum
             if (OpenOrders.Count > 0)
             {
                 if (Vehicles.All(v => v.State == VehicleState.Idle))
                 {
+                    var deliverable = 0;
                     foreach (var order in OpenOrders)
                     {
                         var vehicleTypeValues = Vehicles.First();
                         var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
                         var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target).Item2;
-                        if (orderTravelDistance > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload)
+                        if (!(orderTravelDistance > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload))
                         {
-                            return true;
+                            deliverable++;
                         }
                     }
+
+                    return deliverable <= 0;
                 }
             }
 
@@ -148,32 +150,8 @@ namespace Caelicus.Simulation
         /// </summary>
         public void Advance()
         {
-            // Assign open orders to any available vehicle
-            foreach (var vehicle in Vehicles.Where(vehicle => vehicle.State == VehicleState.Idle))
-            {
-                var availableOrders = OpenOrders.Where(o =>
-                    o.Start == vehicle.CurrentVertexPosition &&
-                    o.PayloadWeight <= vehicle.MaxPayload &&
-                    Parameters.Graph.FindShortestPath(Parameters.Graph, o.Start, o.Target).Item2 <=
-                    vehicle.GetMaximumTravelDistance(o.PayloadWeight)
-                ).ToList();
-
-                if (availableOrders.Count > 0)
-                {
-                    vehicle.AssignOrder(availableOrders.First());
-                }
-                else
-                {
-                    var (order, target) = GetNearestOpenOrder(vehicle);
-                    if (order != null && target != null)
-                    {
-                        vehicle.AssignOrderAtDifferentBase(order, target);
-                    }
-                }
-            }
-
             // Advance all vehicles and their assigned orders
-            Vehicles.ForEach(v => v.Advance());
+            Vehicles.ForEach(v => v.AdvanceNew());
 
             SimulationStep++;
         }
@@ -230,22 +208,22 @@ namespace Caelicus.Simulation
                     var vehicleState = new VehicleStepState(vehicle.Vehicle)
                     {
                         State = vehicle.State,
-                        CurrentVertexPosition = vehicle.CurrentVertexPosition?.Info.Name,
-                        Target = vehicle.Target?.Info.Name,
-                        CurrentOrder = new HistoryCompletedOrder(
-                            new HistoryOrder()
-                            {
-                                Start = vehicle.CurrentOrder?.Order?.Start?.Info.Name,
-                                Target = vehicle.CurrentOrder?.Order?.Target?.Info.Name,
-                                PayloadWeight = vehicle.CurrentOrder?.Order?.PayloadWeight
-                            },
-                            vehicle.CurrentOrder?.DeliveryTime,
-                            vehicle.CurrentOrder?.DeliveryDistance,
-                            vehicle.CurrentOrder?.DeliveryPath?.Select(p => p.Id).ToList()
-                        ),
                         PathToTarget = vehicle.PathToTarget?.Select(p => p.Info.Name).ToList(),
-                        DistanceToTarget = vehicle.TotalDistanceToTarget,
-                        DistanceTraveled = vehicle.DistanceTraveled
+                        CurrentVertexPosition = vehicle.CurrentVertexPosition?.Info?.Name,
+                        CurrentTarget = vehicle.CurrentTarget?.Info?.Name,
+                        CurrentOrders = new List<HistoryCompletedOrder>(vehicle.CurrentOrders?.Select(o => 
+                            new HistoryCompletedOrder(new HistoryOrder
+                                {
+                                    Start = o?.Start?.Info?.Name,
+                                    Target = o?.Target?.Info?.Name,
+                                    PayloadWeight = o?.PayloadWeight
+                                }, 
+                                o?.DeliveryTime, 
+                                o?.DeliveryDistance, 
+                                o?.DeliveryPath?.Select(p => p.Info.Name).ToList())) ?? Array.Empty<HistoryCompletedOrder>()),
+                        DistanceToCurrentTarget = vehicle.DistanceToCurrentTarget,
+                        DistanceTraveled = vehicle.DistanceTraveled,
+                        CurrentFuelLoaded = vehicle.CurrentFuelLoaded
                     };
 
                     simHistoryStep.Vehicles.Add(vehicleState);
@@ -275,7 +253,7 @@ namespace Caelicus.Simulation
                     {
                         DeliveryDistance = closedOrder.DeliveryDistance,
                         DeliveryTime = closedOrder.DeliveryTime,
-                        DeliveryPath = closedOrder.DeliveryPath?.Select(p => p.Id).ToList()
+                        DeliveryPath = closedOrder.DeliveryPath?.Select(p => p.Info.Name).ToList()
                     };
 
                     simHistoryStep.ClosedOrders.Add(order);

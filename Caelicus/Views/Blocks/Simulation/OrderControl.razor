@@ -8,6 +8,19 @@
     </div>
 </form>
 
+<div class="form-group pb-3" style="width: 100%">
+    <div class="row no-gutters">
+        <div class="col" style="padding: 0 5px">
+            <label for="minPayload" style="margin-right: 10px">Min Payload:</label>
+            <input type="number" id="minPayload" class="form-control" placeholder="Minimum" min="0.01" max="@int.MaxValue" value="0.1" step="0.1" @onchange="PayloadMinChanged"/>
+        </div>
+        <div class="col" style="padding: 0 5px">
+            <label for="maxPayload" style="margin-right: 10px">Max Payload:</label>
+            <input type="number" id="maxPayload" class="form-control" placeholder="Maximum" min="0.01" max="@int.MaxValue" value="5" step="0.1" @onchange="PayloadMaxChanged"/>
+        </div>
+    </div>
+</div>
+
 @code {
     private int _orders = 100;
 
@@ -25,6 +38,16 @@
             _orders = newValue;
             AppState.UpdateNumberOfOrders(this, _orders);
         }
+    }
+
+    private void PayloadMinChanged(ChangeEventArgs e)
+    {
+        AppState.UpdateMinMaxPayload(this, Tuple.Create(double.Parse(e.Value?.ToString() ?? "0"), AppState.MinMaxPayload.Item2));
+    }
+
+    private void PayloadMaxChanged(ChangeEventArgs e)
+    {
+        AppState.UpdateMinMaxPayload(this, Tuple.Create(AppState.MinMaxPayload.Item1, double.Parse(e.Value?.ToString() ?? "0")));
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)
