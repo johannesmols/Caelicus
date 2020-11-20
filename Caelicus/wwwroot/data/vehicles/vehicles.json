@@ -51,10 +51,36 @@
         "costPerKm": 10.6
     },
     {
+        "name": "City Bike",
+        "averageSpeed": 20,
+        "fuelCapacity": 99999999,
+        "baseFuelConsumption": 0,
+        "extraFuelConsumptionPerKg": 0,
+        "refuelingTime": 0,
+        "allowRefuelAtTarget": false,
+        "maxPayload": 40,
+        "purchasingCost": 5999,
+        "costPerHour": 130,
+        "costPerKm": 0
+    },
+    {
+        "name": "Seaside Bike",
+        "averageSpeed": 25,
+        "fuelCapacity": 11520,
+        "baseFuelConsumption": 1,
+        "extraFuelConsumptionPerKg": 0.005,
+        "refuelingTime": 300,
+        "allowRefuelAtTarget": false,
+        "maxPayload": 180,
+        "purchasingCost": 33995,
+        "costPerHour": 130,
+        "costPerKm": 0
+    },
+    {
         "name": "Lockheed SR-71 Blackbird",
         "averageSpeed": 3529,
-        "fuelCapacity": 10000,
-        "baseFuelConsumption": 0.1,
+        "fuelCapacity": 999999999999,
+        "baseFuelConsumption": 1,
         "extraFuelConsumptionPerKg": 0,
         "refuelingTime": 30,
         "allowRefuelAtTarget": false,
