@@ -95,18 +95,6 @@ namespace SimulationTests
             }
         }
 
-        [TestMethod]
-        public async Task  TestStartStopSimulation()
-        {
-            var simParameters = SimResources.Instance.Parameters;
-            var simManager = new SimulationManager();
-            simManager.AddSimulation(simParameters);
-            var myres = simManager.StartSimulations();
-            Assert.IsTrue(myres.IsCompleted);
-             
-            var stopRes = await simManager.StartSimulations();
-            Assert.IsNull(stopRes.LastOrDefault());
-        }
         
         [TestMethod]
         public async Task  TestAddMultipleSim()
