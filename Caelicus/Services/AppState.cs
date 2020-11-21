@@ -65,13 +65,6 @@ namespace Caelicus.Services
             NotifyStateChanged(source, nameof(MinMaxPayload));
         }
 
-        public List<SimulationHistory> SimulationHistories { get; set; } = new List<SimulationHistory>();
-
-        public void UpdateSimulationHistoryList(ComponentBase source, List<SimulationHistory> simulationHistories)
-        {
-            SimulationHistories = simulationHistories;
-            NotifyStateChanged(source, nameof(SimulationHistory));
-        }
 
         // Simulation Results / History
 
@@ -97,6 +90,16 @@ namespace Caelicus.Services
         {
             HistoryGraph = graph;
             NotifyStateChanged(source, nameof(HistoryGraph));
+        }
+
+        // Multiple simulation histories
+
+        public List<SimulationHistory> SimulationHistories { get; set; } = new List<SimulationHistory>();
+
+        public void UpdateSimulationHistoryList(ComponentBase source, List<SimulationHistory> simulationHistories)
+        {
+            SimulationHistories = simulationHistories;
+            NotifyStateChanged(source, nameof(SimulationHistory));
         }
 
         // Events

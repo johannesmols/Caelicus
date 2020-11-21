@@ -16,6 +16,8 @@ namespace Caelicus.Simulation.History
         public string CurrentTarget { get; set; }
         public double DistanceToCurrentTarget { get; set; }
         public double DistanceTraveled { get; set; }
+        public double TotalTravelDistance { get; set; }
+        public double TotalTravelTime { get; set; }
         public List<HistoryCompletedOrder> CurrentOrders { get; set; }
         public double CurrentFuelLoaded { get; set; }
 
@@ -28,6 +30,8 @@ namespace Caelicus.Simulation.History
             List<string> pathToTarget, 
             double distanceToCurrentTarget, 
             double distanceTraveled, 
+            double totalTravelDistance,
+            double totalTravelTime,
             double currentFuelLoaded) : base(vehicle)
         {
             State = state;
@@ -37,6 +41,8 @@ namespace Caelicus.Simulation.History
             PathToTarget = pathToTarget;
             DistanceToCurrentTarget = distanceToCurrentTarget;
             DistanceTraveled = distanceTraveled;
+            TotalTravelTime = totalTravelTime;
+            TotalTravelDistance = totalTravelDistance;
             CurrentFuelLoaded = currentFuelLoaded;
         }
 

@@ -105,7 +105,6 @@ namespace Caelicus.Simulation
 
             // Record last step as well
             RecordSimulationStep();
-            SimulationHistory.Vehicles = Vehicles;
             ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Finished simulation with { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
             return SimulationHistory;
         }
@@ -222,6 +221,8 @@ namespace Caelicus.Simulation
                                 o?.DeliveryPath?.Select(p => p.Info.Name).ToList())) ?? Array.Empty<HistoryCompletedOrder>()),
                         DistanceToCurrentTarget = vehicle.DistanceToCurrentTarget,
                         DistanceTraveled = vehicle.DistanceTraveled,
+                        TotalTravelDistance = vehicle.TotalTravelDistance,
+                        TotalTravelTime = vehicle.TotalTravelTime,
                         CurrentFuelLoaded = vehicle.CurrentFuelLoaded
                     };
 

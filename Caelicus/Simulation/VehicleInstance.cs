@@ -155,7 +155,8 @@ namespace Caelicus.Simulation
             {
                 DistanceTraveled += GetSpeedInMetersPerSecond();
                 CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders.Sum(o => o.Order.PayloadWeight));
-                //statistics
+
+                // Record statistics
                 TotalTravelDistance += GetSpeedInMetersPerSecond();
                 TotalTravelTime++;
             }
