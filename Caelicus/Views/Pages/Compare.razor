@@ -1,0 +1,26 @@
+﻿@page "/compare"
+@inject AppState AppState
+@implements IDisposable
+
+<Diagrams/>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}

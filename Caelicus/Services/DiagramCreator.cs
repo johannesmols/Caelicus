@@ -53,7 +53,7 @@ namespace Caelicus.Services
                     totalDeliveryTime += order.DeliveryTime ?? 0;
                     totalDeliveryDistance += order.DeliveryDistance ?? 0;
                 }
-                foreach (var veh in item.Vehicles)
+                foreach (var veh in item.Steps.Last().Vehicles)
                 {
                     totalDistance += veh.TotalTravelDistance;
                     totalTime += veh.TotalTravelTime;
