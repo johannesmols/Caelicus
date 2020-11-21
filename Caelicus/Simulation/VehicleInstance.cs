@@ -156,6 +156,13 @@ namespace Caelicus.Simulation
                 DistanceTraveled += GetSpeedInMetersPerSecond();
                 CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders.Sum(o => o.Order.PayloadWeight));
 
+                // Record progress in order
+                CurrentOrders.ForEach(o =>
+                {
+                    o.DeliveryTime++;
+                    o.DeliveryDistance += GetSpeedInMetersPerSecond();
+                });
+
                 // Record statistics
                 TotalTravelDistance += GetSpeedInMetersPerSecond();
                 TotalTravelTime++;
@@ -237,7 +244,12 @@ namespace Caelicus.Simulation
                 }
             }
 
-            return selectedOrders.Select(o => new CompletedOrder(o.Item1) { DeliveryPath = o.Item2 }).ToList();
+            return selectedOrders.Select(o => new CompletedOrder(o.Item1)
+            {
+                DeliveryPath = o.Item2,
+                DeliveryTime = 0,
+                DeliveryDistance = 0
+            }).ToList();
         }
     }
 }

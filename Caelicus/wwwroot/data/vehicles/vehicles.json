@@ -46,7 +46,7 @@
     "extraFuelConsumptionPerKg": 0,
     "refuelingTime": 300,
     "allowRefuelAtTarget": false,
-    "maxPayload": 9,
+    "maxPayload": 1291,
     "purchasingCost": 318677,
     "costPerHour": 340,
     "costPerKm": 10.6

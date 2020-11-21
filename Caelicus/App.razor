@@ -79,7 +79,7 @@
             Vehicles = await Http.GetFromJsonAsync<List<Vehicle>>("data/vehicles/vehicles.json");
 
             // Write vehicles to local storage and update app state
-            AppState.UpdateVehicles(this, Vehicles.Select(vehicle => Tuple.Create(vehicle, true, 1, 10, 1)).ToList());
+            AppState.UpdateVehicles(this, (Vehicles ?? new List<Vehicle>()).Select(vehicle => Tuple.Create(vehicle, false, 1, 1, 1)).ToList());
             await _localStorageService.WriteVehiclesToLocalStorage(AppState.Vehicles);
         }
         catch

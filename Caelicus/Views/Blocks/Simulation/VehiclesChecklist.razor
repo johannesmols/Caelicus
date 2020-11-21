@@ -15,7 +15,7 @@
                             <input type="number" id="min" class="form-control" placeholder="Minimum" min="0" max="@int.MaxValue" value="1" @onchange="e => { MinChanged(vehicle.Name, e); }" />
                         </div>
                         <div class="col" style="padding: 0 5px">
-                            <input type="number" class="form-control" placeholder="Maximum" min="0" max="@int.MaxValue" value="10" @onchange="e => { MaxChanged(vehicle.Name, e); }" />
+                            <input type="number" class="form-control" placeholder="Maximum" min="0" max="@int.MaxValue" value="1" @onchange="e => { MaxChanged(vehicle.Name, e); }" />
                         </div>
                         <div class="col" style="padding: 0 5px">
                             <input type="number" class="form-control" placeholder="Step" min="1" max="@int.MaxValue" value="1" @onchange="e => { StepChanged(vehicle.Name, e); }" />

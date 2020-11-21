@@ -1,0 +1,67 @@
+﻿@inject AppState AppState
+@implements IDisposable
+
+<div class="row" style="margin-bottom: 20px">
+    <div class="col">
+        <strong>Overall statistics of the entire simulation</strong>
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th scope="col">Metric</th>
+                <th scope="col">Value</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total time</td>
+                    <td>@(_lastStep is not null ? FormatSecondsToPrettyString(_lastStep.SimulationStep) + " days" : string.Empty)</td>
+                </tr>
+            <tr>
+                <td>Average delivery time</td>
+                <td>@(_lastStep is not null ? FormatSecondsToPrettyString(_lastStep.ClosedOrders.Average(o => o.DeliveryTime ?? 0)) + " days" : string.Empty)</td>
+            </tr>
+                <tr>
+                    <td>
+                        Median delivery time
+                    </td>
+                    <td>
+                        @(_lastStep is not null ? FormatSecondsToPrettyString(_lastStep.ClosedOrders.Select(o => o.DeliveryTime).Median()) + " days" : string.Empty)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private SimulationHistoryStep _lastStep = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+    }
+
+    private string FormatSecondsToPrettyString(double seconds)
+    {
+        return TimeSpan.FromSeconds(seconds).ToString(@"dd\.hh\:mm\:ss");
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+
+            if (AppState.SimulationHistory.Steps.LastOrDefault() is not null)
+            {
+                _lastStep = AppState.SimulationHistory.Steps.Last();
+            }
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}

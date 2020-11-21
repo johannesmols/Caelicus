@@ -55,13 +55,13 @@ namespace Caelicus.Models.Vehicles
         public double MaxPayload { get; set; }
         
         // Cost
-        [Description("€")]
+        [Description("DKK")]
         public double PurchasingCost { get; set; }
 
-        [Description("€")]
+        [Description("DKK")]
         public double CostPerHour { get; set; }
 
-        [Description("€")]
+        [Description("DKK")]
         public double CostPerKm { get; set; }
 
         /// <summary>
