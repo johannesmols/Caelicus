@@ -1,0 +1,18 @@
+﻿@using ChartJs.Blazor.BarChart
+@inject AppState AppState
+
+<Chart Config="_configAvgDelTime"></Chart>
+<Chart Config="_configAvgDelCost"></Chart>
+
+@code {
+    private BarConfig _configAvgDelTime;
+    private BarConfig _configAvgDelCost;
+    private BarConfig _configTimeVsCost;
+
+    protected override void OnInitialized()
+    {
+        var configs = DiagramCreator.GetDataSets(AppState);
+        _configAvgDelCost = configs[DataPointType.avgDeliveryCost];
+        _configAvgDelTime = configs[DataPointType.avgDeliveryTime];
+    }
+}

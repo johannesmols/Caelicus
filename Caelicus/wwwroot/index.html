@@ -19,8 +19,8 @@
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcREOduyOuId8If7TU2DjkwvIJzaE4gS4&v=3"></script>
     <script src="_content/BlazorGoogleMaps/objectManager.js"></script>
-	<script src="/GoogleMapsDistanceMatrixAPI.js"></script>
-	
+    <script src="/GoogleMapsDistanceMatrixAPI.js"></script>
+
     <script type="text/javascript">
         function saveAsFile(filename, bytesBase64) {
             var link = document.createElement('a');
@@ -31,6 +31,10 @@
             document.body.removeChild(link);
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+
+    <!-- This is the glue between Blazor and Chart.js -->
+    <script src="_content/ChartJs.Blazor.Fork/ChartJsBlazorInterop.js"></script>
 </head>
 
 <body>

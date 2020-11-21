@@ -65,6 +65,14 @@ namespace Caelicus.Services
             NotifyStateChanged(source, nameof(MinMaxPayload));
         }
 
+        public List<SimulationHistory> SimulationHistories { get; set; } = new List<SimulationHistory>();
+
+        public void UpdateSimulationHistoryList(ComponentBase source, List<SimulationHistory> simulationHistories)
+        {
+            SimulationHistories = simulationHistories;
+            NotifyStateChanged(source, nameof(SimulationHistory));
+        }
+
         // Simulation Results / History
 
         public SimulationHistory SimulationHistory { get; set; } = new SimulationHistory(new SimulationParameters());
