@@ -238,7 +238,8 @@ namespace Caelicus.Graph
             var (path, distance, time) = FindShortestPath(graph, start, target);
 
             // Walking mode is a placeholder for "none". Can't add another default value because the object is from the Gmaps library
-            if (travelMode == TravelMode.Walking) return Tuple.Create(path, distance, time);
+            if (travelMode == TravelMode.Walking) 
+                return Tuple.Create(path, distance, time);
 
             // Build origin-destination-matrix
             var origins = new List<LatLng>();
@@ -262,11 +263,18 @@ namespace Caelicus.Graph
                     new LatLng(path[i].Info.Position.Item1, path[i].Info.Position.Item2),
                     new LatLng(path[i + 1].Info.Position.Item1, path[i + 1].Info.Position.Item2));
 
-                totalDistance += stats.Distance;
-                totalTime += stats.Time;
+                if (stats is not null)
+                {
+                    totalDistance += stats.Distance;
+                    totalTime += stats.Time;
+                }
+                else
+                {
+                    Console.WriteLine("Failed to fetch routes from Google Maps, reverting to default graph values.");
+                }
             }
 
-            return Tuple.Create(path, totalDistance, totalTime);
+            return totalDistance > 0d && totalTime > 0d ? Tuple.Create(path, totalDistance, totalTime) : Tuple.Create(path, distance, time);
         }
 
         /// <summary>

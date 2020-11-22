@@ -11,6 +11,7 @@ using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
 using Caelicus.Simulation.History;
 using GeoCoordinatePortable;
+using GoogleMapsComponents.Maps;
 using Newtonsoft.Json;
 
 namespace Caelicus.Simulation
@@ -77,7 +78,7 @@ namespace Caelicus.Simulation
             ProgressReporter = progress;
             ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Starting simulation with  { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
 
-            while (!IsDone())
+            while (await IsDone() == false)
             {
                 ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, 
                     $"Simulating at step { SimulationStep }: " +
@@ -113,7 +114,7 @@ namespace Caelicus.Simulation
         /// Determines whether all orders have been fulfilled successfully
         /// </summary>
         /// <returns></returns>
-        public bool IsDone()
+        public async Task<bool> IsDone()
         {
             if (OpenOrders.Count == 0 && Vehicles.All(v => v.State == VehicleState.Idle))
             {
@@ -129,8 +130,9 @@ namespace Caelicus.Simulation
                     {
                         var vehicleTypeValues = Vehicles.First();
                         var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
-                        var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target).Item2;
-                        if (!(orderTravelDistance > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload))
+                        var orderTravelDistance = await Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target, vehicleTypeValues.TravelMode);
+
+                        if (!(orderTravelDistance.Item2 > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload))
                         {
                             deliverable++;
                         }
