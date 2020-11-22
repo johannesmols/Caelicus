@@ -1,0 +1,71 @@
+{
+    "Name": "Scenario 3",
+    "Vertices": [
+        {
+            "Name": "Gilleleje",
+            "Type": "base",
+            "Latitude": 56.126063875057895,
+            "Longitude": 12.296310150330507,
+            "Edges": [
+                "Tivoli"
+            ]
+        },
+        {
+            "Name": "Rågeleje",
+            "Type": "target",
+            "Latitude": 56.09966535810104,
+            "Longitude": 12.162931275991793,
+            "Edges": [
+                "Gilleleje"
+            ]
+        },
+        {
+            "Name": "Ramløse",
+            "Type": "target",
+            "Latitude": 56.014551949784526,
+            "Longitude": 12.111542878519302,
+            "Edges": [
+                "Gilleleje"
+            ]
+        },
+        {
+            "Name": "Anisse",
+            "Type": "target",
+            "Latitude": 55.97935561674914,
+            "Longitude": 12.172169639582355,
+            "Edges": [
+                "Gilleleje"
+            ]
+        },
+        {
+            "Name": "Kagerup",
+            "Type": "target",
+            "Latitude": 55.999379479700124,
+            "Longitude": 12.261666286865907,
+            "Edges": [
+                "Gilleleje"
+            ]
+        },
+        {
+            "Name": "Dronningmølle",
+            "Type": "target",
+            "Latitude": 56.09966535810104,
+            "Longitude": 12.380032820369962,
+            "Edges": [
+                "Gilleleje"
+            ]
+        },
+        {
+            "Name": "Esrum",
+            "Type": "target",
+            "Latitude": 56.05036115734118,
+            "Longitude": 12.374258843125862,
+            "Edges": [
+                "Gilleleje"
+            ]
+        }
+
+    ]
+}
+
+

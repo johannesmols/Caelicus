@@ -1,3 +1,23 @@
 {
-
+    "Name": "Scenario 1",
+    "Vertices": [
+        {
+            "Name": "DTU",
+            "Type": "base",
+            "Latitude": 55.786327,
+            "Longitude": 12.523387,
+            "Edges": [
+                "Tivoli"
+            ]
+        },
+        {
+            "Name": "Tivoli",
+            "Type": "target",
+            "Latitude": 55.673452,
+            "Longitude": 12.567195,
+            "Edges": [
+                "DTU"
+            ]
+        }
+    ]
 }
