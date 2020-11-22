@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Caelicus.Models.Graph;
 using Caelicus.Services;
 using GoogleMapsComponents.Maps;
+using Newtonsoft.Json;
 using Priority_Queue;
 
 namespace Caelicus.Graph
@@ -238,8 +239,10 @@ namespace Caelicus.Graph
             var (path, distance, time) = FindShortestPath(graph, start, target);
 
             // Walking mode is a placeholder for "none". Can't add another default value because the object is from the Gmaps library
-            if (travelMode == TravelMode.Walking) 
+            if (travelMode == TravelMode.Walking)
+            {
                 return Tuple.Create(path, distance, time);
+            }
 
             // Build origin-destination-matrix
             var origins = new List<LatLng>();

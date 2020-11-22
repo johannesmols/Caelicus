@@ -1,6 +1,7 @@
 @inject AppState AppState
 @inject HttpClient Http
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@using System.Text.Json
 @implements IDisposable
 @inject IJSRuntime JSruntime
 
@@ -76,7 +77,8 @@
         // Read vehicle file from data folder and add if not already cached in browser
         try
         {
-            Vehicles = await Http.GetFromJsonAsync<List<Vehicle>>("data/vehicles/vehicles.json");
+            var jsonString = await Http.GetStringAsync("data/vehicles/vehicles.json");
+            Vehicles = JsonConvert.DeserializeObject<List<Vehicle>>(jsonString, new Newtonsoft.Json.Converters.StringEnumConverter());
 
             // Write vehicles to local storage and update app state
             AppState.UpdateVehicles(this, (Vehicles ?? new List<Vehicle>()).Select(vehicle => Tuple.Create(vehicle, false, 1, 1, 1)).ToList());
