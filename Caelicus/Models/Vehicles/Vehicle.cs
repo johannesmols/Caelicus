@@ -65,7 +65,7 @@ namespace Caelicus.Models.Vehicles
         [Description("DKK")]
         public double CostPerKm { get; set; }
 
-        public TravelMode? TravelMode { get; set; }
+        public TravelMode TravelMode { get; set; }
 
         /// <summary>
         /// Calculate the cost of a journey given a distance.

@@ -82,9 +82,9 @@
             AppState.UpdateVehicles(this, (Vehicles ?? new List<Vehicle>()).Select(vehicle => Tuple.Create(vehicle, false, 1, 1, 1)).ToList());
             await _localStorageService.WriteVehiclesToLocalStorage(AppState.Vehicles);
         }
-        catch
+        catch (Exception e)
         {
-            Console.WriteLine($"Error while parsing vehicles Json file. Please verify it.");
+            Console.WriteLine($"Error while parsing vehicles Json file. Please verify it. Error: " + e.Message);
         }
     }
 

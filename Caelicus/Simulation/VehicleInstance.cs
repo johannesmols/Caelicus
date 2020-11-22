@@ -154,7 +154,7 @@ namespace Caelicus.Simulation
             else
             {
                 DistanceTraveled += GetSpeedInMetersPerSecond();
-                CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders.Sum(o => o.Order.PayloadWeight));
+                CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders.Sum(o => o.Order.PayloadWeight)) * GetSpeedInMetersPerSecond();
 
                 // Record progress in order
                 CurrentOrders.ForEach(o =>
@@ -227,7 +227,7 @@ namespace Caelicus.Simulation
                 {
                     foreach (var order in ordersSortedByNearestTarget)
                     {
-                        var (path, distance) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target);
+                        var (path, distance, time) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target);
 
                         // Add distance between current position and to start, if any
                         if (order.Start != CurrentVertexPosition)

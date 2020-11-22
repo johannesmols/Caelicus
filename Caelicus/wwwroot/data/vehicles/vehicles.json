@@ -10,7 +10,8 @@
     "maxPayload": 5.5,
     "purchasingCost": 42443,
     "costPerHour": 15.88,
-    "costPerKm": 0
+    "costPerKm": 0,
+    "travelMode": 3
   },
   {
     "name": "Quaternium Hybrix 2.1 Drone",
@@ -23,7 +24,8 @@
     "maxPayload": 10,
     "purchasingCost": 149022,
     "costPerHour": 59.53,
-    "costPerKm": 0
+    "costPerKm": 0,
+    "travelMode": 3
   },
   {
     "name": "Mercedes Actros 1845 LS",
@@ -37,7 +39,7 @@
     "purchasingCost": 350235,
     "costPerHour": 720,
     "costPerKm": 13,
-    "travelMode": "DRIVING" 
+    "travelMode": 1
   },
   {
     "name": "Mercedes Sprinter 311 CDI Standard",
@@ -51,7 +53,7 @@
     "purchasingCost": 318677,
     "costPerHour": 340,
     "costPerKm": 10.6,
-    "travelMode": "DRIVING"
+    "travelMode": 1
   },
   {
     "name": "City Bike",
@@ -65,7 +67,7 @@
     "purchasingCost": 5999,
     "costPerHour": 130,
     "costPerKm": 0,
-    "travelMode": "BICYCLING"
+    "travelMode": 0
   },
   {
     "name": "Seaside Bike",
@@ -79,7 +81,7 @@
     "purchasingCost": 33995,
     "costPerHour": 130,
     "costPerKm": 0,
-    "travelMode": "BICYCLING"
+    "travelMode": 0
   },
   {
     "name": "Lockheed SR-71 Blackbird",
@@ -92,6 +94,7 @@
     "maxPayload": 25,
     "purchasingCost": 50000000000,
     "costPerHour": 1000000,
-    "costPerKm": 1
+    "costPerKm": 1,
+    "travelMode": 3
   }
 ]
