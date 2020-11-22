@@ -185,17 +185,17 @@ namespace Caelicus.Services
         }
 
         //struct so it can be used easily as a key in dictionary
-        internal readonly struct Route
+        public readonly struct Route
         {
-            private readonly TravelMode _mode;
-            private  readonly LatLng _origin;
-            private readonly LatLng _destination;
+            public readonly TravelMode Mode;
+            public readonly LatLng Origin;
+            public readonly LatLng Destination;
 
             public Route(TravelMode mode, LatLng origin, LatLng destination)
             {
-                _origin = origin;
-                _destination = destination;
-                _mode = mode;
+                Origin = origin;
+                Destination = destination;
+                Mode = mode;
             }
         }
     }

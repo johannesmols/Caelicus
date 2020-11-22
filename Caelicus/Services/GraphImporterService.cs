@@ -1,16 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using Caelicus.Enums;
 using Caelicus.Graph;
 using Caelicus.Helpers;
-using Caelicus.Models;
 using Caelicus.Models.Graph;
-using GeoCoordinatePortable;
 
 namespace Caelicus.Services
 {

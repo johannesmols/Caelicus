@@ -33,6 +33,7 @@
         GoogleMapsDistanceService.Init(JSruntime);
 
         await LoadGraphs();
+        await LoadGraphStats();
         await LoadVehicles();
     }
 
@@ -67,6 +68,11 @@
         // Update app state and write to local storage
         AppState.UpdateGraphs(this, Graphs);
         await _localStorageService.WriteGraphsToLocalStorage(AppState.Graphs);
+    }
+
+    private async Task LoadGraphStats()
+    {
+
     }
 
     private async Task LoadVehicles()

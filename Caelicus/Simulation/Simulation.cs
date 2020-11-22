@@ -58,7 +58,6 @@ namespace Caelicus.Simulation
             // Generate random orders
             for (var i = 0; i < Parameters.NumberOfOrders; i++)
             {
-                // TODO: Generate semi-random payload weight
                 // Multiplying the random seed + i with a large number because a change of only 1 per iteration produces very similar results when calculating random values
                 OpenOrders.Add(new Order(
                     allBases[new Random((Parameters.RandomSeed + i) * 133742069).Next(allBases.Count)], 
