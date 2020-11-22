@@ -33,6 +33,8 @@ namespace Caelicus.Services
         /// <returns></returns>
         public static async Task CalculateDistances(TravelMode mode, List<LatLng> origins, List<LatLng> destinations)
         {
+            if (_js is null) return;
+
             await _semaphore.WaitAsync();
             _mode = mode;
             _origins = origins;
@@ -98,6 +100,8 @@ namespace Caelicus.Services
         /// <returns>RouteStats with time and distance or Null if route was not calculated</returns>
         public static async Task<RouteStats> GetDistanceAndTime(TravelMode mode, LatLng origin, LatLng destination)
         {
+            if (_js is null) return null;
+
             await _semaphore.WaitAsync();
             var route = new Route(mode, origin, destination);
 

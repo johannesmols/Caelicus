@@ -36,7 +36,8 @@
     "maxPayload": 33000,
     "purchasingCost": 350235,
     "costPerHour": 720,
-    "costPerKm": 13
+    "costPerKm": 13,
+    "travelMode": "DRIVING" 
   },
   {
     "name": "Mercedes Sprinter 311 CDI Standard",
@@ -49,7 +50,8 @@
     "maxPayload": 1291,
     "purchasingCost": 318677,
     "costPerHour": 340,
-    "costPerKm": 10.6
+    "costPerKm": 10.6,
+    "travelMode": "DRIVING"
   },
   {
     "name": "City Bike",
@@ -62,7 +64,8 @@
     "maxPayload": 40,
     "purchasingCost": 5999,
     "costPerHour": 130,
-    "costPerKm": 0
+    "costPerKm": 0,
+    "travelMode": "BICYCLING"
   },
   {
     "name": "Seaside Bike",
@@ -75,7 +78,8 @@
     "maxPayload": 180,
     "purchasingCost": 33995,
     "costPerHour": 130,
-    "costPerKm": 0
+    "costPerKm": 0,
+    "travelMode": "BICYCLING"
   },
   {
     "name": "Lockheed SR-71 Blackbird",

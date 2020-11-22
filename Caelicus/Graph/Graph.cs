@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Caelicus.Models.Graph;
+using Caelicus.Services;
+using GoogleMapsComponents.Maps;
 using Priority_Queue;
 
 namespace Caelicus.Graph
@@ -169,8 +171,9 @@ namespace Caelicus.Graph
         /// <param name="graph">Reference to the graph with non-generic objects (needed to retrieve distances from edges)</param>
         /// <param name="start">The start vertex</param>
         /// <param name="target">The target vertex</param>
+        /// <param name="travelMode">The travel mode to use when calculating distances and time using the Google Maps API</param>
         /// <returns></returns>
-        public Tuple<List<Vertex<VertexInfo, EdgeInfo>>, double> FindShortestPath(Graph<VertexInfo, EdgeInfo> graph, Vertex<TVertex, TEdge> start, Vertex<TVertex, TEdge> target)
+        public async Task<Tuple<List<Vertex<VertexInfo, EdgeInfo>>, double, double>> FindShortestPath(Graph<VertexInfo, EdgeInfo> graph, Vertex<TVertex, TEdge> start, Vertex<TVertex, TEdge> target, TravelMode? travelMode = null)
         {
             if (start == null)
                 throw new ArgumentNullException(nameof(start));
@@ -227,7 +230,38 @@ namespace Caelicus.Graph
             var shortestPath = new List<Vertex<VertexInfo, EdgeInfo>>();
             shortestPath.AddRange(pfPath.Select(x => graph._vertices.Find(v => v.Id.Equals(x))).ToList());
 
-            return Tuple.Create(shortestPath, costSoFar[target.Id]);
+            if (travelMode.HasValue)
+            {
+                // Build origin-destination-matrix
+                var origins = new List<LatLng>();
+                var destinations = new List<LatLng>();
+
+                for (var i = 0; i < shortestPath.Count - 1; i++)
+                {
+                    origins.Add(new LatLng(shortestPath[i].Info.Position.Item1, shortestPath[i].Info.Position.Item2));
+                    destinations.Add(new LatLng(shortestPath[i + 1].Info.Position.Item1, shortestPath[i + 1].Info.Position.Item2));
+                }
+
+                await GoogleMapsDistanceService.CalculateDistances(travelMode.Value, origins, destinations);
+
+                // Calculate total distance and traveling time from results
+                var totalDistance = 0d;
+                var totalTime = 0d;
+
+                for (var i = 0; i < shortestPath.Count - 1; i++)
+                {
+                    var stats = await GoogleMapsDistanceService.GetDistanceAndTime(travelMode.Value,
+                        new LatLng(shortestPath[i].Info.Position.Item1, shortestPath[i].Info.Position.Item2),
+                        new LatLng(shortestPath[i + 1].Info.Position.Item1, shortestPath[i + 1].Info.Position.Item2));
+
+                    totalDistance += stats.Distance;
+                    totalTime += stats.Time;
+                }
+
+                return Tuple.Create(shortestPath, totalDistance, totalTime);
+            }
+
+            return Tuple.Create(shortestPath, costSoFar[target.Id], double.MinValue);
         }
 
         /// <summary>
