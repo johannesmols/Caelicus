@@ -1,16 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using Caelicus.Enums;
 using Caelicus.Graph;
 using Caelicus.Helpers;
-using Caelicus.Models;
 using Caelicus.Models.Graph;
-using GeoCoordinatePortable;
+using GoogleMapsComponents.Maps;
+using Newtonsoft.Json;
 
 namespace Caelicus.Services
 {
@@ -37,11 +33,15 @@ namespace Caelicus.Services
                 foreach (var edge in vertex.Edges)
                 {
                     var origin = graph.CustomFirstOrDefault(v => v.Name == vertex.Name);
-                    var destination = graph.CustomFirstOrDefault(v => v.Name == edge);
+                    var destination = graph.CustomFirstOrDefault(v => v.Name == edge.Target);
 
                     if (origin != null && destination != null)
                     {
-                        graph.AddEdge(origin, destination, new EdgeInfo() { Distance = GeographicalHelpers.CalculateGeographicalDistanceInMeters(origin.Info.Position, destination.Info.Position) });
+                        graph.AddEdge(origin, destination, new EdgeInfo()
+                        {
+                            Distance = GeographicalHelpers.CalculateGeographicalDistanceInMeters(origin.Info.Position, destination.Info.Position),
+                            GMapsDistanceAndTime = edge.Modes.ToDictionary(mode => Enum.Parse<TravelMode>(mode.TravelMode), mode => Tuple.Create((double)mode.Distance, (double)mode.Time))
+                        });
                     }
                 }
             }
@@ -55,7 +55,7 @@ namespace Caelicus.Services
             {
                 return Enum.Parse<VertexType>(type, true);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Console.WriteLine($"Error while parsing graph JSON for a vertex type " +
                                   $"(type given was { type } but only { VertexType.Base } and " +

@@ -8,6 +8,6 @@ namespace Caelicus.Models.Graph
         public string Type { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public List<string> Edges { get; set; }
+        public List<JsonEdge> Edges { get; set; }
     }
 }

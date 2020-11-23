@@ -6,6 +6,7 @@ using Blazored.LocalStorage;
 using Caelicus.Models;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
+using Caelicus.Services.GoogleMapsDistanceMatrix.Internal;
 
 namespace Caelicus.Services
 {
@@ -17,6 +18,9 @@ namespace Caelicus.Services
         {
             _localStorage = localStorage;
         }
+        
+        
+        // Graphs
 
         public async Task<List<JsonGraphRootObject>> GetLocalStorageGraphs()
         {
@@ -56,6 +60,49 @@ namespace Caelicus.Services
                 await _localStorage.SetItemAsync(graph.Name, graph);
             }
         }
+
+        /// <summary>
+        /// Get stats about the graphs queried from the Google Maps API
+        /// </summary>
+        /// <returns>a list of tuples, one containing the key/name of the graph, and the other the values</returns>
+        public async Task<List<Tuple<string, Dictionary<Route, RouteStats>>>> GetLocalStorageGraphStats()
+        {
+            var localStorageGraphStats = new List<Tuple<string, Dictionary<Route, RouteStats>>>();
+
+            for (var i = 0; i < await _localStorage.LengthAsync(); i++)
+            {
+                var key = await _localStorage.KeyAsync(i);
+                Dictionary<Route, RouteStats> jsonObject = null;
+
+                try
+                {
+                    jsonObject = await _localStorage.GetItemAsync<Dictionary<Route, RouteStats>>(key);
+                    if (!(jsonObject?.Count > 0))
+                    {
+                        continue;
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine($"Could not convert local storage object with key '{ key }' to graph stats object, ignoring object.");
+                }
+
+                if (jsonObject != null)
+                {
+                    localStorageGraphStats.Add(Tuple.Create(key, jsonObject));
+                }
+            }
+
+            return localStorageGraphStats;
+        }
+
+        public async Task WriteGraphStatsToLocalStorage(string key, Dictionary<Route, RouteStats> graphStats)
+        {
+            await _localStorage.SetItemAsync(key, graphStats);
+        }
+
+
+        // Vehicles
 
         public async Task<List<Vehicle>> GetLocalVehicles()
         {

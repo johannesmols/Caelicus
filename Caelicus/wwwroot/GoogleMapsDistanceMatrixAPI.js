@@ -8,22 +8,25 @@ var service = new google.maps.DistanceMatrixService();
 //javascript is a pain in the ass....
 function getDistance(OriginDestinationMatrix)
 {
-    var Matrix = JSON.parse(OriginDestinationMatrix);
+    var matrix = JSON.parse(OriginDestinationMatrix);
     var origins = [];
     var destinations = [];
-    for (var i in Matrix.origins)
+
+    for (var i in matrix.Origins)
     {
-        origins.push(new google.maps.LatLng(Matrix.origins[i].lat, Matrix.origins[i].lng));
+        origins.push(new google.maps.LatLng(matrix.Origins[i].Lat, matrix.Origins[i].Lng));
     }
-    for (var j in Matrix.destinations)
+
+    for (var j in matrix.Destinations)
     {
-        destinations.push(new google.maps.LatLng(Matrix.destinations[j].lat, Matrix.destinations[j].lng));
+        destinations.push(new google.maps.LatLng(matrix.Destinations[j].Lat, matrix.Destinations[j].Lng));
     }
+
     service.getDistanceMatrix(
         {
             origins: origins,
             destinations: destinations,
-            travelMode: Matrix.TravelMode,
+            travelMode: matrix.TravelMode,
             unitSystem: google.maps.UnitSystem.METRIC,
             avoidHighways: false,
             avoidTolls: true,

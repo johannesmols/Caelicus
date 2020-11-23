@@ -23,6 +23,11 @@
         <label for="rnd_seed" style="margin-right: 10px">Random Seed:</label>
         <input type="number" class="form-control" style="flex: 1" id="rnd_seed" step="1" @bind="_randomSeed" />
     </div>
+    <div class="form-group-pb3">
+        <label>
+            <input type="checkbox" checked="@AppState.OnlyDownloadLastStep" @onchange="SwitchOnlyDownloadLastStep"/> Only download last step
+        </label>
+    </div>
 </form>
 
 <div class="row" style="position: absolute; bottom: 0; width: 100%; padding-bottom: 10px;">
@@ -77,6 +82,14 @@
         if (newValue >= 1)
         {
             _simulationSpeed = newValue;
+        }
+    }
+
+    private void SwitchOnlyDownloadLastStep(ChangeEventArgs e)
+    {
+        if (e.Value is bool isChecked)
+        {
+            AppState.UpdateOnlyDownloadLastStep(this, isChecked);
         }
     }
 
@@ -151,7 +164,13 @@
                 {
                     var values = _results.ToDictionary(
                         result => result.Parameters.SimulationIdentifier.ToString(),
-                        result => JsonConvert.SerializeObject(result, new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
+                        result => JsonConvert.SerializeObject(
+                            new SimulationHistory(result.Parameters)
+                            {
+                                Steps = AppState.OnlyDownloadLastStep ? 
+                                    new List<SimulationHistoryStep>() { result.Steps.LastOrDefault() } : result.Steps
+                            }, 
+                            new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
 
                     var archive = FileUtilities.CreateZipFile(values);
                     await FileUtilities.SaveAs(JsRuntime, "results.zip", archive);

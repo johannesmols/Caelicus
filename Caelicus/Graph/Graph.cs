@@ -1,9 +1,12 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Caelicus.Models.Graph;
+using Caelicus.Services;
+using GoogleMapsComponents.Maps;
+using Newtonsoft.Json;
 using Priority_Queue;
 
 namespace Caelicus.Graph
@@ -162,15 +165,7 @@ namespace Caelicus.Graph
 
         #region Traversal
 
-        /// <summary>
-        /// Dijkstra's Algorithm to find shortest path in a directed weighted graph
-        /// Implementation guide and explanation: https://www.redblobgames.com/pathfinding/a-star/introduction.html
-        /// </summary>
-        /// <param name="graph">Reference to the graph with non-generic objects (needed to retrieve distances from edges)</param>
-        /// <param name="start">The start vertex</param>
-        /// <param name="target">The target vertex</param>
-        /// <returns></returns>
-        public Tuple<List<Vertex<VertexInfo, EdgeInfo>>, double> FindShortestPath(Graph<VertexInfo, EdgeInfo> graph, Vertex<TVertex, TEdge> start, Vertex<TVertex, TEdge> target)
+        public Tuple<List<Vertex<VertexInfo, EdgeInfo>>, double, double> FindShortestPath(Graph<VertexInfo, EdgeInfo> graph, Vertex<TVertex, TEdge> start, Vertex<TVertex, TEdge> target, TravelMode travelMode = TravelMode.Transit)
         {
             if (start == null)
                 throw new ArgumentNullException(nameof(start));
@@ -227,7 +222,28 @@ namespace Caelicus.Graph
             var shortestPath = new List<Vertex<VertexInfo, EdgeInfo>>();
             shortestPath.AddRange(pfPath.Select(x => graph._vertices.Find(v => v.Id.Equals(x))).ToList());
 
-            return Tuple.Create(shortestPath, costSoFar[target.Id]);
+            return travelMode switch
+            {
+                TravelMode.Bicycling => UseGoogleMapsValues(shortestPath, travelMode),
+                TravelMode.Driving => UseGoogleMapsValues(shortestPath, travelMode),
+                TravelMode.Transit => Tuple.Create(shortestPath, costSoFar[target.Id], double.MinValue),
+                TravelMode.Walking => Tuple.Create(shortestPath, costSoFar[target.Id], double.MinValue),
+                _ => Tuple.Create(shortestPath, costSoFar[target.Id], double.MinValue),
+            };
+        }
+
+        private Tuple<List<Vertex<VertexInfo, EdgeInfo>>, double, double> UseGoogleMapsValues(List<Vertex<VertexInfo, EdgeInfo>> path, TravelMode travelMode)
+        {
+            var totalDistance = 0d;
+            var totalTime = 0d;
+
+            for (var i = 0; i < path.Count - 1; i++)
+            {
+                totalDistance += path[i].Edges.First(e => e.Destination == path[i + 1]).Info.GMapsDistanceAndTime[travelMode].Item1;
+                totalTime += path[i].Edges.First(e => e.Destination == path[i + 1]).Info.GMapsDistanceAndTime[travelMode].Item2;
+            }
+
+            return Tuple.Create(path, totalDistance, totalTime);
         }
 
         /// <summary>

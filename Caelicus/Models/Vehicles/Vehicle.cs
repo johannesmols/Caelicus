@@ -2,6 +2,9 @@ using System;
 using System.ComponentModel;
 using Caelicus.Graph;
 using Caelicus.Models.Graph;
+using GoogleMapsComponents.Maps;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Caelicus.Models.Vehicles
 {
@@ -26,6 +29,7 @@ namespace Caelicus.Models.Vehicles
             PurchasingCost = vehicle.PurchasingCost;
             CostPerHour = vehicle.CostPerHour;
             CostPerKm = vehicle.CostPerKm;
+            TravelMode = vehicle.TravelMode;
         }
 
         // General information
@@ -63,6 +67,8 @@ namespace Caelicus.Models.Vehicles
 
         [Description("DKK")]
         public double CostPerKm { get; set; }
+
+        public TravelMode TravelMode { get; set; }
 
         /// <summary>
         /// Calculate the cost of a journey given a distance.

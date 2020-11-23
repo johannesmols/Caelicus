@@ -7,6 +7,7 @@ using Caelicus.Graph;
 using Caelicus.Models;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
+using Caelicus.Services.GoogleMapsDistanceMatrix.Internal;
 using Caelicus.Simulation;
 using Caelicus.Simulation.History;
 using Microsoft.AspNetCore.Components;
@@ -24,6 +25,14 @@ namespace Caelicus.Services
         {
             Graphs = graphs;
             NotifyStateChanged(source, nameof(Graphs));
+        }
+
+        public List<Tuple<string, Dictionary<Route, RouteStats>>> GraphStats { get; private set; } = new List<Tuple<string, Dictionary<Route, RouteStats>>>();
+
+        public void UpdateGraphStats(ComponentBase source, List<Tuple<string, Dictionary<Route, RouteStats>>> graphStats)
+        {
+            GraphStats = graphStats;
+            NotifyStateChanged(source, nameof(GraphStats));
         }
 
 
@@ -45,6 +54,14 @@ namespace Caelicus.Services
         {
             SimulationUpdates = updates;
             NotifyStateChanged(source, nameof(SimulationUpdates));
+        }
+
+        public bool OnlyDownloadLastStep { get; set; } = true;
+
+        public void UpdateOnlyDownloadLastStep(ComponentBase source, bool onlyDownloadLastStep)
+        {
+            OnlyDownloadLastStep = onlyDownloadLastStep;
+            NotifyStateChanged(source, nameof(OnlyDownloadLastStep));
         }
 
 

@@ -7,7 +7,21 @@
       "Latitude": 55.786327,
       "Longitude": 12.523387,
       "Edges": [
-        "Tivoli"
+        {
+          "target": "Tivoli",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 15101,
+              "time": 2968
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 14215,
+              "time": 1319
+            }
+          ]
+        }
       ]
     },
     {
@@ -16,9 +30,51 @@
       "Latitude": 55.673452,
       "Longitude": 12.567195,
       "Edges": [
-        "DTU",
-        "Dragor",
-        "Glostrup"
+        {
+          "target": "DTU",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 14525,
+              "time": 3152
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 14713,
+              "time": 1403
+            }
+          ]
+        },
+        {
+          "target": "Dragor",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 15198,
+              "time": 3129
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 17418,
+              "time": 1497
+            }
+          ]
+        },
+        {
+          "target": "Glostrup",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 11498,
+              "time": 2770
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 15813,
+              "time": 1439
+            }
+          ]
+        }
       ]
     },
     {
@@ -27,7 +83,21 @@
       "latitude": 55.594293,
       "longitude": 12.674374,
       "edges": [
-        "Tivoli"
+        {
+          "target": "Tivoli",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 15858,
+              "time": 3177
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 17876,
+              "time": 1632
+            }
+          ]
+        }
       ]
     },
     {
@@ -36,7 +106,21 @@
       "latitude": 55.455554,
       "longitude": 12.183992,
       "edges": [
-        "Glostrup"
+        {
+          "target": "Glostrup",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 30204,
+              "time": 5833
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 36450,
+              "time": 1919
+            }
+          ]
+        }
       ]
     },
     {
@@ -45,8 +129,36 @@
       "latitude": 55.663069,
       "longitude": 12.397718,
       "edges": [
-        "Tivoli",
-        "Koge"
+        {
+          "target": "Tivoli",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 11528,
+              "time": 2632
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 11109,
+              "time": 1520
+            }
+          ]
+        },
+        {
+          "target": "Koge",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 29936,
+              "time": 5715
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 39696,
+              "time": 1957
+            }
+          ]
+        }
       ]
     }
   ]

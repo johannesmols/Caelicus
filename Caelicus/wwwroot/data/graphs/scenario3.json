@@ -7,12 +7,96 @@
       "Latitude": 56.126063875057895,
       "Longitude": 12.296310150330507,
       "Edges": [
-        "Rageleje",
-        "Ramlose",
-        "Anisse",
-        "Kagerup",
-        "Dronningmolle",
-        "Esrup"
+        {
+          "target": "Rageleje",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 9432,
+              "time": 1696
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 9435,
+              "time": 749
+            }
+          ]
+        },
+        {
+          "target": "Ramlose",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 21762,
+              "time": 4002
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 21231,
+              "time": 1289
+            }
+          ]
+        },
+        {
+          "target": "Anisse",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 22307,
+              "time": 4051
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 23829,
+              "time": 1562
+            }
+          ]
+        },
+        {
+          "target": "Kagerup",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 16283,
+              "time": 2909
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 16175,
+              "time": 1041
+            }
+          ]
+        },
+        {
+          "target": "Dronningsmolle",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 7011,
+              "time": 1359
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 6886,
+              "time": 598
+            }
+          ]
+        },
+        {
+          "target": "Esrum",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 14142,
+              "time": 2634
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 11562,
+              "time": 866
+            }
+          ]
+        }
       ]
     },
     {
@@ -21,7 +105,21 @@
       "Latitude": 56.09966535810104,
       "Longitude": 12.162931275991793,
       "Edges": [
-        "Gilleleje"
+        {
+          "target": "Gilleleje",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 10920,
+              "time": 2081
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 9435,
+              "time": 748
+            }
+          ]
+        }
       ]
     },
     {
@@ -30,7 +128,21 @@
       "Latitude": 56.014551949784526,
       "Longitude": 12.111542878519302,
       "Edges": [
-        "Gilleleje"
+        {
+          "target": "Gilleleje",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 22854,
+              "time": 4150
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 21777,
+              "time": 1333
+            }
+          ]
+        }
       ]
     },
     {
@@ -39,7 +151,21 @@
       "Latitude": 55.97935561674914,
       "Longitude": 12.172169639582355,
       "Edges": [
-        "Gilleleje"
+        {
+          "target": "Gilleleje",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 23448,
+              "time": 4347
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 23855,
+              "time": 1589
+            }
+          ]
+        }
       ]
     },
     {
@@ -48,7 +174,21 @@
       "Latitude": 55.999379479700124,
       "Longitude": 12.261666286865907,
       "Edges": [
-        "Gilleleje"
+        {
+          "target": "Gilleleje",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 17141,
+              "time": 3101
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 16189,
+              "time": 1044
+            }
+          ]
+        }
       ]
     },
     {
@@ -57,7 +197,21 @@
       "Latitude": 56.09966535810104,
       "Longitude": 12.380032820369962,
       "Edges": [
-        "Gilleleje"
+        {
+          "target": "Gilleleje",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 6606,
+              "time": 1304
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 7045,
+              "time": 608
+            }
+          ]
+        }
       ]
     },
     {
@@ -66,7 +220,21 @@
       "Latitude": 56.05036115734118,
       "Longitude": 12.374258843125862,
       "Edges": [
-        "Gilleleje"
+        {
+          "target": "Gilleleje",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 13738,
+              "time": 2521
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 11756,
+              "time": 875
+            }
+          ]
+        }
       ]
     }
 

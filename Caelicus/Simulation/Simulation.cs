@@ -11,6 +11,7 @@ using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
 using Caelicus.Simulation.History;
 using GeoCoordinatePortable;
+using GoogleMapsComponents.Maps;
 using Newtonsoft.Json;
 
 namespace Caelicus.Simulation
@@ -57,7 +58,6 @@ namespace Caelicus.Simulation
             // Generate random orders
             for (var i = 0; i < Parameters.NumberOfOrders; i++)
             {
-                // TODO: Generate semi-random payload weight
                 // Multiplying the random seed + i with a large number because a change of only 1 per iteration produces very similar results when calculating random values
                 OpenOrders.Add(new Order(
                     allBases[new Random((Parameters.RandomSeed + i) * 133742069).Next(allBases.Count)], 
@@ -129,8 +129,9 @@ namespace Caelicus.Simulation
                     {
                         var vehicleTypeValues = Vehicles.First();
                         var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
-                        var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target).Item2;
-                        if (!(orderTravelDistance > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload))
+                        var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target, vehicleTypeValues.TravelMode);
+
+                        if (!(orderTravelDistance.Item2 > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload))
                         {
                             deliverable++;
                         }
@@ -178,8 +179,8 @@ namespace Caelicus.Simulation
                 .Where(x => x.Info.Type == VertexType.Base)
                 .Where(x => OpenOrders.Any(y => 
                     y.Start.Info == x.Info &&
-                    Parameters.Graph.FindShortestPath(Parameters.Graph, y.Start, y.Target).Item2 <= vehicle.GetMaximumTravelDistance(y.PayloadWeight)))
-                .Select(x => Tuple.Create(Parameters.Graph.FindShortestPath(Parameters.Graph, vehicle.CurrentVertexPosition, x).Item2, x))
+                    Parameters.Graph.FindShortestPath(Parameters.Graph, y.Start, y.Target, vehicle.TravelMode).Item2 <= vehicle.GetMaximumTravelDistance(y.PayloadWeight)))
+                .Select(x => Tuple.Create(Parameters.Graph.FindShortestPath(Parameters.Graph, vehicle.CurrentVertexPosition, x, vehicle.TravelMode).Item2, x))
                 .OrderBy(x => x.Item1)
                 .FirstOrDefault();
 

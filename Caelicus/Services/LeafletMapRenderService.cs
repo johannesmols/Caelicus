@@ -36,7 +36,7 @@ namespace Caelicus.Services
         {
             _map = new Map(_jsRuntime)
             {
-                Center = new LatLng(55.678074f, 12.572356f),
+                Center = new BlazorLeaflet.Models.LatLng(55.678074f, 12.572356f),
                 Zoom = 8.5f
             };
 
@@ -68,7 +68,7 @@ namespace Caelicus.Services
             {
                 _vertices.Add(new Circle()
                 {
-                    Position = new LatLng((float)vertex.Info.Position.Item1, (float)vertex.Info.Position.Item2),
+                    Position = new BlazorLeaflet.Models.LatLng((float)vertex.Info.Position.Item1, (float)vertex.Info.Position.Item2),
                     Radius = 1f,
                     StrokeColor = vertex.Info.Type == VertexType.Target ? Color.Red : Color.Green,
                     StrokeWidth = 7
@@ -117,7 +117,7 @@ namespace Caelicus.Services
                     start.Info.Position : 
                     GeographicalHelpers.CalculatePointInBetweenTwoPoints(start.Info.Position, target.Info.Position, vehicle.DistanceTraveled / vehicle.DistanceToCurrentTarget);
 
-                _vehicles.Add(new Marker(new LatLng((float) currentPoint.Item1, (float) currentPoint.Item2))
+                _vehicles.Add(new Marker(new BlazorLeaflet.Models.LatLng((float) currentPoint.Item1, (float) currentPoint.Item2))
                 {
                     Icon = new Icon
                     {
@@ -138,7 +138,7 @@ namespace Caelicus.Services
             _vehicles.ForEach(_map.AddLayer);
         }
 
-        public void PanToPoint(LatLng point, float zoom = 0f)
+        public void PanToPoint(BlazorLeaflet.Models.LatLng point, float zoom = 0f)
         {
             if (!_initialized)
                 Initialize();
