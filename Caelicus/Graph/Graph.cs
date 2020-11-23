@@ -165,7 +165,7 @@ namespace Caelicus.Graph
 
         #region Traversal
 
-        public Tuple<List<Vertex<VertexInfo, EdgeInfo>>, double, double> FindShortestPath(Graph<VertexInfo, EdgeInfo> graph, Vertex<TVertex, TEdge> start, Vertex<TVertex, TEdge> target)
+        public Tuple<List<Vertex<VertexInfo, EdgeInfo>>, double, double> FindShortestPath(Graph<VertexInfo, EdgeInfo> graph, Vertex<TVertex, TEdge> start, Vertex<TVertex, TEdge> target, TravelMode travelMode = TravelMode.Transit)
         {
             if (start == null)
                 throw new ArgumentNullException(nameof(start));
@@ -222,64 +222,28 @@ namespace Caelicus.Graph
             var shortestPath = new List<Vertex<VertexInfo, EdgeInfo>>();
             shortestPath.AddRange(pfPath.Select(x => graph._vertices.Find(v => v.Id.Equals(x))).ToList());
 
-            return Tuple.Create(shortestPath, costSoFar[target.Id], double.MinValue);
+            return travelMode switch
+            {
+                TravelMode.Bicycling => UseGoogleMapsValues(shortestPath, travelMode),
+                TravelMode.Driving => UseGoogleMapsValues(shortestPath, travelMode),
+                TravelMode.Transit => Tuple.Create(shortestPath, costSoFar[target.Id], double.MinValue),
+                TravelMode.Walking => Tuple.Create(shortestPath, costSoFar[target.Id], double.MinValue),
+                _ => Tuple.Create(shortestPath, costSoFar[target.Id], double.MinValue),
+            };
         }
 
-        /// <summary>
-        /// Dijkstra's Algorithm to find shortest path in a directed weighted graph
-        /// Implementation guide and explanation: https://www.redblobgames.com/pathfinding/a-star/introduction.html
-        /// </summary>
-        /// <param name="graph">Reference to the graph with non-generic objects (needed to retrieve distances from edges)</param>
-        /// <param name="start">The start vertex</param>
-        /// <param name="target">The target vertex</param>
-        /// <param name="travelMode">The travel mode to use when calculating distances and time using the Google Maps API</param>
-        /// <returns></returns>
-        public async Task<Tuple<List<Vertex<VertexInfo, EdgeInfo>>, double, double>> FindShortestPath(Graph<VertexInfo, EdgeInfo> graph, Vertex<TVertex, TEdge> start, Vertex<TVertex, TEdge> target, TravelMode travelMode)
+        private Tuple<List<Vertex<VertexInfo, EdgeInfo>>, double, double> UseGoogleMapsValues(List<Vertex<VertexInfo, EdgeInfo>> path, TravelMode travelMode)
         {
-            var (path, distance, time) = FindShortestPath(graph, start, target);
-
-            // Walking mode is a placeholder for "none". Can't add another default value because the object is from the Gmaps library
-            if (travelMode == TravelMode.Walking)
-            {
-                return Tuple.Create(path, distance, time);
-            }
-
-            // Build origin-destination-matrix
-            var origins = new List<LatLng>();
-            var destinations = new List<LatLng>();
-
-            for (var i = 0; i < path.Count - 1; i++)
-            {
-                origins.Add(new LatLng(path[i].Info.Position.Item1, path[i].Info.Position.Item2));
-                destinations.Add(new LatLng(path[i + 1].Info.Position.Item1, path[i + 1].Info.Position.Item2));
-            }
-
-            await GoogleMapsDistanceService.CalculateDistances(travelMode, origins, destinations);
-
-            // Calculate total distance and traveling time from results
             var totalDistance = 0d;
             var totalTime = 0d;
 
             for (var i = 0; i < path.Count - 1; i++)
             {
-                var stats = await GoogleMapsDistanceService.GetDistanceAndTime(travelMode,
-                    new LatLng(path[i].Info.Position.Item1, path[i].Info.Position.Item2),
-                    new LatLng(path[i + 1].Info.Position.Item1, path[i + 1].Info.Position.Item2));
-
-                Console.WriteLine("Stats from gmaps: " + JsonConvert.SerializeObject(stats));
-
-                if (stats is not null)
-                {
-                    totalDistance += stats.Distance;
-                    totalTime += stats.Time;
-                }
-                else
-                {
-                    Console.WriteLine("Failed to fetch routes from Google Maps, reverting to default graph values.");
-                }
+                totalDistance += path[i].Edges.First(e => e.Destination == path[i + 1]).Info.GMapsDistanceAndTime[travelMode].Item1;
+                totalTime += path[i].Edges.First(e => e.Destination == path[i + 1]).Info.GMapsDistanceAndTime[travelMode].Item2;
             }
 
-            return totalDistance > 0d && totalTime > 0d ? Tuple.Create(path, totalDistance, totalTime) : Tuple.Create(path, distance, time);
+            return Tuple.Create(path, totalDistance, totalTime);
         }
 
         /// <summary>

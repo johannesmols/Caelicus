@@ -87,7 +87,7 @@ namespace Caelicus.Simulation
                 {
                     CurrentOrders = orders;
                     orders.ForEach(o => Simulation.OpenOrders.Remove(o.Order));
-                    PathToTarget = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, orders.First().Start).Item1;
+                    PathToTarget = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, orders.First().Start, TravelMode).Item1;
                     State = VehicleState.PickingUpOrder;
                     DistanceTraveled = 0d;
                 }
@@ -116,7 +116,7 @@ namespace Caelicus.Simulation
         {
             if (Move())
             {
-                PathToTarget = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentOrders.First().Start, CurrentOrders.First().Target).Item1;
+                PathToTarget = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentOrders.First().Start, CurrentOrders.First().Target, TravelMode).Item1;
                 DistanceToCurrentTarget = 0d;
                 DistanceTraveled = 0d;
 
@@ -202,7 +202,7 @@ namespace Caelicus.Simulation
             {
                 var ordersAtNearestBase = fulfillableOrders
                     .GroupBy(o => o.Start)
-                    .OrderBy(o => Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, o.Key).Item2)
+                    .OrderBy(o => Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, o.Key, TravelMode).Item2)
                     .FirstOrDefault();
 
                 if (ordersAtNearestBase != null)
@@ -218,7 +218,7 @@ namespace Caelicus.Simulation
                 var start = fulfillableOrders.First().Start;
                 var ordersSortedByNearestTarget = fulfillableOrders
                     .GroupBy(o => o.Target)
-                    .OrderBy(o => Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, start, o.Key).Item2)
+                    .OrderBy(o => Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, start, o.Key, TravelMode).Item2)
                     .FirstOrDefault();
 
                 var payloadSoFar = 0d;
@@ -227,12 +227,12 @@ namespace Caelicus.Simulation
                 {
                     foreach (var order in ordersSortedByNearestTarget)
                     {
-                        var (path, distance, time) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target);
+                        var (path, distance, time) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target, TravelMode);
 
                         // Add distance between current position and to start, if any
                         if (order.Start != CurrentVertexPosition)
                         {
-                            distance += Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, order.Start).Item2;
+                            distance += Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, order.Start, TravelMode).Item2;
                         }
 
                         if (GetMaximumTravelDistance(payloadSoFar + order.PayloadWeight) >= distance && payloadSoFar + order.PayloadWeight <= MaxPayload)

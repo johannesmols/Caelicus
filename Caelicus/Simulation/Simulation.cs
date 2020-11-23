@@ -77,7 +77,7 @@ namespace Caelicus.Simulation
             ProgressReporter = progress;
             ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Starting simulation with  { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
 
-            while (await IsDone() == false)
+            while (!IsDone())
             {
                 ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, 
                     $"Simulating at step { SimulationStep }: " +
@@ -113,7 +113,7 @@ namespace Caelicus.Simulation
         /// Determines whether all orders have been fulfilled successfully
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> IsDone()
+        public bool IsDone()
         {
             if (OpenOrders.Count == 0 && Vehicles.All(v => v.State == VehicleState.Idle))
             {
@@ -129,7 +129,7 @@ namespace Caelicus.Simulation
                     {
                         var vehicleTypeValues = Vehicles.First();
                         var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
-                        var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target);
+                        var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target, vehicleTypeValues.TravelMode);
 
                         if (!(orderTravelDistance.Item2 > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload))
                         {
@@ -179,8 +179,8 @@ namespace Caelicus.Simulation
                 .Where(x => x.Info.Type == VertexType.Base)
                 .Where(x => OpenOrders.Any(y => 
                     y.Start.Info == x.Info &&
-                    Parameters.Graph.FindShortestPath(Parameters.Graph, y.Start, y.Target).Item2 <= vehicle.GetMaximumTravelDistance(y.PayloadWeight)))
-                .Select(x => Tuple.Create(Parameters.Graph.FindShortestPath(Parameters.Graph, vehicle.CurrentVertexPosition, x).Item2, x))
+                    Parameters.Graph.FindShortestPath(Parameters.Graph, y.Start, y.Target, vehicle.TravelMode).Item2 <= vehicle.GetMaximumTravelDistance(y.PayloadWeight)))
+                .Select(x => Tuple.Create(Parameters.Graph.FindShortestPath(Parameters.Graph, vehicle.CurrentVertexPosition, x, vehicle.TravelMode).Item2, x))
                 .OrderBy(x => x.Item1)
                 .FirstOrDefault();
 

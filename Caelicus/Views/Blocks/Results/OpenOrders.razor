@@ -9,7 +9,7 @@
             <li>
                 @order.Start to 
                 @order.Target 
-                (@(string.Format("{0:N2}", order.PayloadWeight)) kg)
+                (@($"{order.PayloadWeight:N2}") kg)
             </li>
         }
     }

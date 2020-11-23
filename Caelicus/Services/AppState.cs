@@ -56,6 +56,14 @@ namespace Caelicus.Services
             NotifyStateChanged(source, nameof(SimulationUpdates));
         }
 
+        public bool OnlyDownloadLastStep { get; set; } = true;
+
+        public void UpdateOnlyDownloadLastStep(ComponentBase source, bool onlyDownloadLastStep)
+        {
+            OnlyDownloadLastStep = onlyDownloadLastStep;
+            NotifyStateChanged(source, nameof(OnlyDownloadLastStep));
+        }
+
 
         // Orders
         public int NumberOfOrders { get; set; } = 100;

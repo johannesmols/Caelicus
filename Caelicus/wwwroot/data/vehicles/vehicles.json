@@ -11,7 +11,7 @@
     "purchasingCost": 42443,
     "costPerHour": 15.88,
     "costPerKm": 0,
-    "travelMode": "Walking"
+    "travelMode": "Transit"
   },
   {
     "name": "Quaternium Hybrix 2.1 Drone",
@@ -25,7 +25,7 @@
     "purchasingCost": 149022,
     "costPerHour": 59.53,
     "costPerKm": 0,
-    "travelMode": "Walking"
+    "travelMode": "Transit"
   },
   {
     "name": "Mercedes Actros 1845 LS",
@@ -95,6 +95,6 @@
     "purchasingCost": 50000000000,
     "costPerHour": 1000000,
     "costPerKm": 1,
-    "travelMode": "Walking"
+    "travelMode": "Transit"
   }
 ]
