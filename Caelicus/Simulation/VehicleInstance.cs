@@ -6,6 +6,7 @@ using Caelicus.Graph;
 using Caelicus.Helpers;
 using Caelicus.Models.Graph;
 using Caelicus.Models.Vehicles;
+using GoogleMapsComponents.Maps;
 using Newtonsoft.Json.Bson;
 
 namespace Caelicus.Simulation
@@ -134,7 +135,9 @@ namespace Caelicus.Simulation
             if (CurrentTarget == null && PathToTarget.Count >= 2)
             {
                 CurrentTarget = PathToTarget[1];
-                DistanceToCurrentTarget = PathToTarget[0].Edges.First(e => e.Destination == PathToTarget[1]).Info.GMapsDistanceAndTime[Vehicle.TravelMode].Item1;
+                DistanceToCurrentTarget = Vehicle.TravelMode == TravelMode.Transit ?
+                    PathToTarget[0].Edges.First(e => e.Destination == PathToTarget[1]).Info.Distance :
+                    PathToTarget[0].Edges.First(e => e.Destination == PathToTarget[1]).Info.GMapsDistanceAndTime[Vehicle.TravelMode].Item1;
             }
 
             if (DistanceTraveled >= DistanceToCurrentTarget)
@@ -149,7 +152,9 @@ namespace Caelicus.Simulation
 
                 CurrentTarget = PathToTarget[currentIndexInPath + 1];
                 DistanceTraveled = 0d;
-                DistanceToCurrentTarget = PathToTarget[currentIndexInPath].Edges.First(e => e.Destination == PathToTarget[currentIndexInPath + 1]).Info.GMapsDistanceAndTime[Vehicle.TravelMode].Item1;
+                DistanceToCurrentTarget = Vehicle.TravelMode == TravelMode.Transit ?
+                    PathToTarget[currentIndexInPath].Edges.First(e => e.Destination == PathToTarget[currentIndexInPath + 1]).Info.Distance :
+                    PathToTarget[currentIndexInPath].Edges.First(e => e.Destination == PathToTarget[currentIndexInPath + 1]).Info.GMapsDistanceAndTime[Vehicle.TravelMode].Item1;
             }
             else
             {

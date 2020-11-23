@@ -99,7 +99,7 @@ namespace Caelicus.Simulation
                 if (cancellationToken.IsCancellationRequested)
                 {
                     ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Stopped simulation with { Parameters.NumberOfVehicles } { Parameters.VehicleTemplate.Name }"));
-                    throw new TaskCanceledException();
+                    return SimulationHistory;
                 }
             }
 

@@ -27,6 +27,11 @@ namespace Caelicus.Simulation
             // Start simulations
             _simulations = Simulations.Select(sim => Tuple.Create(sim.Item1(), sim.Item3)).ToList();
 
+            return await WaitForResults();
+        }
+
+        private async Task<List<SimulationHistory>> WaitForResults()
+        {
             // Wait for all simulations to finish before continuing
             await Task.WhenAll(_simulations.Select(x => x.Item1));
 
@@ -45,9 +50,10 @@ namespace Caelicus.Simulation
             return results;
         }
 
-        public void StopSimulations()
+        public async Task<List<SimulationHistory>> StopSimulations()
         {
             _simulations.ForEach(s => s.Item2.Cancel());
+            return await WaitForResults();
         }
 
         public void RemoveAllSimulations()
