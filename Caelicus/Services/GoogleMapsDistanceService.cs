@@ -61,9 +61,17 @@ namespace Caelicus.Services
         [JSInvokable("GoogleMapsDistanceCallback")]
         public static void GoogleMapsDistanceCallback(object resp)
         {
-            var jsonResponse = resp.ToString();
-            var matrix = JsonConvert.DeserializeObject<JsonGoogleMapsDistanceMatrix>(jsonResponse ?? string.Empty);
-            AddDistanceMatrix(matrix);
+            if (resp is not null)
+            {
+                var jsonResponse = resp.ToString();
+                var matrix = JsonConvert.DeserializeObject<JsonGoogleMapsDistanceMatrix>(jsonResponse ?? string.Empty);
+                AddDistanceMatrix(matrix);
+            }
+            else
+            {
+                Console.WriteLine("Response is null, ignoring");
+            }
+
             _semaphore.Release();
         }
 
@@ -114,6 +122,16 @@ namespace Caelicus.Services
 
             _semaphore.Release();
             return null;
+        }
+
+        public static Dictionary<Route, RouteStats> GetRouteDictionary()
+        {
+            return _distancesAndTime;
+        }
+
+        public static void Reset()
+        {
+            _distancesAndTime = new Dictionary<Route, RouteStats>();
         }
     }
 

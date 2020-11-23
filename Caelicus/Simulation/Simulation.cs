@@ -129,7 +129,7 @@ namespace Caelicus.Simulation
                     {
                         var vehicleTypeValues = Vehicles.First();
                         var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
-                        var orderTravelDistance = await Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target, vehicleTypeValues.TravelMode);
+                        var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target);
 
                         if (!(orderTravelDistance.Item2 > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload))
                         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -265,6 +265,8 @@ namespace Caelicus.Graph
                 var stats = await GoogleMapsDistanceService.GetDistanceAndTime(travelMode,
                     new LatLng(path[i].Info.Position.Item1, path[i].Info.Position.Item2),
                     new LatLng(path[i + 1].Info.Position.Item1, path[i + 1].Info.Position.Item2));
+
+                Console.WriteLine("Stats from gmaps: " + JsonConvert.SerializeObject(stats));
 
                 if (stats is not null)
                 {
