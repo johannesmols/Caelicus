@@ -62,9 +62,9 @@
                     Console.WriteLine($"Already cached { localGraph } in local storage or path invalid, ignoring.");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine($"Error parsing { localGraph } to object, ignoring.");
+                Console.WriteLine($"Error parsing { localGraph } to object, ignoring. Message: " + e.Message);
             }
         }
 
@@ -82,8 +82,6 @@
             GraphStats.Add(Tuple.Create(graph.Name + Constants.Constants.GraphStatsKeyAppendix, await GenerateGraphStats(graph)));
             GoogleMapsDistanceService.Reset();
         }
-
-        Console.WriteLine("graph stats: " + JsonConvert.SerializeObject(GraphStats));
 
         AppState.UpdateGraphStats(this, GraphStats);
         GraphStats.ForEach(async g => await _localStorageService.WriteGraphStatsToLocalStorage(g.Item1, g.Item2));
