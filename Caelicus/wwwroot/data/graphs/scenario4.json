@@ -1,0 +1,527 @@
+{
+  "name": "Scenario 4",
+  "vertices": [
+    {
+      "name": "DTU",
+      "type": "base",
+      "latitude": 55.786327,
+      "longitude": 12.523387,
+      "edges": [
+        {
+          "target": "Tivoli",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 15101,
+              "time": 2968
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 14215,
+              "time": 1319
+            }
+          ]
+        },
+        {
+          "target": "Amager Strandpark",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 20514,
+              "time": 3780
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 39688,
+              "time": 1972
+            }
+          ]
+        },
+        {
+          "target": "Ballerup",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 14582,
+              "time": 2798
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 15506,
+              "time": 1243
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Glostrup",
+      "type": "base",
+      "latitude": 55.663069,
+      "longitude": 12.397718,
+      "edges": [
+        {
+          "target": "Tivoli",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 11528,
+              "time": 2632
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 11109,
+              "time": 1520
+            }
+          ]
+        },
+        {
+          "target": "Roskilde",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 20872,
+              "time": 4063
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 21770,
+              "time": 1621
+            }
+          ]
+        },
+        {
+          "target": "Ballerup",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 14152,
+              "time": 2822
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 10888,
+              "time": 986
+            }
+          ]
+        },
+        {
+          "target": "Brondby Strand",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 5947,
+              "time": 1247
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 6643,
+              "time": 725
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tivoli",
+      "type": "target",
+      "latitude": 55.673452,
+      "longitude": 12.567195,
+      "edges": [
+        {
+          "target": "DTU",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 14525,
+              "time": 3152
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 14713,
+              "time": 1403
+            }
+          ]
+        },
+        {
+          "target": "Dragor",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 15198,
+              "time": 3129
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 17418,
+              "time": 1497
+            }
+          ]
+        },
+        {
+          "target": "Brondby Strand",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 13244,
+              "time": 2760
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 16703,
+              "time": 1236
+            }
+          ]
+        },
+        {
+          "target": "Glostrup",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 11498,
+              "time": 2770
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 15813,
+              "time": 1439
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Amager Strandpark",
+      "type": "target",
+      "latitude": 55.655827,
+      "longitude": 12.647102,
+      "edges": [
+        {
+          "target": "DTU",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 19908,
+              "time": 3858
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 40397,
+              "time": 1970
+            }
+          ]
+        },
+        {
+          "target": "Dragor",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 9678,
+              "time": 1765
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 9975,
+              "time": 1072
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dragor",
+      "type": "target",
+      "latitude": 55.594293,
+      "longitude": 12.674374,
+      "edges": [
+        {
+          "target": "Tivoli",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 15858,
+              "time": 3177
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 17867,
+              "time": 1632
+            }
+          ]
+        },
+        {
+          "target": "Amager Strandpark",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 9692,
+              "time": 1825
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 10722,
+              "time": 1170
+            }
+          ]
+        },
+        {
+          "target": "Brondby Strand",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 19616,
+              "time": 3804
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 21605,
+              "time": 1565
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Brondby Strand",
+      "type": "target",
+      "latitude": 55.620991,
+      "longitude": 12.421854,
+      "edges": [
+        {
+          "target": "Dragor",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 19106,
+              "time": 3618
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 20893,
+              "time": 1556
+            }
+          ]
+        },
+        {
+          "target": "Tivoli",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 12909,
+              "time": 2550
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 16766,
+              "time": 1385
+            }
+          ]
+        },
+        {
+          "target": "Koge",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 26485,
+              "time": 5053
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 33960,
+              "time": 1818
+            }
+          ]
+        },
+        {
+          "target": "Glostrup",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 6204,
+              "time": 1333
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 6806,
+              "time": 840
+            }
+          ]
+        },
+        {
+          "target": "Roskilde",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 26044,
+              "time": 4933
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 25723,
+              "time": 1744
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Koge",
+      "type": "target",
+      "latitude": 55.455554,
+      "longitude": 12.183992,
+      "edges": [
+        {
+          "target": "Brondby Strand",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 26969,
+              "time": 5144
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 33723,
+              "time": 1676
+            }
+          ]
+        },
+        {
+          "target": "Roskilde",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 26049,
+              "time": 5096
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 25514,
+              "time": 2086
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Roskilde",
+      "type": "target",
+      "latitude": 55.642504,
+      "longitude": 12.080403,
+      "edges": [
+        {
+          "target": "Koge",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 25755,
+              "time": 4856
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 26417,
+              "time": 2110
+            }
+          ]
+        },
+        {
+          "target": "Brondby Strand",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 25258,
+              "time": 4662
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 28428,
+              "time": 1688
+            }
+          ]
+        },
+        {
+          "target": "Ballerup",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 26246,
+              "time": 5059
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 27360,
+              "time": 1603
+            }
+          ]
+        },
+        {
+          "target": "Glostrup",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 20625,
+              "time": 3914
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 23907,
+              "time": 1670
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ballerup",
+      "type": "target",
+      "latitude": 55.730093,
+      "longitude": 12.358226,
+      "edges": [
+        {
+          "target": "DTU",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 14796,
+              "time": 2797
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 16703,
+              "time": 1304
+            }
+          ]
+        },
+        {
+          "target": "Roskilde",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 27294,
+              "time": 5153
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 24964,
+              "time": 1473
+            }
+          ]
+        },
+        {
+          "target": "Glostrup",
+          "modes": [
+            {
+              "travelMode": "Bicycling",
+              "distance": 11925,
+              "time": 2346
+            },
+            {
+              "travelMode": "Driving",
+              "distance": 10823,
+              "time": 936
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

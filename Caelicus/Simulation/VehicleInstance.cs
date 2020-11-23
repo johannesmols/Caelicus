@@ -134,7 +134,7 @@ namespace Caelicus.Simulation
             if (CurrentTarget == null && PathToTarget.Count >= 2)
             {
                 CurrentTarget = PathToTarget[1];
-                DistanceToCurrentTarget = PathToTarget[0].Edges.First(e => e.Destination == PathToTarget[1]).Info.Distance;
+                DistanceToCurrentTarget = PathToTarget[0].Edges.First(e => e.Destination == PathToTarget[1]).Info.GMapsDistanceAndTime[Vehicle.TravelMode].Item1;
             }
 
             if (DistanceTraveled >= DistanceToCurrentTarget)
@@ -149,7 +149,7 @@ namespace Caelicus.Simulation
 
                 CurrentTarget = PathToTarget[currentIndexInPath + 1];
                 DistanceTraveled = 0d;
-                DistanceToCurrentTarget = PathToTarget[currentIndexInPath].Edges.First(e => e.Destination == PathToTarget[currentIndexInPath + 1]).Info.Distance;
+                DistanceToCurrentTarget = PathToTarget[currentIndexInPath].Edges.First(e => e.Destination == PathToTarget[currentIndexInPath + 1]).Info.GMapsDistanceAndTime[Vehicle.TravelMode].Item1;
             }
             else
             {
