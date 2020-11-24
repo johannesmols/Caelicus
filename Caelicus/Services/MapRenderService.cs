@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Caelicus.Enums;
-using Caelicus.Graph;
-using Caelicus.Models;
-using Caelicus.Models.Graph;
 using GoogleMapsComponents;
 using GoogleMapsComponents.Maps;
-using OneOf;
+using SimulationCore.Enums;
+using SimulationCore.Graph;
+using SimulationCore.Models.Graph;
 
-namespace Caelicus.Services
+namespace BlazorApp.Services
 {
     public class MapRenderService
     {

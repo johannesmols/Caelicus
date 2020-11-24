@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using BlazorApp.Services.GoogleMapsDistanceMatrix.Internal;
 using Blazored.LocalStorage;
-using Caelicus.Models;
-using Caelicus.Models.Graph;
-using Caelicus.Models.Vehicles;
-using Caelicus.Services.GoogleMapsDistanceMatrix.Internal;
+using SimulationCore.Models.Graph;
+using SimulationCore.Models.Vehicles;
 
-namespace Caelicus.Services
+namespace BlazorApp.Services
 {
     public class LocalStorageService
     {

@@ -1,8 +1,5 @@
 ﻿@inject AppState AppState
 @inject IJSRuntime JsRuntime
-@using Caelicus.Simulation.History
-@using System.Text
-@using Caelicus.Helpers
 @implements IDisposable
 
 <form class="form-inline">
@@ -97,7 +94,7 @@
     {
         _results?.Clear();
 
-    // Add the different simulation scenarios
+        // Add the different simulation scenarios
         foreach (var (vehicle, enabled, min, max, step) in AppState.Vehicles)
         {
             if (!enabled)
@@ -168,13 +165,13 @@
                         result => JsonConvert.SerializeObject(
                             new SimulationHistory(result.Parameters)
                             {
-                                Steps = AppState.OnlyDownloadLastStep ? 
+                                Steps = AppState.OnlyDownloadLastStep ?
                                     new List<SimulationHistoryStep>() { result.Steps.LastOrDefault() } : result.Steps
-                            }, 
+                            },
                             new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
 
                     var archive = FileUtilities.CreateZipFile(values);
-                    await FileUtilities.SaveAs(JsRuntime, "results.zip", archive);
+                    await SaveFile.SaveAs(JsRuntime, "results.zip", archive);
                 });
             }
             catch (Exception e)

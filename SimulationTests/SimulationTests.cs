@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Caelicus.Models.Graph;
-using Caelicus.Models.Vehicles;
-using Caelicus.Services;
-using Caelicus.Simulation;
-using Microsoft.VisualStudio.TestPlatform.Common.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using SimulationCore.Models.Graph;
+using SimulationCore.Models.Vehicles;
+using SimulationCore.Services;
+using SimulationCore.Simulation;
 
 namespace SimulationTests
 {

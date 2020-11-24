@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using BlazorLeaflet;
 using BlazorLeaflet.Models;
-using Caelicus.Enums;
-using Caelicus.Graph;
-using Caelicus.Helpers;
-using Caelicus.Models.Graph;
-using Caelicus.Simulation;
-using Caelicus.Simulation.History;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
-using LatLng = BlazorLeaflet.Models.LatLng;
+using SimulationCore.Enums;
+using SimulationCore.Graph;
+using SimulationCore.Helpers;
+using SimulationCore.Models.Graph;
+using SimulationCore.Simulation;
+using SimulationCore.Simulation.History;
 
-namespace Caelicus.Services
+namespace BlazorApp.Services
 {
     public class LeafletMapRenderService
     {

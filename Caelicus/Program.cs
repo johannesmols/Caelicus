@@ -1,15 +1,14 @@
 using System;
 using System.Net.Http;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
+using BlazorApp.Services;
 using Blazored.LocalStorage;
-using Caelicus.Services;
 using GoogleMapsComponents;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using SimulationCore.Services;
 
-namespace Caelicus
+namespace BlazorApp
 {
     public class Program
     {

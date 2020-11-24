@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Caelicus.Services.GoogleMapsDistanceMatrix.Internal;
+using BlazorApp.Services.GoogleMapsDistanceMatrix.Internal;
 using GoogleMapsComponents.Maps;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 
-namespace Caelicus.Services
+namespace BlazorApp.Services
 {
     public static class GoogleMapsDistanceService
     {

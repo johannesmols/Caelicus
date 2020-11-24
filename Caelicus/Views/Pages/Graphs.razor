@@ -81,8 +81,8 @@
 
     private async Task SelectionChanged(ChangeEventArgs e)
     {
-        _currentSelected = e.Value.ToString();
-        await LoadGraphInEditor(e.Value.ToString());
+        _currentSelected = e.Value?.ToString();
+        await LoadGraphInEditor(e.Value?.ToString());
     }
 
     private async Task LoadGraphInEditor(string name)

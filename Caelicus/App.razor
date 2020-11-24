@@ -1,7 +1,6 @@
 @inject AppState AppState
 @inject HttpClient Http
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
-@using LatLng = Caelicus.Services.LatLng
 @implements IDisposable
 @inject IJSRuntime JSruntime
 
@@ -77,9 +76,9 @@
     {
         GraphStats = await _localStorageService.GetLocalStorageGraphStats();
 
-        foreach (var graph in AppState.Graphs.Where(graph => GraphStats.All(g => g.Item1 != graph.Name + Constants.Constants.GraphStatsKeyAppendix)))
+        foreach (var graph in AppState.Graphs.Where(graph => GraphStats.All(g => g.Item1 != graph.Name + "_stats")))
         {
-            GraphStats.Add(Tuple.Create(graph.Name + Constants.Constants.GraphStatsKeyAppendix, await GenerateGraphStats(graph)));
+            GraphStats.Add(Tuple.Create(graph.Name + "_stats", await GenerateGraphStats(graph)));
             GoogleMapsDistanceService.Reset();
         }
 
