@@ -119,22 +119,9 @@ namespace SimulationCore.Simulation
 
             if (OpenOrders.Count > 0)
             {
-                if (Vehicles.All(v => v.State == VehicleState.Idle))
+                if (Vehicles.All(v => v.State == VehicleState.Idle && v.FindOptimalOrders()?.Count == 0))
                 {
-                    var deliverable = 0;
-                    foreach (var order in OpenOrders)
-                    {
-                        var vehicleTypeValues = Vehicles.First();
-                        var maxTravelDistance = vehicleTypeValues.GetMaximumTravelDistance(order.PayloadWeight);
-                        var orderTravelDistance = Parameters.Graph.FindShortestPath(Parameters.Graph, order.Start, order.Target, vehicleTypeValues.TravelMode);
-
-                        if (!(orderTravelDistance.Item2 > maxTravelDistance || order.PayloadWeight > vehicleTypeValues.MaxPayload))
-                        {
-                            deliverable++;
-                        }
-                    }
-
-                    return deliverable <= 0;
+                    return true;
                 }
             }
 
@@ -176,7 +163,7 @@ namespace SimulationCore.Simulation
                 .Where(x => x.Info.Type == VertexType.Base)
                 .Where(x => OpenOrders.Any(y => 
                     y.Start.Info == x.Info &&
-                    Parameters.Graph.FindShortestPath(Parameters.Graph, y.Start, y.Target, vehicle.TravelMode).Item2 <= vehicle.GetMaximumTravelDistance(y.PayloadWeight)))
+                    Parameters.Graph.FindShortestPath(Parameters.Graph, y.Start, y.Target, vehicle.TravelMode).Item2 <= vehicle.GetMaximumTravelDistance(y.PayloadWeight, vehicle.CurrentFuelLoaded)))
                 .Select(x => Tuple.Create(Parameters.Graph.FindShortestPath(Parameters.Graph, vehicle.CurrentVertexPosition, x, vehicle.TravelMode).Item2, x))
                 .OrderBy(x => x.Item1)
                 .FirstOrDefault();

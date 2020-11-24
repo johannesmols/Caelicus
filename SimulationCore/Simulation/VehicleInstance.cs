@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SimulationCore.Enums;
 using SimulationCore.Graph;
 using SimulationCore.Models.Graph;
 using SimulationCore.Models.Vehicles;
@@ -70,7 +71,7 @@ namespace SimulationCore.Simulation
 
         private void AssignOrders(List<CompletedOrder> orders)
         {
-            if (orders != null && orders.Count > 0)
+            if (orders?.Count > 0)
             {
                 if (orders.All(o => o.Start == CurrentVertexPosition))
                 {
@@ -155,7 +156,15 @@ namespace SimulationCore.Simulation
             else
             {
                 DistanceTraveled += GetSpeedInMetersPerSecond();
-                CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders.Sum(o => o.Order.PayloadWeight)) * GetSpeedInMetersPerSecond();
+
+                if (State == VehicleState.MovingToTarget)
+                {
+                    CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders?.Sum(o => o.Order.PayloadWeight) ?? 0d) * GetSpeedInMetersPerSecond();
+                }
+                else if (State == VehicleState.PickingUpOrder)
+                {
+                    CurrentFuelLoaded -= BaseFuelConsumption * GetSpeedInMetersPerSecond();
+                }
 
                 // Record progress in order
                 CurrentOrders.ForEach(o =>
@@ -190,7 +199,7 @@ namespace SimulationCore.Simulation
         /// <summary>
         /// Find the nearest available orders that this vehicle can fulfill
         /// </summary>
-        private List<CompletedOrder> FindOptimalOrders()
+        public List<CompletedOrder> FindOptimalOrders()
         {
             var fulfillableOrders = Simulation.OpenOrders.Where(o => o.PayloadWeight <= MaxPayload).ToList();
 
@@ -232,12 +241,26 @@ namespace SimulationCore.Simulation
                         var (path, distance, time) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target, TravelMode);
 
                         // Add distance between current position and to start, if any
+                        var distanceToPickup = 0d;
                         if (order.Start != CurrentVertexPosition)
                         {
-                            distance += Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, order.Start, TravelMode).Item2;
+                            distanceToPickup = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentVertexPosition, order.Start, TravelMode).Item2;
                         }
 
-                        if (GetMaximumTravelDistance(payloadSoFar + order.PayloadWeight) >= distance && payloadSoFar + order.PayloadWeight <= MaxPayload)
+                        // Add distance to nearest base station after target to check whether the vehicle can still get back to refuel
+                        var distanceToNextBaseStation = 0d;
+                        if (!AllowRefuelAtTarget)
+                        {
+                            distanceToNextBaseStation = Simulation.Parameters.Graph.Vertices
+                                .Where(v => v.Info.Type == VertexType.Base)
+                                .Select(b => Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Target, b))
+                                .OrderBy(d => d.Item2).First().Item2;
+                        }
+
+                        if (GetMaximumTravelDistance(0d, CurrentFuelLoaded) >= distanceToPickup && // do i have enough fuel to go pick up the order?
+                            GetMaximumTravelDistance(payloadSoFar + order.PayloadWeight) >= distance && // do i have enough fuel to deliver the order with a full fuel tank + payload?
+                            GetMaximumTravelDistance(0d, FuelCapacity - GetFuelConsumptionForOneMeter(payloadSoFar + order.PayloadWeight) * distance) >= distanceToNextBaseStation && // do i have enough fuel to get to the nearest base station after delivery?
+                            payloadSoFar + order.PayloadWeight <= MaxPayload)
                         {
                             selectedOrders.Add(Tuple.Create(order, path));
                             payloadSoFar += order.PayloadWeight;

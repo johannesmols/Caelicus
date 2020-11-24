@@ -91,15 +91,6 @@ namespace SimulationCore.Models.Vehicles
         }
 
         /// <summary>
-        /// Calculate how far the vehicle can travel given the fuel capacity and fuel consumption.
-        /// </summary>
-        /// <returns></returns>
-        public double GetMaximumTravelDistance()
-        {
-            return FuelCapacity / BaseFuelConsumption;
-        }
-
-        /// <summary>
         /// Calculate how far the vehicle can travel given the fuel capacity, fuel consumption, and payload weight.
         /// </summary>
         /// <param name="payload"></param>
@@ -107,6 +98,11 @@ namespace SimulationCore.Models.Vehicles
         public double GetMaximumTravelDistance(double payload)
         {
             return FuelCapacity / (BaseFuelConsumption + ExtraFuelConsumptionPerKg * payload);
+        }
+
+        public double GetMaximumTravelDistance(double payload, double fuelLoaded)
+        {
+            return fuelLoaded / (BaseFuelConsumption + ExtraFuelConsumptionPerKg * payload);
         }
     }
 }

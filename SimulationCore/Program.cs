@@ -58,10 +58,10 @@ namespace SimulationCore
     public static class Parameters
     {
         // Adjustable Parameters
-        public const bool OnlyDownloadLastStep = true;
+        public const bool OnlyDownloadLastStep = false;
         private const int RandomSeed = 0;
-        private const int NumberOfVehicles = 5;
-        private const int NumberOfOrders = 25;
+        private const int NumberOfVehicles = 1;
+        private const int NumberOfOrders = 10;
         private static readonly Tuple<double, double> MinMaxPayload = Tuple.Create(0.1d, 5.5d);
 
         // Graphs
