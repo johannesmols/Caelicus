@@ -21,7 +21,7 @@ namespace SimulationCore.Simulation
 
         public int NumberOfVehicles { get; set; } = 1;
 
-        public double SimulationSpeed { get; set; } = 1f;
+        public double SimulationSpeed { get; set; } = 1d;
 
         public int NumberOfOrders { get; set; } = 100;
 

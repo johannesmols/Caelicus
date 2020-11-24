@@ -87,7 +87,10 @@ namespace SimulationCore.Simulation
                 Advance();
 
                 // Wait for an amount of time corresponding to the simulation speed (e.g. speed of 1 = 1 step per second, speed of 2 = 2 steps per second, ...)
-                await Task.Delay((int) (SecondsPerSimulationStep * 1000));
+                if (Parameters.SimulationSpeed != 0d)
+                {
+                    await Task.Delay((int)(SecondsPerSimulationStep * 1000));
+                }
 
                 // Use this snippet to repeatedly check for cancellation in each iteration of the simulation
                 if (cancellationToken.IsCancellationRequested)
