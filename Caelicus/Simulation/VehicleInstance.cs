@@ -166,7 +166,7 @@ namespace Caelicus.Simulation
                 {
                     o.DeliveryTime++;
                     o.DeliveryDistance += GetSpeedInMetersPerSecond();
-                    o.DeliveryCost = CalculateJourneyCost(o.DeliveryDistance, o.DeliveryTime);
+                    o.DeliveryCost = CalculateJourneyCost(o.DeliveryDistance, o.DeliveryTime) / CurrentOrders.Count; // divide cost depending how many orders are loaded
                 });
 
                 // Record statistics
@@ -231,7 +231,7 @@ namespace Caelicus.Simulation
 
                 if (ordersSortedByNearestTarget != null)
                 {
-                    foreach (var order in ordersSortedByNearestTarget)
+                    foreach (var order in ordersSortedByNearestTarget.OrderBy(o => o.PayloadWeight))
                     {
                         var (path, distance, time) = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Start, order.Target, TravelMode);
 
