@@ -1,16 +1,15 @@
-﻿using ChartJs.Blazor.BarChart;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using ChartJs.Blazor.BarChart;
 using ChartJs.Blazor.Common;
 using ChartJs.Blazor.Common.Axes;
 using ChartJs.Blazor.Common.Axes.Ticks;
 using ChartJs.Blazor.Common.Enums;
 using ChartJs.Blazor.Util;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Caelicus.Services
+namespace BlazorApp.Services
 {
     public enum DataPointType
     {

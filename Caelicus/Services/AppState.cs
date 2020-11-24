@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Threading.Tasks;
-using Caelicus.Graph;
-using Caelicus.Models;
-using Caelicus.Models.Graph;
-using Caelicus.Models.Vehicles;
-using Caelicus.Services.GoogleMapsDistanceMatrix.Internal;
-using Caelicus.Simulation;
-using Caelicus.Simulation.History;
+using BlazorApp.Services.GoogleMapsDistanceMatrix.Internal;
 using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
+using SimulationCore.Graph;
+using SimulationCore.Models.Graph;
+using SimulationCore.Models.Vehicles;
+using SimulationCore.Simulation;
+using SimulationCore.Simulation.History;
 
-namespace Caelicus.Services
+namespace BlazorApp.Services
 {
     public class AppState
     {

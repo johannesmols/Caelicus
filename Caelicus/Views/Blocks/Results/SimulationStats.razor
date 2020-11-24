@@ -1,4 +1,5 @@
 ﻿@inject AppState AppState
+@using SimulationCore.Simulation.History
 @implements IDisposable
 
 <div class="row" style="margin-bottom: 20px">
@@ -36,7 +37,7 @@
 @code {
     private SimulationHistoryStep _lastStep = null;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         // Register app state changed event
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);

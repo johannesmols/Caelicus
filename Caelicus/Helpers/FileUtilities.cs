@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
-namespace Caelicus.Helpers
+namespace BlazorApp.Helpers
 {
     /// <summary>
     /// Static utility class to create and save files

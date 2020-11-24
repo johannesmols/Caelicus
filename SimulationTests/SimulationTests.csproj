@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Caelicus\Caelicus.csproj" />
+    <ProjectReference Include="..\Caelicus\BlazorApp.csproj" />
   </ItemGroup>
 
   <ItemGroup>
