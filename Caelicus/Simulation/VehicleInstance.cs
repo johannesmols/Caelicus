@@ -166,6 +166,7 @@ namespace Caelicus.Simulation
                 {
                     o.DeliveryTime++;
                     o.DeliveryDistance += GetSpeedInMetersPerSecond();
+                    o.DeliveryCost = CalculateJourneyCost(o.DeliveryDistance, o.DeliveryTime);
                 });
 
                 // Record statistics
@@ -253,7 +254,8 @@ namespace Caelicus.Simulation
             {
                 DeliveryPath = o.Item2,
                 DeliveryTime = 0,
-                DeliveryDistance = 0
+                DeliveryDistance = 0,
+                DeliveryCost = 0
             }).ToList();
         }
     }

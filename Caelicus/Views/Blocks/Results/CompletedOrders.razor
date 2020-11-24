@@ -1,0 +1,67 @@
+﻿@inject AppState AppState
+@implements IDisposable
+
+<div class="row" style="margin-bottom: 20px">
+    <div class="col">
+        <strong>Completed orders</strong>
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th scope="col">Path</th>
+                <th scope="col">Delivery Distance</th>
+                <th scope="col">Delivery Time</th>
+                <th scope="col">Delivery Cost</th>
+                <th scope="col">Weight</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (_lastStep is not null)
+            {
+                foreach (var order in _lastStep.ClosedOrders)
+                {
+                    <tr>
+                        <td>@string.Join(" - ", order.DeliveryPath)</td>
+                        <td>@($"{order.DeliveryDistance:N2}") m</td>
+                        <td>@(Formatters.FormatSecondsToPrettyString(order.DeliveryTime ?? 0d))</td>
+                        <td>@($"{order.DeliveryCost:N2}") DKK</td>
+                        <td>@($"{order.PayloadWeight:N2}") kg</td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private SimulationHistoryStep _lastStep = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Register app state changed event
+        AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
+    }
+
+    private string FormatSecondsToPrettyString(double seconds)
+    {
+        return TimeSpan.FromSeconds(seconds).ToString(@"dd\.hh\:mm\:ss");
+    }
+
+    private async Task AppState_StateChanged(ComponentBase source, string property)
+    {
+        if (source != this)
+        {
+            await InvokeAsync(StateHasChanged);
+
+            if (AppState.SimulationHistory.Steps.LastOrDefault() is not null)
+            {
+                _lastStep = AppState.SimulationHistory.Steps.Last();
+            }
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await AppState_StateChanged(source, property);
+    }
+}

@@ -23,5 +23,7 @@ namespace Caelicus.Simulation
         public double DeliveryTime { get; set; }
 
         public double DeliveryDistance { get; set; }
+
+        public double DeliveryCost { get; set; }
     }
 }

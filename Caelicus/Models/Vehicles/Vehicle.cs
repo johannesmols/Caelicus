@@ -74,11 +74,12 @@ namespace Caelicus.Models.Vehicles
         /// Calculate the cost of a journey given a distance.
         /// The base hourly cost plus the cost per kilometre is considered.
         /// </summary>
-        /// <param name="distanceInMetres"></param>
+        /// <param name="distanceInMetres">distance in metres</param>
+        /// <param name="travelTime">travel time in seconds</param>
         /// <returns></returns>
-        public double CalculateJourneyCost(double distanceInMetres)
+        public double CalculateJourneyCost(double distanceInMetres, double travelTime = 0d)
         {
-            var travelTimeInHours = (distanceInMetres / 1000d) / AverageSpeed;
+            var travelTimeInHours = travelTime != 0d ? (distanceInMetres / 1000d) / AverageSpeed : travelTime / 60d / 60d;
             var baseHourlyCost = CostPerHour * travelTimeInHours;
             var baseDistanceCost = CostPerKm * (distanceInMetres / 1000d);
             return baseHourlyCost + baseDistanceCost;

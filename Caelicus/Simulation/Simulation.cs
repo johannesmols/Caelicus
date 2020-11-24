@@ -219,6 +219,7 @@ namespace Caelicus.Simulation
                                 }, 
                                 o?.DeliveryTime, 
                                 o?.DeliveryDistance, 
+                                o?.DeliveryCost,
                                 o?.DeliveryPath?.Select(p => p.Info.Name).ToList())) ?? Array.Empty<HistoryCompletedOrder>()),
                         DistanceToCurrentTarget = vehicle.DistanceToCurrentTarget,
                         DistanceTraveled = vehicle.DistanceTraveled,
@@ -254,7 +255,8 @@ namespace Caelicus.Simulation
                     {
                         DeliveryDistance = closedOrder.DeliveryDistance,
                         DeliveryTime = closedOrder.DeliveryTime,
-                        DeliveryPath = closedOrder.DeliveryPath?.Select(p => p.Info.Name).ToList()
+                        DeliveryPath = closedOrder.DeliveryPath?.Select(p => p.Info.Name).ToList(),
+                        DeliveryCost = closedOrder.DeliveryCost,
                     };
 
                     simHistoryStep.ClosedOrders.Add(order);

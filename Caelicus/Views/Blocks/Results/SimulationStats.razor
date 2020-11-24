@@ -14,18 +14,18 @@
             <tbody>
                 <tr>
                     <td>Total time</td>
-                    <td>@(_lastStep is not null ? FormatSecondsToPrettyString(_lastStep.SimulationStep) + " days" : string.Empty)</td>
+                    <td>@(_lastStep is not null ? Formatters.FormatSecondsToPrettyString(_lastStep.SimulationStep) + " days" : string.Empty)</td>
                 </tr>
             <tr>
                 <td>Average delivery time</td>
-                <td>@(_lastStep?.ClosedOrders?.Count > 0 ? FormatSecondsToPrettyString(_lastStep.ClosedOrders.Average(o => o.DeliveryTime ?? 0)) + " days" : "No completed orders")</td>
+                <td>@(_lastStep?.ClosedOrders?.Count > 0 ? Formatters.FormatSecondsToPrettyString(_lastStep.ClosedOrders.Average(o => o.DeliveryTime ?? 0)) + " days" : "No completed orders")</td>
             </tr>
                 <tr>
                     <td>
                         Median delivery time
                     </td>
                     <td>
-                        @(_lastStep?.ClosedOrders?.Count > 0 ? FormatSecondsToPrettyString(_lastStep.ClosedOrders.Select(o => o.DeliveryTime).Median()) + " days" : "No completed orders")
+                        @(_lastStep?.ClosedOrders?.Count > 0 ? Formatters.FormatSecondsToPrettyString(_lastStep.ClosedOrders.Select(o => o.DeliveryTime).Median()) + " days" : "No completed orders")
                     </td>
                 </tr>
             </tbody>
@@ -40,11 +40,6 @@
     {
         // Register app state changed event
         AppState.StateChanged += async (source, property) => await AppState_StateChanged(source, property);
-    }
-
-    private string FormatSecondsToPrettyString(double seconds)
-    {
-        return TimeSpan.FromSeconds(seconds).ToString(@"dd\.hh\:mm\:ss");
     }
 
     private async Task AppState_StateChanged(ComponentBase source, string property)
