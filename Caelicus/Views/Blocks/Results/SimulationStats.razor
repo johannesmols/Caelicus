@@ -18,6 +18,10 @@
                     <td>@(_lastStep is not null ? Formatters.FormatSecondsToPrettyString(_lastStep.SimulationStep) + " days" : string.Empty)</td>
                 </tr>
                 <tr>
+                    <td>Total cost</td>
+                    <td>@(_lastStep is not null ? $"{_lastStep.ClosedOrders.Sum(o => o.DeliveryCost + o.PickupCost):N2} DKK" : string.Empty)</td>
+                </tr>
+                <tr>
                     <td>Average delivery time</td>
                     <td>@(_lastStep?.ClosedOrders?.Count > 0 ? Formatters.FormatSecondsToPrettyString(_lastStep.ClosedOrders.Average(o => o.DeliveryTime ?? 0)) + " days" : "No completed orders")</td>
                 </tr>
