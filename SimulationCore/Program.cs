@@ -38,7 +38,7 @@ namespace SimulationCore
                     {
                         Steps = Parameters.OnlyDownloadLastStep ? new List<SimulationHistoryStep>() { result.Steps.LastOrDefault() } : result.Steps
                     },
-                    new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+                    new JsonSerializerSettings() {ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
             var archive = FileUtilities.CreateZipFile(values);
 
             // Save zip file
@@ -47,6 +47,37 @@ namespace SimulationCore
 
             Console.WriteLine("Downloading zip file to " + path);
             await File.WriteAllBytesAsync(path, archive);
+
+            // Save csv file
+            if (Parameters.SaveCsv)
+            {
+                Console.WriteLine("Append result to results.csv");
+                var resCsv = Path.Combine(downloadsPath, "results.csv");
+                var writeHeader = !new FileInfo(resCsv).Exists;
+
+                await using var sw = File.AppendText(resCsv);
+
+                if (writeHeader)
+                {
+                    await sw.WriteLineAsync("Vehicle Type,Number of Vehicles,Number Of Orders,Delivery Time,Delivery Cost");
+                }
+
+                foreach (var r in _results)
+                {
+                    var lastStep = r.Steps.LastOrDefault();
+                    if (lastStep != null)
+                    {
+                        var lastOrders = lastStep.ClosedOrders;
+                        foreach (var order in lastOrders)
+                        {
+                            await sw.WriteLineAsync(r.Parameters.VehicleTemplate.Name + "," + r.Parameters.NumberOfVehicles +
+                                                    "," +
+                                                    r.Parameters.NumberOfOrders + "," + order.DeliveryTime + "," +
+                                                    order.DeliveryCost);
+                        }
+                    }
+                }
+            }
         }
 
         public static void SimulationUpdate(object sender, SimulationProgress progress)
@@ -58,6 +89,7 @@ namespace SimulationCore
     public static class Parameters
     {
         // Adjustable Parameters
+        public const bool SaveCsv = true;
         public const bool OnlyDownloadLastStep = false;
         private const int RandomSeed = 0;
         private const int NumberOfVehicles = 5;
@@ -84,6 +116,7 @@ namespace SimulationCore
                 NumberOfVehicles = NumberOfVehicles,
                 SimulationSpeed = 0f,
                 NumberOfOrders = NumberOfOrders,
+                LogIntermediateSteps = false,
                 MinMaxPayload = MinMaxPayload
             }));
     }
