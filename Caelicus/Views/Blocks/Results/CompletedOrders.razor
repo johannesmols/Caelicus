@@ -11,6 +11,9 @@
                 <th scope="col">Delivery Distance</th>
                 <th scope="col">Delivery Time</th>
                 <th scope="col">Delivery Cost</th>
+                <th scope="col">Pickup Distance</th>
+                <th scope="col">Pickup Time</th>
+                <th scope="col">Pickup Cost</th>
                 <th scope="col">Weight</th>
             </tr>
             </thead>
@@ -24,6 +27,9 @@
                         <td>@($"{order.DeliveryDistance:N2}") m</td>
                         <td>@(Formatters.FormatSecondsToPrettyString(order.DeliveryTime ?? 0d))</td>
                         <td>@($"{order.DeliveryCost:N2}") DKK</td>
+                        <td>@($"{order.PickupDistance:N2}") m</td>
+                        <td>@($"{Formatters.FormatSecondsToPrettyString(order.PickupTime ?? 0d)}")</td>
+                        <td>@($"{order.PickupCost:N2}") DKK</td>
                         <td>@($"{order.PayloadWeight:N2}") kg</td>
                     </tr>
                 }

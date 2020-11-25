@@ -59,7 +59,7 @@ namespace SimulationCore
 
                 if (writeHeader)
                 {
-                    await sw.WriteLineAsync("Vehicle Type,Number of Vehicles,Number Of Orders,Delivery Time,Delivery Cost");
+                    await sw.WriteLineAsync("Vehicle Type,Number of Vehicles,Number Of Orders,Delivery Time,Delivery Cost,Delivery Distance,Pickup Time,Pickup Cost,Pickup Distance");
                 }
 
                 foreach (var r in _results)
@@ -70,10 +70,9 @@ namespace SimulationCore
                         var lastOrders = lastStep.ClosedOrders;
                         foreach (var order in lastOrders)
                         {
-                            await sw.WriteLineAsync(r.Parameters.VehicleTemplate.Name + "," + r.Parameters.NumberOfVehicles +
-                                                    "," +
-                                                    r.Parameters.NumberOfOrders + "," + order.DeliveryTime + "," +
-                                                    order.DeliveryCost);
+                            await sw.WriteLineAsync(
+                                $"{r.Parameters.VehicleTemplate.Name},{r.Parameters.NumberOfVehicles},{r.Parameters.NumberOfOrders}," +
+                                $"{order.DeliveryTime},{order.DeliveryCost},{order.DeliveryDistance},{order.PickupTime},{order.PickupCost},{order.PickupDistance}");
                         }
                     }
                 }
@@ -90,10 +89,10 @@ namespace SimulationCore
     {
         // Adjustable Parameters
         public const bool SaveCsv = true;
-        public const bool OnlyDownloadLastStep = false;
+        public const bool OnlyDownloadLastStep = true;
         private const int RandomSeed = 0;
-        private const int NumberOfVehicles = 5;
-        private const int NumberOfOrders = 50;
+        private const int NumberOfVehicles = 1;
+        private const int NumberOfOrders = 100;
         private static readonly Tuple<double, double> MinMaxPayload = Tuple.Create(0.1d, 5.5d);
 
         // Graphs
@@ -110,8 +109,8 @@ namespace SimulationCore
             {
                 SimulationIdentifier = Guid.NewGuid(),
                 RandomSeed = RandomSeed,
-                JsonGraph = JsonConvert.DeserializeObject<JsonGraphRootObject>(Scenario3),
-                Graph = GraphImporterService.GenerateGraph(JsonConvert.DeserializeObject<JsonGraphRootObject>(Scenario3)),
+                JsonGraph = JsonConvert.DeserializeObject<JsonGraphRootObject>(Scenario1),
+                Graph = GraphImporterService.GenerateGraph(JsonConvert.DeserializeObject<JsonGraphRootObject>(Scenario1)),
                 VehicleTemplate = v,
                 NumberOfVehicles = NumberOfVehicles,
                 SimulationSpeed = 0f,

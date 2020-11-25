@@ -206,12 +206,16 @@ namespace SimulationCore.Simulation
                                 o?.DeliveryTime,
                                 o?.DeliveryDistance,
                                 o?.DeliveryCost,
+                                o?.PickupTime,
+                                o?.PickupDistance,
+                                o?.PickupCost,
                                 o?.DeliveryPath?.Select(p => p.Info.Name).ToList())) ??
                         Array.Empty<HistoryCompletedOrder>()),
                         DistanceToCurrentTarget = vehicle.DistanceToCurrentTarget,
                         DistanceTraveled = vehicle.DistanceTraveled,
                         TotalTravelDistance = vehicle.TotalTravelDistance,
                         TotalTravelTime = vehicle.TotalTravelTime,
+                        TotalIdleTime = vehicle.TotalIdleTime,
                         CurrentFuelLoaded = vehicle.CurrentFuelLoaded
                     };
 
@@ -244,6 +248,9 @@ namespace SimulationCore.Simulation
                         DeliveryTime = closedOrder.DeliveryTime,
                         DeliveryPath = closedOrder.DeliveryPath?.Select(p => p.Info.Name).ToList(),
                         DeliveryCost = closedOrder.DeliveryCost,
+                        PickupTime = closedOrder.PickupTime,
+                        PickupDistance = closedOrder.PickupDistance,
+                        PickupCost = closedOrder.PickupCost
                     };
 
                     simHistoryStep.ClosedOrders.Add(order);

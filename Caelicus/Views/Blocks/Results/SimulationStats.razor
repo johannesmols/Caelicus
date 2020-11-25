@@ -1,4 +1,4 @@
-﻿@inject AppState AppState
+@inject AppState AppState
 @using SimulationCore.Simulation.History
 @implements IDisposable
 
@@ -17,10 +17,10 @@
                     <td>Total time</td>
                     <td>@(_lastStep is not null ? Formatters.FormatSecondsToPrettyString(_lastStep.SimulationStep) + " days" : string.Empty)</td>
                 </tr>
-            <tr>
-                <td>Average delivery time</td>
-                <td>@(_lastStep?.ClosedOrders?.Count > 0 ? Formatters.FormatSecondsToPrettyString(_lastStep.ClosedOrders.Average(o => o.DeliveryTime ?? 0)) + " days" : "No completed orders")</td>
-            </tr>
+                <tr>
+                    <td>Average delivery time</td>
+                    <td>@(_lastStep?.ClosedOrders?.Count > 0 ? Formatters.FormatSecondsToPrettyString(_lastStep.ClosedOrders.Average(o => o.DeliveryTime ?? 0)) + " days" : "No completed orders")</td>
+                </tr>
                 <tr>
                     <td>
                         Median delivery time

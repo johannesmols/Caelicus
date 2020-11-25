@@ -4,6 +4,12 @@ namespace SimulationCore.Simulation.History
 {
     public class HistoryCompletedOrder : HistoryOrder
     {
+        public double? PickupTime { get; set; }
+
+        public double? PickupDistance { get; set; }
+
+        public double? PickupCost { get; set; }
+
         public double? DeliveryTime { get; set; }
 
         public double? DeliveryDistance { get; set; }
@@ -12,11 +18,14 @@ namespace SimulationCore.Simulation.History
 
         public List<string> DeliveryPath { get; set; }
 
-        public HistoryCompletedOrder(HistoryOrder order, double? deliveryTime, double? deliveryDistance, double? deliverCost, List<string> deliveryPath) : base(order)
+        public HistoryCompletedOrder(HistoryOrder order, double? deliveryTime, double? deliveryDistance, double? deliveryCost, double? pickupTime, double? pickupDistance, double? pickupCost, List<string> deliveryPath) : base(order)
         {
             DeliveryTime = deliveryTime;
             DeliveryDistance = deliveryDistance;
-            DeliveryCost = deliverCost;
+            DeliveryCost = deliveryCost;
+            PickupTime = pickupTime;
+            PickupDistance = PickupDistance;
+            PickupCost = pickupCost;
             DeliveryPath = deliveryPath;
         }
 

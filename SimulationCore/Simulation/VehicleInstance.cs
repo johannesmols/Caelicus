@@ -39,8 +39,11 @@ namespace SimulationCore.Simulation
         public Vertex<VertexInfo, EdgeInfo> CurrentTarget { get; private set; }
         public double DistanceToCurrentTarget { get; private set; }
         public double DistanceTraveled { get; private set; }
+
+        // Statistics
         public double TotalTravelDistance { get; private set; }
         public double TotalTravelTime { get; private set; }
+        public double TotalIdleTime { get; private set; }
 
         // Order management
         public List<CompletedOrder> CurrentOrders { get; private set; }
@@ -56,6 +59,7 @@ namespace SimulationCore.Simulation
             {
                 case VehicleState.Idle:
                     AssignOrders(FindOptimalOrders());
+                    TotalIdleTime++;
                     break;
                 case VehicleState.Refueling:
                     Refuel();
@@ -169,9 +173,18 @@ namespace SimulationCore.Simulation
                 // Record progress in order
                 CurrentOrders.ForEach(o =>
                 {
-                    o.DeliveryTime++;
-                    o.DeliveryDistance += GetSpeedInMetersPerSecond();
-                    o.DeliveryCost = CalculateJourneyCost(o.DeliveryDistance, o.DeliveryTime) / CurrentOrders.Count; // divide cost depending how many orders are loaded
+                    if (State == VehicleState.MovingToTarget)
+                    {
+                        o.DeliveryTime++;
+                        o.DeliveryDistance += GetSpeedInMetersPerSecond();
+                        o.DeliveryCost = CalculateJourneyCost(o.DeliveryDistance, o.DeliveryTime) / CurrentOrders.Count; // divide cost depending how many orders are loaded
+                    }
+                    else if (State == VehicleState.PickingUpOrder)
+                    {
+                        o.PickupTime++;
+                        o.PickupDistance += GetSpeedInMetersPerSecond();
+                        o.PickupCost = CalculateJourneyCost(o.PickupDistance, o.PickupTime) / CurrentOrders.Count; // divide cost depending how many orders are loaded
+                    }
                 });
 
                 // Record statistics
@@ -274,7 +287,10 @@ namespace SimulationCore.Simulation
                 DeliveryPath = o.Item2,
                 DeliveryTime = 0,
                 DeliveryDistance = 0,
-                DeliveryCost = 0
+                DeliveryCost = 0,
+                PickupTime = 0,
+                PickupDistance = 0,
+                PickupCost = 0
             }).ToList();
         }
     }

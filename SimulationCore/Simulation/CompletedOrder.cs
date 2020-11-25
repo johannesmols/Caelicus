@@ -17,6 +17,12 @@ namespace SimulationCore.Simulation
 
 
         // Statistics about order delivery
+        public double PickupTime { get; set; }
+
+        public double PickupDistance { get; set; }
+
+        public double PickupCost { get; set; }
+
         public double DeliveryTime { get; set; }
 
         public double DeliveryDistance { get; set; }

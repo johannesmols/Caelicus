@@ -13,6 +13,7 @@ namespace SimulationCore.Simulation.History
         public double DistanceTraveled { get; set; }
         public double TotalTravelDistance { get; set; }
         public double TotalTravelTime { get; set; }
+        public double TotalIdleTime { get; set; }
         public List<HistoryCompletedOrder> CurrentOrders { get; set; }
         public double CurrentFuelLoaded { get; set; }
 
