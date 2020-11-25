@@ -45,8 +45,7 @@ namespace SimulationCore.Simulation
                     currentBaseIndex = 0;
                 }
 
-                Vehicles.Add(new VehicleInstance(this, Parameters.VehicleTemplate,
-                    allBases[new Random(Parameters.RandomSeed + i).Next(allBases.Count)]));
+                Vehicles.Add(new VehicleInstance(this, Parameters.VehicleTemplate, allBases[new Random(Parameters.RandomSeed + i).Next(allBases.Count)]));
                 currentBaseIndex++;
             }
 
@@ -54,8 +53,7 @@ namespace SimulationCore.Simulation
             for (var i = 0; i < Parameters.NumberOfOrders; i++)
             {
                 // Multiplying the random seed + i with a large number because a change of only 1 per iteration produces very similar results when calculating random values
-                OpenOrders.Add(new Order(
-                    allBases[new Random((Parameters.RandomSeed + i) * 133742069).Next(allBases.Count)],
+                OpenOrders.Add(new Order(allBases[new Random((Parameters.RandomSeed + i) * 133742069).Next(allBases.Count)], 
                     allTargets[new Random((Parameters.RandomSeed + i) * 133742069).Next(allTargets.Count)],
                     new Random((Parameters.RandomSeed + i) * 133742069).NextDouble() *
                     (Parameters.MinMaxPayload.Item2 - Parameters.MinMaxPayload.Item1) +
@@ -69,12 +67,10 @@ namespace SimulationCore.Simulation
         /// <param name="progress">Can be used to send status updates back to the UI</param>
         /// <param name="cancellationToken">Can be used to cancel the operation from the UI</param>
         /// <returns></returns>
-        public async Task<SimulationHistory> Simulate(IProgress<SimulationProgress> progress,
-            CancellationToken cancellationToken)
+        public async Task<SimulationHistory> Simulate(IProgress<SimulationProgress> progress, CancellationToken cancellationToken)
         {
             ProgressReporter = progress;
-            ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier,
-                $"Starting simulation with  {Parameters.NumberOfVehicles} {Parameters.VehicleTemplate.Name}"));
+            ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Starting simulation with  {Parameters.NumberOfVehicles} {Parameters.VehicleTemplate.Name}"));
 
             while (!IsDone())
             {
@@ -103,16 +99,14 @@ namespace SimulationCore.Simulation
                 // Use this snippet to repeatedly check for cancellation in each iteration of the simulation
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier,
-                        $"Stopped simulation with {Parameters.NumberOfVehicles} {Parameters.VehicleTemplate.Name}"));
+                    ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Stopped simulation with {Parameters.NumberOfVehicles} {Parameters.VehicleTemplate.Name}"));
                     return SimulationHistory;
                 }
             }
 
             // Record last step as well
             RecordSimulationStep();
-            ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier,
-                $"Finished simulation with {Parameters.NumberOfVehicles} {Parameters.VehicleTemplate.Name}"));
+            ProgressReporter.Report(new SimulationProgress(Parameters.SimulationIdentifier, $"Finished simulation with {Parameters.NumberOfVehicles} {Parameters.VehicleTemplate.Name}"));
             return SimulationHistory;
         }
 
@@ -171,14 +165,8 @@ namespace SimulationCore.Simulation
         {
             var nearestBaseStation = Parameters.Graph
                 .Where(x => x.Info.Type == VertexType.Base)
-                .Where(x => OpenOrders.Any(y =>
-                    y.Start.Info == x.Info &&
-                    Parameters.Graph.FindShortestPath(Parameters.Graph, y.Start, y.Target, vehicle.TravelMode).Item2 <=
-                    vehicle.GetMaximumTravelDistance(y.PayloadWeight, vehicle.CurrentFuelLoaded)))
-                .Select(x =>
-                    Tuple.Create(
-                        Parameters.Graph.FindShortestPath(Parameters.Graph, vehicle.CurrentVertexPosition, x,
-                            vehicle.TravelMode).Item2, x))
+                .Where(x => OpenOrders.Any(y => y.Start.Info == x.Info && Parameters.Graph.FindShortestPath(Parameters.Graph, y.Start, y.Target, vehicle.TravelMode).Item2 <= vehicle.GetMaximumTravelDistance(y.PayloadWeight, vehicle.CurrentFuelLoaded)))
+                .Select(x => Tuple.Create(Parameters.Graph.FindShortestPath(Parameters.Graph, vehicle.CurrentVertexPosition, x, vehicle.TravelMode).Item2, x))
                 .OrderBy(x => x.Item1)
                 .FirstOrDefault();
 
@@ -209,19 +197,17 @@ namespace SimulationCore.Simulation
                         CurrentVertexPosition = vehicle.CurrentVertexPosition?.Info?.Name,
                         CurrentTarget = vehicle.CurrentTarget?.Info?.Name,
                         CurrentOrders = new List<HistoryCompletedOrder>(vehicle.CurrentOrders?.Select(o =>
-                                                                            new HistoryCompletedOrder(new HistoryOrder
-                                                                                {
-                                                                                    Start = o?.Start?.Info?.Name,
-                                                                                    Target = o?.Target?.Info?.Name,
-                                                                                    PayloadWeight = o?.PayloadWeight
-                                                                                },
-                                                                                o?.DeliveryTime,
-                                                                                o?.DeliveryDistance,
-                                                                                o?.DeliveryCost,
-                                                                                o?.DeliveryPath
-                                                                                    ?.Select(p => p.Info.Name)
-                                                                                    .ToList())) ??
-                                                                        Array.Empty<HistoryCompletedOrder>()),
+                            new HistoryCompletedOrder(new HistoryOrder
+                                {
+                                    Start = o?.Start?.Info?.Name,
+                                    Target = o?.Target?.Info?.Name,
+                                    PayloadWeight = o?.PayloadWeight
+                                },
+                                o?.DeliveryTime,
+                                o?.DeliveryDistance,
+                                o?.DeliveryCost,
+                                o?.DeliveryPath?.Select(p => p.Info.Name).ToList())) ??
+                        Array.Empty<HistoryCompletedOrder>()),
                         DistanceToCurrentTarget = vehicle.DistanceToCurrentTarget,
                         DistanceTraveled = vehicle.DistanceTraveled,
                         TotalTravelDistance = vehicle.TotalTravelDistance,
@@ -252,8 +238,7 @@ namespace SimulationCore.Simulation
             {
                 if (closedOrder != null)
                 {
-                    var order = new HistoryCompletedOrder(new HistoryOrder(closedOrder.Order?.Start?.Info.Name,
-                        closedOrder.Order?.Target?.Info.Name, closedOrder.Order?.PayloadWeight))
+                    var order = new HistoryCompletedOrder(new HistoryOrder(closedOrder.Order?.Start?.Info.Name, closedOrder.Order?.Target?.Info.Name, closedOrder.Order?.PayloadWeight))
                     {
                         DeliveryDistance = closedOrder.DeliveryDistance,
                         DeliveryTime = closedOrder.DeliveryTime,
