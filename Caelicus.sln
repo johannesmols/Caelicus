@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulationTests", "Simulati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorLeaflet", "BlazorLeaflet\BlazorLeaflet.csproj", "{4096B59D-1CDD-4DA0-8605-63AECF0805B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulationCore", "SimulationCore\SimulationCore.csproj", "{8B2B71E1-7B52-4191-AD46-F5B765E623A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimulationCore", "SimulationCore\SimulationCore.csproj", "{8B2B71E1-7B52-4191-AD46-F5B765E623A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor", "DataProcessor\DataProcessor.csproj", "{60E59F9E-55DB-4434-A794-F06488094738}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{8B2B71E1-7B52-4191-AD46-F5B765E623A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B2B71E1-7B52-4191-AD46-F5B765E623A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B2B71E1-7B52-4191-AD46-F5B765E623A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60E59F9E-55DB-4434-A794-F06488094738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60E59F9E-55DB-4434-A794-F06488094738}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60E59F9E-55DB-4434-A794-F06488094738}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60E59F9E-55DB-4434-A794-F06488094738}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
