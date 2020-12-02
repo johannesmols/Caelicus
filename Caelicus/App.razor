@@ -45,7 +45,7 @@
         Graphs = await _localStorageService.GetLocalStorageGraphs();
 
         // Read graph files from data folder and add if not already cached in browser
-        var localGraphs = new[] { "data/graphs/scenario1.json", "data/graphs/scenario2.json", "data/graphs/scenario3.json", "data/graphs/scenario4.json" };
+        var localGraphs = new[] { "data/graphs/scenario1.json", "data/graphs/scenario2.json", "data/graphs/scenario3.json", "data/graphs/scenario4.json", "data/graphs/innercity.json" };
         foreach (var localGraph in localGraphs)
         {
             try
