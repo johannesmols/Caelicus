@@ -9,9 +9,9 @@
       "Edges": [
         "Fredriksberg Hospital",
         "Bispebjerg Hospital",
-        "Bellahøj Centeret",
+        "Bellahoej Centeret",
         "Amager hospital",
-        "Dyssegårdsskolen"
+        "Dyssegaardsskolen"
       ]
     },
     {
@@ -22,9 +22,9 @@
       "Edges": [
         "Rishospitalet",
         "Bispebjerg Hospital",
-        "Bellahøj Centeret",
+        "Bellahoej Centeret",
         "Amager hospital",
-        "Dyssegårdsskolen"
+        "Dyssegaardsskolen"
       ]
     },
     {
@@ -35,9 +35,9 @@
       "Edges": [
         "Rishospitalet",
         "Fredriksberg Hospital",
-        "Bellahøj Centeret",
+        "Bellahoej Centeret",
         "Amager hospital",
-        "Dyssegårdsskolen"
+        "Dyssegaardsskolen"
       ]
     },
     {
@@ -87,7 +87,7 @@
       ]
     },
     {
-      "Name": "Svanemøllen",
+      "Name": "Svanemoellen",
       "Type": "target",
       "Latitude": 55.71455072540137,
       "Longitude": 12.578753565783671,
@@ -101,11 +101,11 @@
       "Latitude": 55.727774633642284,
       "Longitude": 12.579459589900871,
       "Edges": [
-        "Dyssegårdsskolen"
+        "Dyssegaardsskolen"
       ]
     },
     {
-      "Name": "Bellahøj Centeret",
+      "Name": "Bellahoej Centeret",
       "Type": "base",
       "Latitude": 55.63806153977925,
       "Longitude": 12.578257961855346,
@@ -114,7 +114,7 @@
         "Fredriksberg Hospital",
         "Bispebjerg Hospital",
         "Amager hospital",
-        "Dyssegårdsskolen"
+        "Dyssegaardsskolen"
       ]
     },
     {
@@ -135,8 +135,8 @@
         "Rishospitalet",
         "Fredriksberg Hospital",
         "Bispebjerg Hospital",
-        "Bellahøj Centeret",
-        "Dyssegårdsskolen"
+        "Bellahoej Centeret",
+        "Dyssegaardsskolen"
       ]
     },
     {
@@ -154,20 +154,20 @@
       "Latitude": 55.680858440688,
       "Longitude": 12.620416363260832,
       "Edges": [
-        "Dyssegårdsskolen"
+        "Dyssegaardsskolen"
       ]
     },
     {
-      "Name": "Østregasværk teater",
+      "Name": "Oestregasvaerk teater",
       "Type": "target",
       "Latitude": 55.71044070917062,
       "Longitude": 12.581690863535153,
       "Edges": [
-        "Dyssegårdsskolen"
+        "Dyssegaardsskolen"
       ]
     },
     {
-      "Name": "Dyssegårdsskolen",
+      "Name": "Dyssegaardsskolen",
       "Type": "base",
       "Latitude": 55.73277428992391,
       "Longitude": 12.538689689330875,
@@ -175,7 +175,7 @@
         "Rishospitalet",
         "Fredriksberg Hospital",
         "Bispebjerg Hospital",
-        "Bellahøj Centeret",
+        "Bellahoej Centeret",
         "Amager hospital"
       ]
     },
