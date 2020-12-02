@@ -1,0 +1,192 @@
+﻿{
+  "Name": "Inner City",
+  "Vertices": [
+    {
+      "Name": "Rishospitalet",
+      "Type": "base",
+      "Latitude": 55.696581631707076,
+      "Longitude": 12.566857345253906,
+      "Edges": [
+        "Fredriksberg Hospital",
+        "Bispebjerg Hospital",
+        "Bellahøj Centeret",
+        "Amager hospital",
+        "Dyssegårdsskolen"
+      ]
+    },
+    {
+      "Name": "Fredriksberg Hospital",
+      "Type": "base",
+      "Latitude": 55.68524758990225,
+      "Longitude": 12.524759919046602,
+      "Edges": [
+        "Rishospitalet",
+        "Bispebjerg Hospital",
+        "Bellahøj Centeret",
+        "Amager hospital",
+        "Dyssegårdsskolen"
+      ]
+    },
+    {
+      "Name": "Bispebjerg Hospital",
+      "Type": "base",
+      "Latitude": 55.714141100260704,
+      "Longitude": 12.540088383339548,
+      "Edges": [
+        "Rishospitalet",
+        "Fredriksberg Hospital",
+        "Bellahøj Centeret",
+        "Amager hospital",
+        "Dyssegårdsskolen"
+      ]
+    },
+    {
+      "Name": "Noerrebrocenteret",
+      "Type": "target",
+      "Latitude": 55.70392506111949,
+      "Longitude": 12.538433554503621,
+      "Edges": [
+        "Rishospitalet"
+      ]
+    },
+    {
+      "Name": "Maendeneshjem",
+      "Type": "target",
+      "Latitude": 55.67121194424447,
+      "Longitude": 12.55961030052976,
+      "Edges": [
+        "Fredriksberg Hospital"
+      ]
+    },
+    {
+      "Name": "Christiana",
+      "Type": "target",
+      "Latitude": 55.67342028944557,
+      "Longitude": 12.593760186073682,
+      "Edges": [
+        "Rishospitalet"
+      ]
+    },
+    {
+      "Name": "Dr. Byen",
+      "Type": "target",
+      "Latitude": 55.65855844749799,
+      "Longitude": 12.589726145319544,
+      "Edges": [
+        "Amager hospital"
+      ]
+    },
+    {
+      "Name": "Fredriksberg centeret",
+      "Type": "target",
+      "Latitude": 55.68210725331254,
+      "Longitude": 12.532519990642227,
+      "Edges": [
+        "Fredriksberg Hospital"
+
+      ]
+    },
+    {
+      "Name": "Svanemøllen",
+      "Type": "target",
+      "Latitude": 55.71455072540137,
+      "Longitude": 12.578753565783671,
+      "Edges": [
+
+      ]
+    },
+    {
+      "Name": "Experimentarium",
+      "Type": "target",
+      "Latitude": 55.727774633642284,
+      "Longitude": 12.579459589900871,
+      "Edges": [
+        "Dyssegårdsskolen"
+      ]
+    },
+    {
+      "Name": "Bellahøj Centeret",
+      "Type": "base",
+      "Latitude": 55.63806153977925,
+      "Longitude": 12.578257961855346,
+      "Edges": [
+        "Rishospitalet",
+        "Fredriksberg Hospital",
+        "Bispebjerg Hospital",
+        "Amager hospital",
+        "Dyssegårdsskolen"
+      ]
+    },
+    {
+      "Name": "Copenhagen airport",
+      "Type": "target",
+      "Latitude": 55.6185653146523,
+      "Longitude": 12.649019439701046,
+      "Edges": [
+        "Amager hospital"
+      ]
+    },
+    {
+      "Name": "Amager hospital",
+      "Type": "base",
+      "Latitude": 55.65525095150975,
+      "Longitude": 12.620545109049955,
+      "Edges": [
+        "Rishospitalet",
+        "Fredriksberg Hospital",
+        "Bispebjerg Hospital",
+        "Bellahøj Centeret",
+        "Dyssegårdsskolen"
+      ]
+    },
+    {
+      "Name": "Amager Centeret",
+      "Type": "target",
+      "Latitude": 55.66296158536369,
+      "Longitude": 12.603829582763687,
+      "Edges": [
+        "Amager hospital"
+      ]
+    },
+    {
+      "Name": "Copenhagen cablepark",
+      "Type": "taget",
+      "Latitude": 55.680858440688,
+      "Longitude": 12.620416363260832,
+      "Edges": [
+        "Dyssegårdsskolen"
+      ]
+    },
+    {
+      "Name": "Østregasværk teater",
+      "Type": "target",
+      "Latitude": 55.71044070917062,
+      "Longitude": 12.581690863535153,
+      "Edges": [
+        "Dyssegårdsskolen"
+      ]
+    },
+    {
+      "Name": "Dyssegårdsskolen",
+      "Type": "base",
+      "Latitude": 55.73277428992391,
+      "Longitude": 12.538689689330875,
+      "Edges": [
+        "Rishospitalet",
+        "Fredriksberg Hospital",
+        "Bispebjerg Hospital",
+        "Bellahøj Centeret",
+        "Amager hospital"
+      ]
+    },
+    {
+      "Name": "Just-Play",
+      "Type": "taget",
+      "Latitude": 55.70564382638199,
+      "Longitude": 12.507561717168977,
+      "Edges": [
+        "Fredriksberg Hospital"
+      ]
+    }
+  ]
+}
