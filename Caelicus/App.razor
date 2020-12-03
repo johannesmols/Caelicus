@@ -137,6 +137,7 @@
         foreach (var travelMode in (TravelMode[]) Enum.GetValues(typeof(TravelMode)))
         {
             await GoogleMapsDistanceService.CalculateDistances(travelMode, origins, destinations);
+            await Task.Delay(10000); // wait a little bit to avoid exceeding the API limit
         }
 
         return GoogleMapsDistanceService.GetRouteDictionary();

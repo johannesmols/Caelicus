@@ -34,7 +34,7 @@ function getDistance(OriginDestinationMatrix)
 }
 
 //just pass the result back to C#
-function callback(response, status)
-{
+function callback(response, status) {
+    console.log("response with status", status);
     DotNet.invokeMethodAsync("BlazorApp", "GoogleMapsDistanceCallback", response);
 }
