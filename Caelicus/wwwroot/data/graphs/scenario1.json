@@ -8,17 +8,27 @@
       "Longitude": 12.523387,
       "Edges": [
         {
-          "target": "Tivoli",
-          "modes": [
+          "Target": "Tivoli",
+          "Modes": [
             {
-              "travelMode": "Bicycling",
-              "distance": 15101,
-              "time": 2968
+              "TravelMode": "Bicycling",
+              "Distance": 15101,
+              "Time": 2965
             },
             {
-              "travelMode": "Driving",
-              "distance": 14215,
-              "time": 1319
+              "TravelMode": "Driving",
+              "Distance": 14215,
+              "Time": 1322
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 15224,
+              "Time": 2967
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 14158,
+              "Time": 10534
             }
           ]
         }
@@ -31,17 +41,27 @@
       "Longitude": 12.567195,
       "Edges": [
         {
-          "target": "DTU",
-          "modes": [
+          "Target": "DTU",
+          "Modes": [
             {
-              "travelMode": "Bicycling",
-              "distance": 15101,
-              "time": 2968
+              "TravelMode": "Bicycling",
+              "Distance": 14525,
+              "Time": 3150
             },
             {
-              "travelMode": "Driving",
-              "distance": 14215,
-              "time": 1319
+              "TravelMode": "Driving",
+              "Distance": 14713,
+              "Time": 1401
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 17453,
+              "Time": 3165
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 14158,
+              "Time": 10706
             }
           ]
         }
