@@ -8,260 +8,160 @@
       "Longitude": 12.566857345253906,
       "Edges": [
         {
-          "target": "Fredriksberg Hospital",
-          "modes": [
+          "Target": "Frederiksberg Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 4885,
+              "Time": 976
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 4449,
+              "Time": 866
             }
           ]
         },
         {
-          "target": "Bispebjerg Hospital",
-          "modes": [
+          "Target": "Bispebjerg Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 3254,
+              "Time": 666
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 3876,
+              "Time": 759
             }
           ]
         },
         {
-          "target": "Amager Hospital",
-          "modes": [
+          "Target": "Amager Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 7727,
+              "Time": 1603
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 7610,
+              "Time": 1223
             }
           ]
         },
         {
-          "target": "Psykiatrisk Akutmodtagelse",
-          "modes": [
+          "Target": "Psykiatrisk Akutmodtagelse",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 7774,
+              "Time": 1491
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 8335,
+              "Time": 1150
             }
           ]
         },
         {
-          "target": "Gentofte Hospital",
-          "modes": [
+          "Target": "Gentofte Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 5243,
+              "Time": 1108
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 6347,
+              "Time": 783
             }
           ]
         }
       ]
     },
     {
-      "Name": "Fredriksberg Hospital",
+      "Name": "Frederiksberg Hospital",
       "Type": "base",
       "Latitude": 55.68524758990225,
       "Longitude": 12.524759919046602,
       "Edges": [
         {
-          "target": "Rigshospitalet",
-          "modes": [
+          "Target": "Rigshospitalet",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 4300,
+              "Time": 866
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 4877,
+              "Time": 943
             }
           ]
         },
         {
-          "target": "Bispebjerg Hospital",
-          "modes": [
+          "Target": "Bispebjerg Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 3774,
+              "Time": 778
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 4345,
+              "Time": 873
             }
           ]
         },
         {
-          "target": "Amager Hospital",
-          "modes": [
+          "Target": "Amager Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 8112,
+              "Time": 1755
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 8695,
+              "Time": 1400
             }
           ]
         },
         {
-          "target": "Herlev Hospital",
-          "modes": [
+          "Target": "Herlev Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 9146,
+              "Time": 1829
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 9629,
+              "Time": 1020
             }
           ]
         },
         {
-          "target": "Psykiatrisk Akutmodtagelse",
-          "modes": [
+          "Target": "Psykiatrisk Akutmodtagelse",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 8262,
+              "Time": 1679
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 9420,
+              "Time": 1326
             }
           ]
         }
@@ -274,102 +174,62 @@
       "Longitude": 12.540088383339548,
       "Edges": [
         {
-          "target": "Rigshospitalet",
-          "modes": [
+          "Target": "Rigshospitalet",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 3282,
+              "Time": 690
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 3776,
+              "Time": 776
             }
           ]
         },
         {
-          "target": "Fredriksberg Hospital",
-          "modes": [
+          "Target": "Frederiksberg Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 3775,
+              "Time": 715
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 3719,
+              "Time": 792
             }
           ]
         },
         {
-          "target": "Herlev Hospital",
-          "modes": [
+          "Target": "Herlev Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 8431,
+              "Time": 1618
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 9061,
+              "Time": 981
             }
           ]
         },
         {
-          "target": "Gentofte Hospital",
-          "modes": [
+          "Target": "Gentofte Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 3856,
+              "Time": 879
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 4274,
+              "Time": 689
             }
           ]
         }
@@ -382,77 +242,47 @@
       "Longitude": 12.620545109049955,
       "Edges": [
         {
-          "target": "Rigshospitalet",
-          "modes": [
+          "Target": "Rigshospitalet",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 7024,
+              "Time": 1431
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 7961,
+              "Time": 1292
             }
           ]
         },
         {
-          "target": "Fredriksberg Hospital",
-          "modes": [
+          "Target": "Frederiksberg Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 8498,
+              "Time": 1826
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 8335,
+              "Time": 1375
             }
           ]
         },
         {
-          "target": "Psykiatrisk Akutmodtagelse",
-          "modes": [
+          "Target": "Psykiatrisk Akutmodtagelse",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 4163,
+              "Time": 843
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 3725,
+              "Time": 619
             }
           ]
         }
@@ -461,81 +291,51 @@
     {
       "Name": "Herlev Hospital",
       "Type": "base",
-      "Latitude": 55.730880,
+      "Latitude": 55.73088,
       "Longitude": 12.443262,
       "Edges": [
         {
-          "target": "Fredriksberg Hospital",
-          "modes": [
+          "Target": "Frederiksberg Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 9087,
+              "Time": 1659
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 9053,
+              "Time": 909
             }
           ]
         },
         {
-          "target": "Bispebjerg Hospital",
-          "modes": [
+          "Target": "Bispebjerg Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 8279,
+              "Time": 1529
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 8242,
+              "Time": 949
             }
           ]
         },
         {
-          "target": "Gentofte Hospital",
-          "modes": [
+          "Target": "Gentofte Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 7221,
+              "Time": 1468
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 10256,
+              "Time": 789
             }
           ]
         }
@@ -548,77 +348,47 @@
       "Longitude": 12.547113,
       "Edges": [
         {
-          "target": "Herlev Hospital",
-          "modes": [
+          "Target": "Herlev Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 7320,
+              "Time": 1480
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 10038,
+              "Time": 798
             }
           ]
         },
         {
-          "target": "Bispebjerg Hospital",
-          "modes": [
+          "Target": "Bispebjerg Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 3843,
+              "Time": 798
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 4182,
+              "Time": 665
             }
           ]
         },
         {
-          "target": "Rigshospitalet",
-          "modes": [
+          "Target": "Rigshospitalet",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 6548,
+              "Time": 1195
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 6382,
+              "Time": 809
             }
           ]
         }
@@ -631,77 +401,47 @@
       "Longitude": 12.586503,
       "Edges": [
         {
-          "target": "Amager Hospital",
-          "modes": [
+          "Target": "Amager Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 4155,
+              "Time": 887
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 3518,
+              "Time": 598
             }
           ]
         },
         {
-          "target": "Frederiksberg Hospital",
-          "modes": [
+          "Target": "Frederiksberg Hospital",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 8379,
+              "Time": 1678
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 8670,
+              "Time": 1264
             }
           ]
         },
         {
-          "target": "Rigshospitalet",
-          "modes": [
+          "Target": "Rigshospitalet",
+          "Modes": [
             {
-              "travelMode": "Driving",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Bicycling",
+              "Distance": 7815,
+              "Time": 1502
             },
             {
-              "travelMode": "Walking",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Bicycling",
-              "distance": 0,
-              "time": 0
-            },
-            {
-              "travelMode": "Transit",
-              "distance": 0,
-              "time": 0
+              "TravelMode": "Driving",
+              "Distance": 8296,
+              "Time": 1181
             }
           ]
         }

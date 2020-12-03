@@ -56,7 +56,7 @@
                     // If there are no values for Gmaps, query the API to get them
                     if (graph != null && graph.Vertices.All(v => v.Edges.All(e => e.Modes.All(m => m.Distance == 0 && m.Time == 0))))
                     {
-                        //graph = await QueryGoogleMaps(graph);
+                        graph = await QueryGoogleMaps(graph);
                     }
 
                     Graphs.Add(graph);
@@ -89,20 +89,30 @@
                 foreach (var travelMode in (TravelMode[]) Enum.GetValues(typeof(TravelMode)))
                 {
                     var start = new LatLng(vertex.Latitude, vertex.Longitude);
-                    var target = new LatLng(graph.Vertices.First(v => v.Name == edge.Target).Latitude, 
-                        graph.Vertices.First(v => v.Name == edge.Target).Longitude);
+
+                    var targetVertex = graph.Vertices.FirstOrDefault(v => v.Name == edge.Target);
+                    LatLng target = null;
+
+                    if (targetVertex is not null)
+                    {
+                        target = new LatLng(targetVertex.Latitude, targetVertex.Longitude);
+                    }
 
                     var route = new Route(travelMode, start, target);
-                    var routeStats = routes[route];
 
-                    if (routeStats != null)
+                    if (routes.ContainsKey(route))
                     {
-                        edge.Modes.Add(new Mode()
+                        var routeStats = routes[route];
+
+                        if (routeStats != null)
                         {
-                            Distance = (int) routeStats.Distance,
-                            Time = (int) routeStats.Time,
-                            TravelMode = travelMode.ToString()
-                        });
+                            edge.Modes.Add(new Mode()
+                            {
+                                Distance = (int) routeStats.Distance,
+                                Time = (int) routeStats.Time,
+                                TravelMode = travelMode.ToString()
+                            });
+                        }
                     }
                 }
             }

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BlazorApp.Services.GoogleMapsDistanceMatrix.Internal;
 using GoogleMapsComponents.Maps;
+using MathNet.Numerics;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 
@@ -147,15 +148,30 @@ namespace BlazorApp.Services
         }
     }
 
-    public struct LatLng
+    public class LatLng
     {
-        public double Lat { get; set; }
-        public double Lng { get; set; }
+        public double Lat { get; }
+        public double Lng { get; }
 
         public LatLng(double lat, double lng)
         {
             Lat = lat;
             Lng = lng;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Lat, Lng);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as LatLng);
+        }
+
+        public bool Equals(LatLng obj)
+        {
+            return obj != null && obj.Lng.AlmostEqual(Lng) && obj.Lat.AlmostEqual(Lat);
         }
     }
 
@@ -203,7 +219,7 @@ namespace BlazorApp.Services
         }
 
         //struct so it can be used easily as a key in dictionary
-        public readonly struct Route
+        public class Route
         {
             public readonly TravelMode Mode;
             public readonly LatLng Origin;
@@ -214,6 +230,21 @@ namespace BlazorApp.Services
                 Origin = origin;
                 Destination = destination;
                 Mode = mode;
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(Origin.Lat, Origin.Lng, Destination.Lat, Destination.Lng, Mode);
+            }
+
+            public override bool Equals(object obj)
+            {
+                return Equals(obj as Route);
+            }
+
+            public bool Equals(Route obj)
+            {
+                return obj != null && obj.Mode == Mode && obj.Origin.Equals(Origin) && obj.Destination.Equals(Destination);
             }
         }
     }
