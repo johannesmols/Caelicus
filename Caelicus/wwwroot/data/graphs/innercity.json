@@ -81,6 +81,56 @@
               "time": 0
             }
           ]
+        },
+        {
+          "target": "Psykiatrisk Akutmodtagelse",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Gentofte Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
         }
       ]
     },
@@ -164,6 +214,56 @@
               "time": 0
             }
           ]
+        },
+        {
+          "target": "Herlev Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Psykiatrisk Akutmodtagelse",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
         }
       ]
     },
@@ -222,6 +322,56 @@
               "time": 0
             }
           ]
+        },
+        {
+          "target": "Herlev Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Gentofte Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
         }
       ]
     },
@@ -258,6 +408,280 @@
         },
         {
           "target": "Fredriksberg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Psykiatrisk Akutmodtagelse",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Herlev Hospital",
+      "Type": "base",
+      "Latitude": 55.730880,
+      "Longitude": 12.443262,
+      "Edges": [
+        {
+          "target": "Fredriksberg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bispebjerg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Gentofte Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Gentofte Hospital",
+      "Type": "base",
+      "Latitude": 55.738999,
+      "Longitude": 12.547113,
+      "Edges": [
+        {
+          "target": "Herlev Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bispebjerg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Rigshospitalet",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Psykiatrisk Akutmodtagelse",
+      "Type": "base",
+      "Latitude": 55.644461,
+      "Longitude": 12.586503,
+      "Edges": [
+        {
+          "target": "Amager Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Frederiksberg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Rigshospitalet",
           "modes": [
             {
               "travelMode": "Driving",
