@@ -56,8 +56,8 @@ namespace SimulationCore.Services
             catch
             {
                 Console.WriteLine($"Error while parsing graph JSON for a vertex type " +
-                                  $"(type given was { type } but only { VertexType.Base } and " +
-                                  $"{ VertexType.Target } are allowed)");
+                                  $"(type given was { type } but only { VertexType.Base }, " +
+                                  $"{ VertexType.Target } and { VertexType.Both } are allowed)");
                 
                 return VertexType.Target;
             }
