@@ -35,7 +35,6 @@
         GoogleMapsDistanceService.Init(JSruntime);
 
         await LoadGraphs();
-        //await LoadGraphStats();
         await LoadVehicles();
     }
 
@@ -52,8 +51,14 @@
             {
                 var graph = await Http.GetFromJsonAsync<JsonGraphRootObject>(localGraph);
 
-                if (Graphs.All(x => x.Name != graph.Name))
+                if (Graphs.All(x => x.Name != graph?.Name))
                 {
+                    // If there are no values for Gmaps, query the API to get them
+                    if (graph != null && graph.Vertices.All(v => v.Edges.All(e => e.Modes.All(m => m.Distance == 0d && m.Time == 0d))))
+                    {
+                        graph = await QueryGoogleMaps(graph);
+                    }
+
                     Graphs.Add(graph);
                 }
                 else
@@ -72,21 +77,41 @@
         await _localStorageService.WriteGraphsToLocalStorage(AppState.Graphs);
     }
 
-    private async Task LoadGraphStats()
+    private async Task<JsonGraphRootObject> QueryGoogleMaps(JsonGraphRootObject graph)
     {
-        GraphStats = await _localStorageService.GetLocalStorageGraphStats();
+        var routes = await GenerateGraphStats(graph);
+        GoogleMapsDistanceService.Reset();
 
-        foreach (var graph in AppState.Graphs.Where(graph => GraphStats.All(g => g.Item1 != graph.Name + "_stats")))
+        foreach (var vertex in graph.Vertices)
         {
-            GraphStats.Add(Tuple.Create(graph.Name + "_stats", await GenerateGraphStats(graph)));
-            GoogleMapsDistanceService.Reset();
+            foreach (var edge in vertex.Edges)
+            {
+                foreach (var travelMode in (TravelMode[]) Enum.GetValues(typeof(TravelMode)))
+                {
+                    var start = new LatLng(vertex.Latitude, vertex.Longitude);
+                    var target = new LatLng(graph.Vertices.First(v => v.Name == edge.Target).Latitude, 
+                        graph.Vertices.First(v => v.Name == edge.Target).Longitude);
+
+                    var route = new Route(travelMode, start, target);
+                    var routeStats = routes[route];
+
+                    if (routeStats != null)
+                    {
+                        edge.Modes.Add(new Mode()
+                        {
+                            Distance = (int) routeStats.Distance,
+                            Time = (int) routeStats.Time,
+                            TravelMode = travelMode.ToString()
+                        });
+                    }
+                }
+            }
         }
 
-        AppState.UpdateGraphStats(this, GraphStats);
-        GraphStats.ForEach(async g => await _localStorageService.WriteGraphStatsToLocalStorage(g.Item1, g.Item2));
+        return graph;
     }
 
-    private async Task<Dictionary<Route, RouteStats>>  GenerateGraphStats(JsonGraphRootObject jsonGraph)
+    private async Task<Dictionary<Route, RouteStats>> GenerateGraphStats(JsonGraphRootObject jsonGraph)
     {
         var graph = GraphImporterService.GenerateGraph(jsonGraph);
 
