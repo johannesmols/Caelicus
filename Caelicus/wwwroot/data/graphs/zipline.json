@@ -1,0 +1,477 @@
+{
+  "Name": "Zipline",
+  "Vertices": [
+    {
+      "Name": "EKCH",
+      "Type": "base",
+      "Latitude": 55.609397,
+      "Longitude": 12.659007,
+      "Edges": [
+        {
+          "Target": "Dragor",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 2407,
+              "Time": 416
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 2468,
+              "Time": 410
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 2536,
+              "Time": 1261
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 2421,
+              "Time": 1748
+            }
+          ]
+        },
+        {
+          "Target": "Amager Strandpark",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 8438,
+              "Time": 1648
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 8201,
+              "Time": 796
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 10142,
+              "Time": 2701
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 8235,
+              "Time": 6021
+            }
+          ]
+        },
+        {
+          "Target": "Aalborg University",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 14778,
+              "Time": 2968
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 15566,
+              "Time": 997
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 18992,
+              "Time": 3912
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 13385,
+              "Time": 9884
+            }
+          ]
+        },
+        {
+          "Target": "Central Station",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 14968,
+              "Time": 2970
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 19478,
+              "Time": 1493
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 17435,
+              "Time": 2187
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 13870,
+              "Time": 10268
+            }
+          ]
+        },
+        {
+          "Target": "Svanemollestranden",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 18575,
+              "Time": 3542
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 18278,
+              "Time": 2084
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 19419,
+              "Time": 4751
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 17465,
+              "Time": 12530
+            }
+          ]
+        },
+        {
+          "Target": "DTU",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 27538,
+              "Time": 5342
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 42889,
+              "Time": 2056
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 31462,
+              "Time": 6524
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 26718,
+              "Time": 19937
+            }
+          ]
+        },
+        {
+          "Target": "Damhussoen",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 21675,
+              "Time": 4256
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 31710,
+              "Time": 1732
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 20891,
+              "Time": 4139
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 19624,
+              "Time": 14569
+            }
+          ]
+        },
+        {
+          "Target": "Arken Museum",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 23511,
+              "Time": 4502
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 28169,
+              "Time": 1513
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 37405,
+              "Time": 7475
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 22918,
+              "Time": 16727
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Dragor",
+      "Type": "target",
+      "Latitude": 55.593597,
+      "Longitude": 12.675344,
+      "Edges": [
+        {
+          "Target": "EKCH",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 2407,
+              "Time": 422
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 2981,
+              "Time": 386
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 2614,
+              "Time": 819
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 2421,
+              "Time": 1758
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Amager Strandpark",
+      "Type": "target",
+      "Latitude": 55.654476,
+      "Longitude": 12.649514,
+      "Edges": [
+        {
+          "Target": "EKCH",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 8407,
+              "Time": 1583
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 8291,
+              "Time": 804
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 10364,
+              "Time": 2936
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 8225,
+              "Time": 6013
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Aalborg University",
+      "Type": "target",
+      "Latitude": 55.650679,
+      "Longitude": 12.542359,
+      "Edges": [
+        {
+          "Target": "EKCH",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 15317,
+              "Time": 2932
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 15419,
+              "Time": 930
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 20181,
+              "Time": 4119
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 13419,
+              "Time": 9920
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Central Station",
+      "Type": "target",
+      "Latitude": 55.672873,
+      "Longitude": 12.564558,
+      "Edges": [
+        {
+          "Target": "EKCH",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 14530,
+              "Time": 2911
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 19239,
+              "Time": 1413
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 17543,
+              "Time": 2902
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 13858,
+              "Time": 10258
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Svanemollestranden",
+      "Type": "target",
+      "Latitude": 55.719969,
+      "Longitude": 12.583524,
+      "Edges": [
+        {
+          "Target": "EKCH",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 18346,
+              "Time": 3567
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 18307,
+              "Time": 2062
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 21571,
+              "Time": 4576
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 17456,
+              "Time": 12496
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "DTU",
+      "Type": "target",
+      "Latitude": 55.786098,
+      "Longitude": 12.522955,
+      "Edges": [
+        {
+          "Target": "EKCH",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 28127,
+              "Time": 5201
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 41856,
+              "Time": 1919
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 27801,
+              "Time": 7516
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 26708,
+              "Time": 19733
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Damhussoen",
+      "Type": "target",
+      "Latitude": 55.680978,
+      "Longitude": 12.470941,
+      "Edges": [
+        {
+          "Target": "EKCH",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 22772,
+              "Time": 4250
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 30116,
+              "Time": 1767
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 21386,
+              "Time": 4302
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 19707,
+              "Time": 14569
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Arken Museum",
+      "Type": "target",
+      "Latitude": 55.60607,
+      "Longitude": 12.387569,
+      "Edges": [
+        {
+          "Target": "EKCH",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 23397,
+              "Time": 4346
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 27631,
+              "Time": 1471
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 35512,
+              "Time": 9684
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 22953,
+              "Time": 16738
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

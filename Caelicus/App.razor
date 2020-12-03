@@ -44,7 +44,15 @@
         Graphs = await _localStorageService.GetLocalStorageGraphs();
 
         // Read graph files from data folder and add if not already cached in browser
-        var localGraphs = new[] { "data/graphs/scenario1.json", "data/graphs/scenario2.json", "data/graphs/scenario3.json", "data/graphs/scenario4.json", "data/graphs/innercity.json" };
+        var localGraphs = new[] { 
+            "data/graphs/scenario1.json", 
+            "data/graphs/scenario2.json", 
+            "data/graphs/scenario3.json", 
+            "data/graphs/scenario4.json", 
+            "data/graphs/innercity.json",
+            "data/graphs/zipline.json"
+        };
+
         foreach (var localGraph in localGraphs)
         {
             try
@@ -137,7 +145,7 @@
         foreach (var travelMode in (TravelMode[]) Enum.GetValues(typeof(TravelMode)))
         {
             await GoogleMapsDistanceService.CalculateDistances(travelMode, origins, destinations);
-            await Task.Delay(10000); // wait a little bit to avoid exceeding the API limit
+            await Task.Delay(15000); // wait a little bit to avoid exceeding the API limit
         }
 
         return GoogleMapsDistanceService.GetRouteDictionary();
