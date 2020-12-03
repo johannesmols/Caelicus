@@ -2,16 +2,136 @@
   "Name": "Inner City",
   "Vertices": [
     {
-      "Name": "Rishospitalet",
+      "Name": "Rigshospitalet",
       "Type": "base",
       "Latitude": 55.696581631707076,
       "Longitude": 12.566857345253906,
       "Edges": [
-        "Fredriksberg Hospital",
-        "Bispebjerg Hospital",
-        "Bellahoej Centeret",
-        "Amager hospital",
-        "Dyssegaardsskolen"
+        {
+          "target": "Fredriksberg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bispebjerg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bellahoej Centeret",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Amager hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Dyssegaardsskolen",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -20,11 +140,131 @@
       "Latitude": 55.68524758990225,
       "Longitude": 12.524759919046602,
       "Edges": [
-        "Rishospitalet",
-        "Bispebjerg Hospital",
-        "Bellahoej Centeret",
-        "Amager hospital",
-        "Dyssegaardsskolen"
+        {
+          "target": "Rigshospitalet",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bispebjerg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bellahoej Centeret",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Amager hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Dyssegaardsskolen",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -33,11 +273,131 @@
       "Latitude": 55.714141100260704,
       "Longitude": 12.540088383339548,
       "Edges": [
-        "Rishospitalet",
-        "Fredriksberg Hospital",
-        "Bellahoej Centeret",
-        "Amager hospital",
-        "Dyssegaardsskolen"
+        {
+          "target": "Rigshospitalet",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Fredriksberg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bellahoej Centeret",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Amager hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Dyssegaardsskolen",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -46,7 +406,31 @@
       "Latitude": 55.70392506111949,
       "Longitude": 12.538433554503621,
       "Edges": [
-        "Rishospitalet"
+        {
+          "target": "Rigshospitalet",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -55,7 +439,31 @@
       "Latitude": 55.67121194424447,
       "Longitude": 12.55961030052976,
       "Edges": [
-        "Fredriksberg Hospital"
+        {
+          "target": "Fredriksberg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -64,7 +472,31 @@
       "Latitude": 55.67342028944557,
       "Longitude": 12.593760186073682,
       "Edges": [
-        "Rishospitalet"
+        {
+          "target": "Rishopitalet",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -73,7 +505,31 @@
       "Latitude": 55.65855844749799,
       "Longitude": 12.589726145319544,
       "Edges": [
-        "Amager hospital"
+        {
+          "target": "Amager hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -82,17 +538,31 @@
       "Latitude": 55.68210725331254,
       "Longitude": 12.532519990642227,
       "Edges": [
-        "Fredriksberg Hospital"
-
-      ]
-    },
-    {
-      "Name": "Svanemoellen",
-      "Type": "target",
-      "Latitude": 55.71455072540137,
-      "Longitude": 12.578753565783671,
-      "Edges": [
-
+        {
+          "target": "Fredriksberg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -101,7 +571,31 @@
       "Latitude": 55.727774633642284,
       "Longitude": 12.579459589900871,
       "Edges": [
-        "Dyssegaardsskolen"
+        {
+          "target": "Dyssegaardsskolen",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -110,11 +604,131 @@
       "Latitude": 55.63806153977925,
       "Longitude": 12.578257961855346,
       "Edges": [
-        "Rishospitalet",
-        "Fredriksberg Hospital",
-        "Bispebjerg Hospital",
-        "Amager hospital",
-        "Dyssegaardsskolen"
+        {
+          "target": "Rigshospitalet",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Fredriksberg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bispebjerg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Amager hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Dyssegaardsskolen",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -123,7 +737,31 @@
       "Latitude": 55.6185653146523,
       "Longitude": 12.649019439701046,
       "Edges": [
-        "Amager hospital"
+        {
+          "target": "Amager hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -132,11 +770,131 @@
       "Latitude": 55.65525095150975,
       "Longitude": 12.620545109049955,
       "Edges": [
-        "Rishospitalet",
-        "Fredriksberg Hospital",
-        "Bispebjerg Hospital",
-        "Bellahoej Centeret",
-        "Dyssegaardsskolen"
+        {
+          "target": "Rigshospitalet",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Fredriksberg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bispebjerg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bellahoej Centeret",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Dyssegaardsskolen",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -145,7 +903,31 @@
       "Latitude": 55.66296158536369,
       "Longitude": 12.603829582763687,
       "Edges": [
-        "Amager hospital"
+        {
+          "target": "Amager hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -154,7 +936,31 @@
       "Latitude": 55.680858440688,
       "Longitude": 12.620416363260832,
       "Edges": [
-        "Dyssegaardsskolen"
+        {
+          "target": "Dyssegaardsskolen",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -163,7 +969,31 @@
       "Latitude": 55.71044070917062,
       "Longitude": 12.581690863535153,
       "Edges": [
-        "Dyssegaardsskolen"
+        {
+          "target": "Dyssegaardsskolen",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -172,11 +1002,131 @@
       "Latitude": 55.73277428992391,
       "Longitude": 12.538689689330875,
       "Edges": [
-        "Rishospitalet",
-        "Fredriksberg Hospital",
-        "Bispebjerg Hospital",
-        "Bellahoej Centeret",
-        "Amager hospital"
+        {
+          "target": "Rigshospitalet",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Fredriksberg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bispebjerg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Bellahoej Centeret",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        },
+        {
+          "target": "Amager hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     },
     {
@@ -185,7 +1135,31 @@
       "Latitude": 55.70564382638199,
       "Longitude": 12.507561717168977,
       "Edges": [
-        "Fredriksberg Hospital"
+        {
+          "target": "Fredriksberg Hospital",
+          "modes": [
+            {
+              "travelMode": "Driving",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Walking",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Bicycling",
+              "distance": 0,
+              "time": 0
+            },
+            {
+              "travelMode": "Transit",
+              "distance": 0,
+              "time": 0
+            }
+          ]
+        }
       ]
     }
   ]

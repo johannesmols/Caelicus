@@ -54,9 +54,9 @@
                 if (Graphs.All(x => x.Name != graph?.Name))
                 {
                     // If there are no values for Gmaps, query the API to get them
-                    if (graph != null && graph.Vertices.All(v => v.Edges.All(e => e.Modes.All(m => m.Distance == 0d && m.Time == 0d))))
+                    if (graph != null && graph.Vertices.All(v => v.Edges.All(e => e.Modes.All(m => m.Distance == 0 && m.Time == 0))))
                     {
-                        graph = await QueryGoogleMaps(graph);
+                        //graph = await QueryGoogleMaps(graph);
                     }
 
                     Graphs.Add(graph);
