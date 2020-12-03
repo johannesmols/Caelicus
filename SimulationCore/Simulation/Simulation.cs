@@ -53,7 +53,7 @@ namespace SimulationCore.Simulation
             for (var i = 0; i < Parameters.NumberOfOrders; i++)
             {
                 var start = allBases[new Random((Parameters.RandomSeed + i) * 133742069).Next(allBases.Count)];
-                var target = allTargets[new Random((Parameters.RandomSeed + i) * 133742069).Next(allTargets.Count)];
+                var target = allTargets[new Random((Parameters.RandomSeed + i) * 420691337).Next(allTargets.Count)];
 
                 // Avoid having the start and target be at the same vertex (can happen if there are vertices that are both a base station and target)
                 if (start.Equals(target))

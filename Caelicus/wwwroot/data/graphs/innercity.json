@@ -22,8 +22,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 5311,
-              "Time": 1793
+              "Distance": 5140,
+              "Time": 1914
             },
             {
               "TravelMode": "Walking",
@@ -48,7 +48,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 3271,
-              "Time": 1290
+              "Time": 1292
             },
             {
               "TravelMode": "Walking",
@@ -72,8 +72,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 7026,
-              "Time": 2344
+              "Distance": 10818,
+              "Time": 3046
             },
             {
               "TravelMode": "Walking",
@@ -97,8 +97,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 7374,
-              "Time": 1771
+              "Distance": 9239,
+              "Time": 2317
             },
             {
               "TravelMode": "Walking",
@@ -122,8 +122,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 6202,
-              "Time": 1701
+              "Distance": 6637,
+              "Time": 1558
             },
             {
               "TravelMode": "Walking",
@@ -155,8 +155,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 6296,
-              "Time": 1877
+              "Distance": 6292,
+              "Time": 1798
             },
             {
               "TravelMode": "Walking",
@@ -181,7 +181,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 4714,
-              "Time": 1387
+              "Time": 1363
             },
             {
               "TravelMode": "Walking",
@@ -280,13 +280,38 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 7678,
-              "Time": 2290
+              "Distance": 7637,
+              "Time": 2300
             },
             {
               "TravelMode": "Walking",
               "Distance": 6554,
               "Time": 4902
+            }
+          ]
+        },
+        {
+          "Target": "Rigshospitalet Glostrup",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 10860,
+              "Time": 2153
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 11721,
+              "Time": 1462
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 19906,
+              "Time": 4569
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 9715,
+              "Time": 7402
             }
           ]
         }
@@ -314,7 +339,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 3439,
-              "Time": 1363
+              "Time": 1358
             },
             {
               "TravelMode": "Walking",
@@ -339,7 +364,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 4522,
-              "Time": 1390
+              "Time": 1346
             },
             {
               "TravelMode": "Walking",
@@ -364,7 +389,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 8689,
-              "Time": 2272
+              "Time": 2269
             },
             {
               "TravelMode": "Walking",
@@ -389,7 +414,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 4127,
-              "Time": 1351
+              "Time": 1354
             },
             {
               "TravelMode": "Walking",
@@ -421,8 +446,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 7588,
-              "Time": 2348
+              "Distance": 7440,
+              "Time": 2224
             },
             {
               "TravelMode": "Walking",
@@ -446,8 +471,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 8408,
-              "Time": 1813
+              "Distance": 8664,
+              "Time": 1731
             },
             {
               "TravelMode": "Walking",
@@ -471,8 +496,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 4008,
-              "Time": 1063
+              "Distance": 6592,
+              "Time": 1653
             },
             {
               "TravelMode": "Walking",
@@ -505,7 +530,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 9028,
-              "Time": 2882
+              "Time": 2840
             },
             {
               "TravelMode": "Walking",
@@ -530,7 +555,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 9489,
-              "Time": 3561
+              "Time": 2347
             },
             {
               "TravelMode": "Walking",
@@ -555,7 +580,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 8465,
-              "Time": 2889
+              "Time": 2284
             },
             {
               "TravelMode": "Walking",
@@ -580,7 +605,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 8341,
-              "Time": 1251
+              "Time": 1240
             },
             {
               "TravelMode": "Walking",
@@ -613,7 +638,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 8497,
-              "Time": 1997
+              "Time": 2590
             },
             {
               "TravelMode": "Walking",
@@ -638,7 +663,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 4232,
-              "Time": 1418
+              "Time": 1412
             },
             {
               "TravelMode": "Walking",
@@ -663,7 +688,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 6400,
-              "Time": 1634
+              "Time": 1610
             },
             {
               "TravelMode": "Walking",
@@ -696,7 +721,7 @@
             {
               "TravelMode": "Transit",
               "Distance": 4240,
-              "Time": 1066
+              "Time": 1045
             },
             {
               "TravelMode": "Walking",
@@ -745,8 +770,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 7532,
-              "Time": 1860
+              "Distance": 7936,
+              "Time": 1882
             },
             {
               "TravelMode": "Walking",
@@ -770,8 +795,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 16893,
-              "Time": 2825
+              "Distance": 12399,
+              "Time": 3024
             },
             {
               "TravelMode": "Walking",
@@ -803,8 +828,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 12104,
-              "Time": 2705
+              "Distance": 16734,
+              "Time": 2928
             },
             {
               "TravelMode": "Walking",
@@ -828,8 +853,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 7559,
-              "Time": 2174
+              "Distance": 7558,
+              "Time": 2146
             },
             {
               "TravelMode": "Walking",
@@ -853,8 +878,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 9670,
-              "Time": 2676
+              "Distance": 11671,
+              "Time": 2410
             },
             {
               "TravelMode": "Walking",
@@ -886,8 +911,8 @@
             },
             {
               "TravelMode": "Transit",
-              "Distance": 9307,
-              "Time": 1871
+              "Distance": 11156,
+              "Time": 2625
             },
             {
               "TravelMode": "Walking",
@@ -912,12 +937,37 @@
             {
               "TravelMode": "Transit",
               "Distance": 8270,
-              "Time": 1416
+              "Time": 1402
             },
             {
               "TravelMode": "Walking",
               "Distance": 8104,
               "Time": 6053
+            }
+          ]
+        },
+        {
+          "Target": "Frederiksberg Hospital",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 10931,
+              "Time": 2121
+            },
+            {
+              "TravelMode": "Driving",
+              "Distance": 11736,
+              "Time": 1382
+            },
+            {
+              "TravelMode": "Transit",
+              "Distance": 15221,
+              "Time": 3584
+            },
+            {
+              "TravelMode": "Walking",
+              "Distance": 9715,
+              "Time": 7348
             }
           ]
         }
