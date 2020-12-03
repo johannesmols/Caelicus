@@ -38,6 +38,7 @@ namespace SimulationCore.Simulation
         public Vertex<VertexInfo, EdgeInfo> CurrentVertexPosition { get; private set; } 
         public Vertex<VertexInfo, EdgeInfo> CurrentTarget { get; private set; }
         public double DistanceToCurrentTarget { get; private set; }
+        public double TimeToCurrentTarget { get; private set; }
         public double DistanceTraveled { get; private set; }
 
         // Statistics
@@ -108,6 +109,7 @@ namespace SimulationCore.Simulation
                 PathToTarget.Clear();
                 CurrentTarget = null;
                 DistanceToCurrentTarget = 0d;
+                TimeToCurrentTarget = 0d;
                 DistanceTraveled = 0d;
 
                 State = VehicleState.Idle;
@@ -120,6 +122,7 @@ namespace SimulationCore.Simulation
             {
                 PathToTarget = Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, CurrentOrders.First().Start, CurrentOrders.First().Target, TravelMode).Item1;
                 DistanceToCurrentTarget = 0d;
+                TimeToCurrentTarget = 0d;
                 DistanceTraveled = 0d;
 
                 // Refuel the vehicle before heading out to deliver
@@ -139,6 +142,8 @@ namespace SimulationCore.Simulation
                 DistanceToCurrentTarget = Vehicle.TravelMode == GoogleMapsComponents.Maps.TravelMode.Transit ?
                     PathToTarget[0].Edges.First(e => e.Destination == PathToTarget[1]).Info.Distance :
                     PathToTarget[0].Edges.First(e => e.Destination == PathToTarget[1]).Info.GMapsDistanceAndTime[Vehicle.TravelMode].Item1;
+                TimeToCurrentTarget = Vehicle.TravelMode == GoogleMapsComponents.Maps.TravelMode.Transit ? 0d
+                    : PathToTarget[0].Edges.First(e => e.Destination == PathToTarget[1]).Info.GMapsDistanceAndTime[Vehicle.TravelMode].Item2;
             }
 
             if (DistanceTraveled >= DistanceToCurrentTarget)
@@ -156,18 +161,20 @@ namespace SimulationCore.Simulation
                 DistanceToCurrentTarget = Vehicle.TravelMode == GoogleMapsComponents.Maps.TravelMode.Transit ?
                     PathToTarget[currentIndexInPath].Edges.First(e => e.Destination == PathToTarget[currentIndexInPath + 1]).Info.Distance :
                     PathToTarget[currentIndexInPath].Edges.First(e => e.Destination == PathToTarget[currentIndexInPath + 1]).Info.GMapsDistanceAndTime[Vehicle.TravelMode].Item1;
+                TimeToCurrentTarget = Vehicle.TravelMode == GoogleMapsComponents.Maps.TravelMode.Transit ? 0d
+                    : PathToTarget[currentIndexInPath].Edges.First(e => e.Destination == PathToTarget[currentIndexInPath + 1]).Info.GMapsDistanceAndTime[Vehicle.TravelMode].Item2;
             }
             else
             {
-                DistanceTraveled += GetSpeedInMetersPerSecond();
+                DistanceTraveled += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
 
                 if (State == VehicleState.MovingToTarget)
                 {
-                    CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders?.Sum(o => o.Order.PayloadWeight) ?? 0d) * GetSpeedInMetersPerSecond();
+                    CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders?.Sum(o => o.Order.PayloadWeight) ?? 0d) * GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
                 }
                 else if (State == VehicleState.PickingUpOrder)
                 {
-                    CurrentFuelLoaded -= BaseFuelConsumption * GetSpeedInMetersPerSecond();
+                    CurrentFuelLoaded -= BaseFuelConsumption * GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
                 }
 
                 // Record progress in order
@@ -176,19 +183,19 @@ namespace SimulationCore.Simulation
                     if (State == VehicleState.MovingToTarget)
                     {
                         o.DeliveryTime++;
-                        o.DeliveryDistance += GetSpeedInMetersPerSecond();
+                        o.DeliveryDistance += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
                         o.DeliveryCost = CalculateJourneyCost(o.DeliveryDistance, o.DeliveryTime) / CurrentOrders.Count; // divide cost depending how many orders are loaded
                     }
                     else if (State == VehicleState.PickingUpOrder)
                     {
                         o.PickupTime++;
-                        o.PickupDistance += GetSpeedInMetersPerSecond();
+                        o.PickupDistance += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
                         o.PickupCost = CalculateJourneyCost(o.PickupDistance, o.PickupTime) / CurrentOrders.Count; // divide cost depending how many orders are loaded
                     }
                 });
 
                 // Record statistics
-                TotalTravelDistance += GetSpeedInMetersPerSecond();
+                TotalTravelDistance += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
                 TotalTravelTime++;
             }
 

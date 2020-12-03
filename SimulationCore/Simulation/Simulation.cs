@@ -212,6 +212,7 @@ namespace SimulationCore.Simulation
                                 o?.DeliveryPath?.Select(p => p.Info.Name).ToList())) ??
                         Array.Empty<HistoryCompletedOrder>()),
                         DistanceToCurrentTarget = vehicle.DistanceToCurrentTarget,
+                        TimeToCurrentTarget = vehicle.TimeToCurrentTarget,
                         DistanceTraveled = vehicle.DistanceTraveled,
                         TotalTravelDistance = vehicle.TotalTravelDistance,
                         TotalTravelTime = vehicle.TotalTravelTime,

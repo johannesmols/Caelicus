@@ -27,7 +27,7 @@ namespace SimulationCore
                 for (var i = 1; i <= 64; i *= 2)
                 {
                     Console.WriteLine($"Running scenario {s + 1} with {i} vehicles");
-                    await Run(new Parameters(0, 128, Tuple.Create(0.1d, 5.5d), i, s).GetSimulationParameters(), $"scenario{s}_{i}vehicles_128orders");
+                    await Run(new Parameters(0, 64, Tuple.Create(0.1d, 5.5d), i, s).GetSimulationParameters(), $"scenario{s}_{i}vehicles_64orders");
                 }
             }
         }

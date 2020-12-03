@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SimulationCore.Simulation.Simulation">
+    <Position X="11.75" Y="2.75" Width="2.75" />
+    <Members>
+      <Method Name="Advance" Hidden="true" />
+      <Method Name="GetNearestBaseStationWithOpenOrder" Hidden="true" />
+      <Method Name="GetNearestOpenOrder" Hidden="true" />
+      <Method Name="IsDone" Hidden="true" />
+      <Field Name="Parameters" Hidden="true" />
+      <Property Name="ProgressReporter" Hidden="true" />
+      <Method Name="RecordSimulationStep" Hidden="true" />
+      <Field Name="SecondsPerSimulationStep" Hidden="true" />
+      <Method Name="Simulate" Hidden="true" />
+      <Method Name="Simulation" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AEAACSAIAAAAgAAAAAAFAAAAAAAAAAAAAIAAQAAQhAA=</HashCode>
+      <FileName>Simulation\Simulation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SimulationCore.Simulation.SimulationParameters">
+    <Position X="7.25" Y="2.5" Width="2" />
+    <Members>
+      <Property Name="JsonGraph" Hidden="true" />
+      <Property Name="LogIntermediateSteps" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>QAAAAAAABAQAAIAAAAAACABAAAIAAAgAAAAAAAAAUAA=</HashCode>
+      <FileName>Simulation\SimulationParameters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SimulationCore.Models.Vehicles.Vehicle">
+    <Position X="3.25" Y="2.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAADAAAAEAEAAAAggAAAUEAAAAABBAAAAgEAAAIgA=</HashCode>
+      <FileName>Models\Vehicles\Vehicle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

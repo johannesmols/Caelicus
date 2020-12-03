@@ -10,6 +10,7 @@ namespace SimulationCore.Simulation.History
         public string CurrentVertexPosition { get; set; }
         public string CurrentTarget { get; set; }
         public double DistanceToCurrentTarget { get; set; }
+        public double TimeToCurrentTarget { get; set; }
         public double DistanceTraveled { get; set; }
         public double TotalTravelDistance { get; set; }
         public double TotalTravelTime { get; set; }

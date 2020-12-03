@@ -85,6 +85,20 @@ namespace SimulationCore.Models.Vehicles
             return AverageSpeed / 3.6d;
         }
 
+        public double GetSpeedInMetersPerSecond(double totalDistanceToTarget, double totalTimeToTarget)
+        {
+            var regularSpeedPerSeconds = GetSpeedInMetersPerSecond();
+
+            if (totalTimeToTarget == 0d)
+            {
+                return regularSpeedPerSeconds;
+            }
+
+            var estimatedSpeedPerSecond = totalDistanceToTarget / totalTimeToTarget;
+
+            return estimatedSpeedPerSecond <= regularSpeedPerSeconds ? estimatedSpeedPerSecond : regularSpeedPerSeconds;
+        }
+
         public double GetFuelConsumptionForOneMeter(double payload)
         {
             return BaseFuelConsumption + ExtraFuelConsumptionPerKg * payload;
