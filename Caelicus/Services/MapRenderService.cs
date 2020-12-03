@@ -36,7 +36,12 @@ namespace BlazorApp.Services
                     //Label = vertex.Info.Name,
                     Icon = new Icon()
                     {
-                        Url = vertex.Info.Type == VertexType.Target ?  "icons/circle_green.svg" : "icons/home_black.svg",
+                        Url = vertex.Info.Type switch
+                        {
+                            VertexType.Target => "icons/circle_green.svg",
+                            VertexType.Base => "icons/home_black.svg",
+                            VertexType.Both => "icons/home_green.svg",
+                        },
                         ScaledSize = new Size()
                         {
                             Height = 24,

@@ -272,7 +272,7 @@ namespace SimulationCore.Simulation
                         if (!AllowRefuelAtTarget)
                         {
                             distanceToNextBaseStation = Simulation.Parameters.Graph.Vertices
-                                .Where(v => v.Info.Type == VertexType.Base)
+                                .Where(v => v.Info.Type == VertexType.Base || v.Info.Type == VertexType.Both)
                                 .Select(b => Simulation.Parameters.Graph.FindShortestPath(Simulation.Parameters.Graph, order.Target, b))
                                 .OrderBy(d => d.Item2).First().Item2;
                         }

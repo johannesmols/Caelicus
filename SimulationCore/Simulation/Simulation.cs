@@ -33,8 +33,8 @@ namespace SimulationCore.Simulation
             SimulationHistory = new SimulationHistory(parameters);
             SecondsPerSimulationStep = 1d / Parameters.SimulationSpeed;
 
-            var allBases = Parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Base).ToList();
-            var allTargets = Parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Target).ToList();
+            var allBases = Parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Base || v.Info.Type == VertexType.Both).ToList();
+            var allTargets = Parameters.Graph.Vertices.Where(v => v.Info.Type == VertexType.Target || v.Info.Type == VertexType.Both).ToList();
 
             // Equally split vehicles up to base stations
             var currentBaseIndex = 0;
@@ -52,9 +52,17 @@ namespace SimulationCore.Simulation
             // Generate random orders
             for (var i = 0; i < Parameters.NumberOfOrders; i++)
             {
+                var start = allBases[new Random((Parameters.RandomSeed + i) * 133742069).Next(allBases.Count)];
+                var target = allTargets[new Random((Parameters.RandomSeed + i) * 133742069).Next(allTargets.Count)];
+
+                // Avoid having the start and target be at the same vertex (can happen if there are vertices that are both a base station and target)
+                if (start.Equals(target))
+                {
+                    target = allTargets.FirstOrDefault(t => !t.Equals(target));
+                }
+
                 // Multiplying the random seed + i with a large number because a change of only 1 per iteration produces very similar results when calculating random values
-                OpenOrders.Add(new Order(allBases[new Random((Parameters.RandomSeed + i) * 133742069).Next(allBases.Count)], 
-                    allTargets[new Random((Parameters.RandomSeed + i) * 133742069).Next(allTargets.Count)],
+                OpenOrders.Add(new Order(start, target,
                     new Random((Parameters.RandomSeed + i) * 133742069).NextDouble() *
                     (Parameters.MinMaxPayload.Item2 - Parameters.MinMaxPayload.Item1) +
                     Parameters.MinMaxPayload.Item1));
@@ -164,7 +172,7 @@ namespace SimulationCore.Simulation
         public Vertex<VertexInfo, EdgeInfo> GetNearestBaseStationWithOpenOrder(VehicleInstance vehicle)
         {
             var nearestBaseStation = Parameters.Graph
-                .Where(x => x.Info.Type == VertexType.Base)
+                .Where(x => x.Info.Type == VertexType.Base || x.Info.Type == VertexType.Both)
                 .Where(x => OpenOrders.Any(y => y.Start.Info == x.Info && Parameters.Graph.FindShortestPath(Parameters.Graph, y.Start, y.Target, vehicle.TravelMode).Item2 <= vehicle.GetMaximumTravelDistance(y.PayloadWeight, vehicle.CurrentFuelLoaded)))
                 .Select(x => Tuple.Create(Parameters.Graph.FindShortestPath(Parameters.Graph, vehicle.CurrentVertexPosition, x, vehicle.TravelMode).Item2, x))
                 .OrderBy(x => x.Item1)

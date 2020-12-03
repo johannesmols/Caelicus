@@ -66,7 +66,12 @@ namespace BlazorApp.Services
                 {
                     Position = new BlazorLeaflet.Models.LatLng((float)vertex.Info.Position.Item1, (float)vertex.Info.Position.Item2),
                     Radius = 1f,
-                    StrokeColor = vertex.Info.Type == VertexType.Target ? Color.Red : Color.Green,
+                    StrokeColor = vertex.Info.Type switch
+                    {
+                        VertexType.Target => Color.Red,
+                        VertexType.Base => Color.Green,
+                        VertexType.Both => Color.Yellow
+                    },
                     StrokeWidth = 7
                 });
 

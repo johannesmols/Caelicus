@@ -3,7 +3,7 @@
   "Vertices": [
     {
       "Name": "Rigshospitalet",
-      "Type": "base",
+      "Type": "both",
       "Latitude": 55.696581631707076,
       "Longitude": 12.566857345253906,
       "Edges": [
@@ -136,7 +136,7 @@
     },
     {
       "Name": "Frederiksberg Hospital",
-      "Type": "base",
+      "Type": "both",
       "Latitude": 55.68524758990225,
       "Longitude": 12.524759919046602,
       "Edges": [
@@ -294,7 +294,7 @@
     },
     {
       "Name": "Bispebjerg Hospital",
-      "Type": "base",
+      "Type": "both",
       "Latitude": 55.714141100260704,
       "Longitude": 12.540088383339548,
       "Edges": [
@@ -402,7 +402,7 @@
     },
     {
       "Name": "Amager Hospital",
-      "Type": "base",
+      "Type": "both",
       "Latitude": 55.65525095150975,
       "Longitude": 12.620545109049955,
       "Edges": [
@@ -485,7 +485,7 @@
     },
     {
       "Name": "Herlev Hospital",
-      "Type": "base",
+      "Type": "both",
       "Latitude": 55.73088,
       "Longitude": 12.443262,
       "Edges": [
@@ -593,7 +593,7 @@
     },
     {
       "Name": "Gentofte Hospital",
-      "Type": "base",
+      "Type": "both",
       "Latitude": 55.738999,
       "Longitude": 12.547113,
       "Edges": [
@@ -676,7 +676,7 @@
     },
     {
       "Name": "Psykiatrisk Akutmodtagelse",
-      "Type": "base",
+      "Type": "both",
       "Latitude": 55.644461,
       "Longitude": 12.586503,
       "Edges": [
@@ -784,7 +784,7 @@
     },
     {
       "Name": "Hvidovre Hospital",
-      "Type": "base",
+      "Type": "both",
       "Latitude": 55.648609,
       "Longitude": 12.470186,
       "Edges": [
@@ -867,7 +867,7 @@
     },
     {
       "Name": "Rigshospitalet Glostrup",
-      "Type": "base",
+      "Type": "both",
       "Latitude": 55.669843,
       "Longitude": 12.389111,
       "Edges": [

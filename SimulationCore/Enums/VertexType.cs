@@ -3,6 +3,7 @@
     public enum VertexType
     {
         Base,
-        Target
+        Target,
+        Both
     }
 }
