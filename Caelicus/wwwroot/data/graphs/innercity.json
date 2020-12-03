@@ -14,11 +14,6 @@
               "TravelMode": "Bicycling",
               "Distance": 4885,
               "Time": 976
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 4449,
-              "Time": 866
             }
           ]
         },
@@ -29,11 +24,6 @@
               "TravelMode": "Bicycling",
               "Distance": 3254,
               "Time": 666
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 3876,
-              "Time": 759
             }
           ]
         },
@@ -44,11 +34,6 @@
               "TravelMode": "Bicycling",
               "Distance": 7727,
               "Time": 1603
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 7610,
-              "Time": 1223
             }
           ]
         },
@@ -59,11 +44,6 @@
               "TravelMode": "Bicycling",
               "Distance": 7774,
               "Time": 1491
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 8335,
-              "Time": 1150
             }
           ]
         },
@@ -74,11 +54,6 @@
               "TravelMode": "Bicycling",
               "Distance": 5243,
               "Time": 1108
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 6347,
-              "Time": 783
             }
           ]
         }
@@ -97,11 +72,6 @@
               "TravelMode": "Bicycling",
               "Distance": 4300,
               "Time": 866
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 4877,
-              "Time": 943
             }
           ]
         },
@@ -112,11 +82,6 @@
               "TravelMode": "Bicycling",
               "Distance": 3774,
               "Time": 778
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 4345,
-              "Time": 873
             }
           ]
         },
@@ -127,11 +92,6 @@
               "TravelMode": "Bicycling",
               "Distance": 8112,
               "Time": 1755
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 8695,
-              "Time": 1400
             }
           ]
         },
@@ -142,11 +102,6 @@
               "TravelMode": "Bicycling",
               "Distance": 9146,
               "Time": 1829
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 9629,
-              "Time": 1020
             }
           ]
         },
@@ -157,11 +112,26 @@
               "TravelMode": "Bicycling",
               "Distance": 8262,
               "Time": 1679
-            },
+            }
+          ]
+        },
+        {
+          "Target": "Hvidovre Hospital",
+          "Modes": [
             {
-              "TravelMode": "Driving",
-              "Distance": 9420,
-              "Time": 1326
+              "TravelMode": "Bicycling",
+              "Distance": 7748,
+              "Time": 1451
+            }
+          ]
+        },
+        {
+          "Target": "Rigshospitalet Glostrup",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 10860,
+              "Time": 2153
             }
           ]
         }
@@ -180,11 +150,6 @@
               "TravelMode": "Bicycling",
               "Distance": 3282,
               "Time": 690
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 3776,
-              "Time": 776
             }
           ]
         },
@@ -195,11 +160,6 @@
               "TravelMode": "Bicycling",
               "Distance": 3775,
               "Time": 715
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 3719,
-              "Time": 792
             }
           ]
         },
@@ -210,11 +170,6 @@
               "TravelMode": "Bicycling",
               "Distance": 8431,
               "Time": 1618
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 9061,
-              "Time": 981
             }
           ]
         },
@@ -225,11 +180,6 @@
               "TravelMode": "Bicycling",
               "Distance": 3856,
               "Time": 879
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 4274,
-              "Time": 689
             }
           ]
         }
@@ -248,11 +198,6 @@
               "TravelMode": "Bicycling",
               "Distance": 7024,
               "Time": 1431
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 7961,
-              "Time": 1292
             }
           ]
         },
@@ -263,11 +208,6 @@
               "TravelMode": "Bicycling",
               "Distance": 8498,
               "Time": 1826
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 8335,
-              "Time": 1375
             }
           ]
         },
@@ -278,11 +218,6 @@
               "TravelMode": "Bicycling",
               "Distance": 4163,
               "Time": 843
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 3725,
-              "Time": 619
             }
           ]
         }
@@ -301,11 +236,6 @@
               "TravelMode": "Bicycling",
               "Distance": 9087,
               "Time": 1659
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 9053,
-              "Time": 909
             }
           ]
         },
@@ -316,11 +246,6 @@
               "TravelMode": "Bicycling",
               "Distance": 8279,
               "Time": 1529
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 8242,
-              "Time": 949
             }
           ]
         },
@@ -331,11 +256,16 @@
               "TravelMode": "Bicycling",
               "Distance": 7221,
               "Time": 1468
-            },
+            }
+          ]
+        },
+        {
+          "Target": "Rigshospitalet Glostrup",
+          "Modes": [
             {
-              "TravelMode": "Driving",
-              "Distance": 10256,
-              "Time": 789
+              "TravelMode": "Bicycling",
+              "Distance": 8104,
+              "Time": 1544
             }
           ]
         }
@@ -354,11 +284,6 @@
               "TravelMode": "Bicycling",
               "Distance": 7320,
               "Time": 1480
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 10038,
-              "Time": 798
             }
           ]
         },
@@ -369,11 +294,6 @@
               "TravelMode": "Bicycling",
               "Distance": 3843,
               "Time": 798
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 4182,
-              "Time": 665
             }
           ]
         },
@@ -384,11 +304,6 @@
               "TravelMode": "Bicycling",
               "Distance": 6548,
               "Time": 1195
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 6382,
-              "Time": 809
             }
           ]
         }
@@ -407,11 +322,6 @@
               "TravelMode": "Bicycling",
               "Distance": 4155,
               "Time": 887
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 3518,
-              "Time": 598
             }
           ]
         },
@@ -422,11 +332,6 @@
               "TravelMode": "Bicycling",
               "Distance": 8379,
               "Time": 1678
-            },
-            {
-              "TravelMode": "Driving",
-              "Distance": 8670,
-              "Time": 1264
             }
           ]
         },
@@ -437,11 +342,92 @@
               "TravelMode": "Bicycling",
               "Distance": 7815,
               "Time": 1502
-            },
+            }
+          ]
+        },
+        {
+          "Target": "Hvidovre Hospital",
+          "Modes": [
             {
-              "TravelMode": "Driving",
-              "Distance": 8296,
-              "Time": 1181
+              "TravelMode": "Bicycling",
+              "Distance": 9370,
+              "Time": 1886
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Hvidovre Hospital",
+      "Type": "base",
+      "Latitude": 55.648609,
+      "Longitude": 12.470186,
+      "Edges": [
+        {
+          "Target": "Psykiatrisk Akutmodtagelse",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 8579,
+              "Time": 1735
+            }
+          ]
+        },
+        {
+          "Target": "Frederiksberg Hospital",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 7421,
+              "Time": 1456
+            }
+          ]
+        },
+        {
+          "Target": "Rigshospitalet Glostrup",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 8890,
+              "Time": 1817
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Rigshospitalet Glostrup",
+      "Type": "base",
+      "Latitude": 55.669843,
+      "Longitude": 12.389111,
+      "Edges": [
+        {
+          "Target": "Hvidovre Hospital",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 8403,
+              "Time": 1604
+            }
+          ]
+        },
+        {
+          "Target": "Herlev Hospital",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 8609,
+              "Time": 1640
+            }
+          ]
+        },
+        {
+          "Target": "Frederiksberg Hospital",
+          "Modes": [
+            {
+              "TravelMode": "Bicycling",
+              "Distance": 10931,
+              "Time": 2121
             }
           ]
         }
