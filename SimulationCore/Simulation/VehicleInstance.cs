@@ -283,7 +283,7 @@ namespace SimulationCore.Simulation
                             payloadSoFar + order.PayloadWeight <= MaxPayload)
                         {
                             // TODO: For now only allow one order at a time
-                            if (selectedOrders.Count <= 1)
+                            if (selectedOrders.Count <= int.MaxValue)
                             {
                                 selectedOrders.Add(Tuple.Create(order, path));
                                 payloadSoFar += order.PayloadWeight;

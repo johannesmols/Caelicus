@@ -15,8 +15,8 @@ namespace DataProcessor
     {
         public static async Task Main(string[] args)
         {
-            var scenarios = new[] {"Scenario 1", "Scenario 2", "Scenario 3", "Scenario 4"};
-            var path = Path.Combine(KnownFolders.Desktop.Path, "Caelicus", "results");
+            var scenarios = new[] {"Scenario 1", "Scenario 3", "Inner City"};
+            var path = Path.Combine(KnownFolders.Desktop.Path, "Caelicus", "final_results", "multiple orders");
 
             var excel = WorkBook.Create(ExcelFileFormat.XLSX);
             excel.Metadata.Title = "Caelicus Data Analysis";
@@ -53,6 +53,7 @@ namespace DataProcessor
                 worksheet[$"{currentCol}{currentRow}"].Value = simulationsForVehicle.First().Parameters.VehicleTemplate.Name;
                 worksheet[$"{(char) (currentCol + 1)}{currentRow}"].Value = "Orders per hour";
                 worksheet[$"{(char) (currentCol + 2)}{currentRow}"].Value = "Cost per hour";
+                worksheet[$"{(char) (currentCol + 3)}{currentRow}"].Value = "Fulfillment percentage";
                 currentRow++;
 
                 foreach (var simulation in simulationsForVehicle)
@@ -68,9 +69,12 @@ namespace DataProcessor
                     var ordersPerHour = totalDeliveries /  totalTime * 60 * 60;
                     var costPerHour = totalCost / totalTime * 60 * 60;
 
+                    var fulfillmentPercentage = ((double) step.ClosedOrders.Count) / ((double) (step.OpenOrders.Count + step.ClosedOrders.Count)) * 100d;
+
                     worksheet[$"{currentCol}{currentRow}"].Value = simulation.Parameters.NumberOfVehicles;
                     worksheet[$"{(char)(currentCol + 1)}{currentRow}"].Value = ordersPerHour;
                     worksheet[$"{(char)(currentCol + 2)}{currentRow}"].Value = costPerHour;
+                    worksheet[$"{(char) (currentCol + 3)}{currentRow}"].Value = fulfillmentPercentage;
                     currentRow++;
                 }
             }

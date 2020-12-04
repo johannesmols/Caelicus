@@ -1,7 +1,7 @@
 [
   {
     "name": "DJI Matrice 600 Drone",
-    "averageSpeed": 64,
+    "averageSpeed": 40,
     "fuelCapacity": 37331,
     "baseFuelConsumption": 1,
     "extraFuelConsumptionPerKg": 0.18,
