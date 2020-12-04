@@ -85,11 +85,11 @@ namespace SimulationCore.Models.Vehicles
             return AverageSpeed / 3.6d;
         }
 
-        public double GetSpeedInMetersPerSecond(double totalDistanceToTarget, double totalTimeToTarget)
+        public double GetSpeedInMetersPerSecond(double totalDistanceToTarget, double totalTimeToTarget, TravelMode travelMode)
         {
             var regularSpeedPerSeconds = GetSpeedInMetersPerSecond();
 
-            if (totalTimeToTarget == 0d)
+            if (totalTimeToTarget == 0d || travelMode != TravelMode.Driving)
             {
                 return regularSpeedPerSeconds;
             }

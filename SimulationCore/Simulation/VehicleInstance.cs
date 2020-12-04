@@ -166,15 +166,15 @@ namespace SimulationCore.Simulation
             }
             else
             {
-                DistanceTraveled += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
+                DistanceTraveled += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget, TravelMode);
 
                 if (State == VehicleState.MovingToTarget)
                 {
-                    CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders?.Sum(o => o.Order.PayloadWeight) ?? 0d) * GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
+                    CurrentFuelLoaded -= GetFuelConsumptionForOneMeter(CurrentOrders?.Sum(o => o.Order.PayloadWeight) ?? 0d) * GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget, TravelMode);
                 }
                 else if (State == VehicleState.PickingUpOrder)
                 {
-                    CurrentFuelLoaded -= BaseFuelConsumption * GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
+                    CurrentFuelLoaded -= BaseFuelConsumption * GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget, TravelMode);
                 }
 
                 // Record progress in order
@@ -183,19 +183,19 @@ namespace SimulationCore.Simulation
                     if (State == VehicleState.MovingToTarget)
                     {
                         o.DeliveryTime++;
-                        o.DeliveryDistance += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
+                        o.DeliveryDistance += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget, TravelMode);
                         o.DeliveryCost = CalculateJourneyCost(o.DeliveryDistance, o.DeliveryTime) / CurrentOrders.Count; // divide cost depending how many orders are loaded
                     }
                     else if (State == VehicleState.PickingUpOrder)
                     {
                         o.PickupTime++;
-                        o.PickupDistance += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
+                        o.PickupDistance += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget, TravelMode);
                         o.PickupCost = CalculateJourneyCost(o.PickupDistance, o.PickupTime) / CurrentOrders.Count; // divide cost depending how many orders are loaded
                     }
                 });
 
                 // Record statistics
-                TotalTravelDistance += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget);
+                TotalTravelDistance += GetSpeedInMetersPerSecond(DistanceToCurrentTarget, TimeToCurrentTarget, TravelMode);
                 TotalTravelTime++;
             }
 
@@ -283,7 +283,7 @@ namespace SimulationCore.Simulation
                             payloadSoFar + order.PayloadWeight <= MaxPayload)
                         {
                             // TODO: For now only allow one order at a time
-                            if (selectedOrders.Count <= int.MaxValue)
+                            if (selectedOrders.Count <= 1)
                             {
                                 selectedOrders.Add(Tuple.Create(order, path));
                                 payloadSoFar += order.PayloadWeight;

@@ -16,7 +16,7 @@ namespace DataProcessor
         public static async Task Main(string[] args)
         {
             var scenarios = new[] {"Scenario 1", "Scenario 3", "Inner City"};
-            var path = Path.Combine(KnownFolders.Desktop.Path, "Caelicus", "final_results", "multiple orders");
+            var path = Path.Combine(KnownFolders.Desktop.Path, "Caelicus", "final-final-results", "single orders");
 
             var excel = WorkBook.Create(ExcelFileFormat.XLSX);
             excel.Metadata.Title = "Caelicus Data Analysis";
