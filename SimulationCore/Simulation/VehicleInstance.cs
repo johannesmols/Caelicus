@@ -282,8 +282,7 @@ namespace SimulationCore.Simulation
                             GetMaximumTravelDistance(0d, FuelCapacity - GetFuelConsumptionForOneMeter(payloadSoFar + order.PayloadWeight) * distance) >= distanceToNextBaseStation && // do i have enough fuel to get to the nearest base station after delivery?
                             payloadSoFar + order.PayloadWeight <= MaxPayload)
                         {
-                            // TODO: For now only allow one order at a time
-                            if (selectedOrders.Count <= 1)
+                            if (selectedOrders.Count < Simulation.Parameters.SimultaneousOrders)
                             {
                                 selectedOrders.Add(Tuple.Create(order, path));
                                 payloadSoFar += order.PayloadWeight;

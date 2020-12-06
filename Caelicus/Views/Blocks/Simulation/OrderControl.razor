@@ -21,8 +21,16 @@
     </div>
 </div>
 
+<form class="form-inline">
+    <div class="form-group pb-3" style="width: 100%">
+        <label for="simultOrders" style="margin-right: 10px">Simultaneous Orders:</label>
+        <input type="number" class="form-control" style="flex: 1" id="simultOrders" value="@_simtOrders" step="1" min="1" @onchange="SimtOrdersChanged" />
+    </div>
+</form>
+
 @code {
     private int _orders = 100;
+    private int _simtOrders = 1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,6 +45,16 @@
         {
             _orders = newValue;
             AppState.UpdateNumberOfOrders(this, _orders);
+        }
+    }
+
+    private void SimtOrdersChanged(ChangeEventArgs e)
+    {
+        var newValue = int.Parse(e.Value.ToString());
+        if (newValue >= 1)
+        {
+            _simtOrders = newValue;
+            AppState.UpdateSimultaneousOrders(this, _simtOrders);
         }
     }
 

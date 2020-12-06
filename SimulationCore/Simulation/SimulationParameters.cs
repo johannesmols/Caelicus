@@ -28,5 +28,7 @@ namespace SimulationCore.Simulation
         public Tuple<double, double> MinMaxPayload = Tuple.Create(0.1d, 5d);
 
         public bool LogIntermediateSteps { get; set; } = true;
+
+        public int SimultaneousOrders { get; set; } = 1;
     }
 }

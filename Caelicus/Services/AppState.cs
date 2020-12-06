@@ -59,6 +59,13 @@ namespace BlazorApp.Services
             NotifyStateChanged(source, nameof(OnlyDownloadLastStep));
         }
 
+        public int SimultaneousOrders { get; set; } = 1;
+
+        public void UpdateSimultaneousOrders(ComponentBase source, int simultaneousOrders)
+        {
+            SimultaneousOrders = simultaneousOrders;
+            NotifyStateChanged(source, nameof(SimultaneousOrders));
+        }
 
         // Orders
         public int NumberOfOrders { get; set; } = 100;

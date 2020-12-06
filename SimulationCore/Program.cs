@@ -27,7 +27,7 @@ namespace SimulationCore
                 for (var i = 1; i <= 64; i *= 2)
                 {
                     Console.WriteLine($"Running scenario {s + 1} with {i} vehicles");
-                    await Run(new Parameters(0, 100, Tuple.Create(0.1d, 5.5d), i, s).GetSimulationParameters(), $"scenario{s}_{i}vehicles_100orders_singleorders");
+                    await Run(new Parameters(0, 100, Tuple.Create(0.1d, 5.5d), i, s, 1).GetSimulationParameters(), $"scenario{s}_{i}vehicles_100orders_singleorders");
                 }
             }
         }
@@ -114,14 +114,16 @@ namespace SimulationCore
         public int NumberOfOrders;
         public Tuple<double, double> MinMaxPayload;
         public int Scenario;
+        public int SimultaneousOrders;
 
-        public Parameters(int seed, int orders, Tuple<double, double> payload, int vehicles, int scenario)
+        public Parameters(int seed, int orders, Tuple<double, double> payload, int vehicles, int scenario, int simultaneousOrders)
         {
             RandomSeed = seed;
             NumberOfOrders = orders;
             NumberOfVehicles = vehicles;
             MinMaxPayload = payload;
             Scenario = scenario;
+            SimultaneousOrders = simultaneousOrders;
         }
 
         public List<SimulationParameters> GetSimulationParameters()
@@ -138,7 +140,8 @@ namespace SimulationCore
                     SimulationSpeed = 0f,
                     NumberOfOrders = NumberOfOrders,
                     LogIntermediateSteps = false,
-                    MinMaxPayload = MinMaxPayload
+                    MinMaxPayload = MinMaxPayload,
+                    SimultaneousOrders = SimultaneousOrders
                 }));
         }
 
