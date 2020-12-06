@@ -32,9 +32,9 @@ namespace SimulationTests
                     SimulationIdentifier = Guid.NewGuid(),
                     RandomSeed = 42,
                     Graph = GraphImporterService.GenerateGraph(Graph),
-                    VehicleTemplate = Vehicle[0],
+                    VehicleTemplate = Vehicle.Last(),
                     NumberOfVehicles = 1,
-                    SimulationSpeed = 10
+                    SimulationSpeed = 0d
                 };
             }
         }
@@ -45,8 +45,8 @@ namespace SimulationTests
         public void TestLoadJsonResources()
         {
             var simResources = SimResources.Instance;
-            Assert.AreEqual("Copenhagen", simResources.Graph.Name);
-            Assert.AreEqual("Drone", simResources.Vehicle[0].Name);
+            Assert.AreEqual("Inner City", simResources.Graph.Name);
+            Assert.AreEqual("Lockheed SR-71 Blackbird", simResources.Vehicle.Last().Name);
         }
 
         [TestMethod]
